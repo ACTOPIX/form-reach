@@ -1,6 +1,7 @@
 <?php
 
-function envoi_mail() {
+echo ($_POST['name']);
+
     // Si le bouton submit est cliqué, envoi du mail
     if(isset($_POST['submit'])) {
         //Adresse mail de réception
@@ -38,8 +39,7 @@ function envoi_mail() {
     //     } else {
     //         $echec = "Erreur : le message n'a pas été envoyé. Veuillez réessayer plus tard";
     //     }
-        echo ($_POST['name']);
+
     header("Location:http://wp-action-form.local/action-form/");
-}
         
 }
