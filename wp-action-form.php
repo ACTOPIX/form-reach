@@ -6,7 +6,15 @@
  */
 
 function wp_action_form() {
-    echo `<form accept-charset="UTF-8" action="validation.php" method="post">`;
+
+    $formulaire = '<form accept-charset="UTF-8" action="';
+    $url = plugins_url( 'validation.php', __FILE__ );
+    $fin_formulaire = '" method="post">';
+
+    echo $formulaire;
+    echo $url;
+    echo $fin_formulaire;
+    
     echo '<p>';
     echo 'Prénom* <br/>';
     echo '<input type="text" name="name" pattern="[a-zA-Z0-9 ]+" placeholder="Votre prénom" autofocus required />';
@@ -29,8 +37,7 @@ function wp_action_form() {
 
 function shortcode() {
     ob_start();
-    include 'validation.php';
-    envoi_mail();
+    
     wp_action_form();
 
     return ob_get_clean();
