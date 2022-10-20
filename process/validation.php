@@ -31,8 +31,8 @@
                . "Vous avez soumis le message suivant : " . "\n" . $objectif . "\n";
                
           //fonction mail PHP
-               mail($to, $subject, $message); // Mail envoyé à notre l'adresse
-               mail($email, $subject2, $message2); //Mail de confirmation envoyé au client
+               wp_mail($to, $subject, $message); // Mail envoyé à notre l'adresse
+               wp_mail($email, $subject2, $message2); //Mail de confirmation envoyé au client
 
           //Redirection vers le formulaire
                wp_redirect("Location:http://wp-action-form.local/action-form/");
