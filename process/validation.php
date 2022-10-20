@@ -13,30 +13,44 @@
                $name = sanitize_text_field($_POST['name']); 
                $email = sanitize_email($_POST['email']); 
                $objectif = sanitize_textarea_field($_POST['objectif']);
-
+          
+          //Supression des backslash potentiels lors de l'utilisation d'apostrophes
+               $Newobjectif = str_replace("\\","",$objectif);
+          
           //Sujet du mail que nous recevrons
                $subject = "Message d'un utilisateur";
-
+          
           //Sujet du mail de confirmation pour l'utilisateur
                $subject2 = "Confirmation : Votre message a bien été envoyé"; 
-
+          
           //Email que nous recevrons
                $message = "Prénom de l'utilisateur : " . $name . "\n"
                . "Adresse mail : " . $email . "\n"
-               . "Message: " . "\n" . $objectif;
-               echo $message;
+               . "Message: " . "\n" . $Newobjectif;
+
           //Message de confirmation pour l'utilisateur
-               $message2 = "Cher" . $name . "\n"
+               $message2 = "Cher " . $name . ",\n"
                . "Merci de nous avoir contactés. Nous vous répondrons sous peu !" . "\n"
-               . "Vous avez soumis le message suivant : " . "\n" . $objectif . "\n";
-               
+               . "Vous avez soumis le message suivant : " . "\n" . $Newobjectif . "\n";
+          
+          //Headers
+               $headers = "From: " . $email; // Mail de l'utilisateur que nous recevrons
+               $headers2 = "From: " . $to; // Mail que l'utilisateur recevra
+
           //fonction mail PHP
-               wp_mail($to, $subject, $message); // Mail envoyé à notre l'adresse
-               wp_mail($email, $subject2, $message2); //Mail de confirmation envoyé au client
+               wp_mail($to, $subject, $message, $headers); // Mail envoyé à notre l'adresse
+               wp_mail($email, $subject2, $message2, $headers2); //Mail de confirmation envoyé au client
+
+          //Vérification de l'envoie des mails
+               if ($result1 && $result2) {
+                    $succés = "Votre message a été soumis avec succès !";
+               } else {
+                    $echec = "Erreur : le message n'a pas été envoyé. Veuillez réessayer plus tard";
+               }
 
           //Redirection vers le formulaire
-               wp_redirect("Location:http://wp-action-form.local/action-form/");
-               
+               header("Location:http://wp-action-form.local/action-form/");
+
      }
 
 ?>
