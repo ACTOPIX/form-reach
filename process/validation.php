@@ -34,8 +34,8 @@
                . "Vous avez soumis le message suivant : " . "\n" . $Newobjectif . "\n";
           
           //Headers
-               $headers = "From: " . $email; // Mail de l'utilisateur que nous recevrons
-               $headers2 = "From: " . $to; // Mail que l'utilisateur recevra
+                $headers = "From: " . $email; // Mail de l'utilisateur que nous recevrons
+                $headers2 = "From: " . $to; // Mail que l'utilisateur recevra
 
           //fonction mail PHP
                wp_mail($to, $subject, $message, $headers); // Mail envoyé à notre l'adresse
@@ -47,7 +47,7 @@
                } else {
                     $echec = "Erreur : le message n'a pas été envoyé. Veuillez réessayer plus tard";
                }
-
+          
           //Redirection vers le formulaire
                header("Location:http://wp-action-form.local/action-form/");
 
