@@ -13,118 +13,151 @@ function admin (){
 add_action( "admin_menu", "admin" );
 
 function admin_page(){
-	
-	//Déclaration de la variable en 'string' pour contenir l'HTML
-	$content = '';
-	
-	$content .= '<!DOCTYPE html>
-				<html lang="en">
-					<head>
-						<meta charset="UTF-8">
-						<meta http-equiv="X-UA-Compatible" content="IE=edge">
-						<meta name="viewport" content="width=device-width, initial-scale=1.0">
-						<title>Document</title>
-						<link rel="stylesheet" href="style/admin.css">
-						<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-						<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
-					</head>
-					<body>
-						<h1 class="p-5">Formulaire de contact</h1>
+	//Récupération des données de la la databse
+		global $wpdb;
+		$result =$wpdb->get_results("SELECT * FROM `wp39_posts` WHERE `post_type` = 'wp_action_form';");
+		//  WHERE post_type=wp_action_form
+		$table="wp39_posts";
 
+		foreach ($result as $table) {
+			//Déclaration de la variable en 'string' pour contenir l'HTML
+			$content = '';
+			
+			$content = '<!DOCTYPE html>
+						<html lang="en">
+							<head>
+								<meta charset="UTF-8">
+								<meta http-equiv="X-UA-Compatible" content="IE=edge">
+								<meta name="viewport" content="width=device-width, initial-scale=1.0">
+								<title>Document</title>
+								<link rel="stylesheet" href="style/admin.css">
+								<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+								<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
 
-						<form class="position-absolute top-2 end-0 pe-5">
-							<div class="row g-1 align-items-center">
-								<div class="col-auto">
-									<input type="search" style="width=200px" name="search" class="form-control" placeholder="Rechercher">
-								</div>
+							</head>
+							<body>
+								<h1 class="p-5">Formulaire de contact</h1>
 
-								<div class="col-auto">
-								<button type="submit" name="search_submit" class="btn btn-primary mx-auto">
-									<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-										<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-									</svg>
-								</button>
-								</div>
-							</div>
-						</form>
+								<form class="position-absolute top-2 end-0 pe-5">
+									<div class="row g-1 align-items-center">
+										<div class="col-auto">
+											<input type="search" style="width=200px" name="search" class="form-control" placeholder="Rechercher">
+										</div>
 
-
-						<div class="input-group mt-5 w-50 ps-5 pt-4">
-							<select class="form-select" id="inputGroupSelect04">
-								<option selected>Action groupées</option>
-								<option value="1">Fusionner</option>
-								<option value="2">Duppliquer</option>
-								<option value="3">Supprimer</option>
-							</select>
-							<button class="btn btn-outline-secondary" type="button">Appliquer</button>
-						</div>
-
-						<div class="w-75 ps-5 pt-3">
-							<table class="table table-striped table-hover table-bordered p-3">
-								<thead>
-									<tr>
-										<th scope="col">
-
-										</th>
-										<th scope="col">
-											Titre
-										</th>
-										<th scope="col">
-											Code court
-										</th>
-										<th scope="col">
-											Auteur
-										</th>
-										<th scope="col">
-											Date
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th scope="row">
-											<input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="">
-										</th>
-										<td>
-											WP-Action-Form 1
-										</td>
-										<td>
-											[wp-action-form]
-										</td>
-										<td>
-											Axel
-										</td>
-										<td>
-											17/10/2022
-										</td>
-									</tr>
-									<tr>
-										<th scope="row"><input class="form-check-input" type="checkbox" id="checkboxNoLabel" value=""></th>
-										<td>
-											WhatsApp 1
-										</td>
-										<td>
-											[wp-action-form-whatsapp]
-										</td>
-										<td>
-											Axel
-										</td>
-										<td>
-											24/10/2022
-										</td>
-									</tr>
-							</table>
-						</div>
-					</body>
-				</html>';
+										<div class="co\wp-admin\index.phpl-auto">
+										<button type="submit" name="search_submit" class="btn btn-primary mx-auto">
+											<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+												<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+											</svg>
+										</button>
+										</div>
+									</div>
+								</form>
 								
+								<div class="input-group mt-5 ps-5 pt-4 d-inline">
+									<select name="action" class="form-select d-inline" id="inputGroupSelect04" style="width:14em; font-size:1.14em;">
+										<option selected>Action groupées</option>
+										<option value="2">Duppliquer</option>
+										<option value="3">Supprimer</option>
+									</select>
+									<button class="btn btn-outline-secondary position-absolute" type="button">Appliquer</button>
+								</div>
+
+								<div class="w-75 ps-5 pt-3 fs-6">
+									<table class="table table-responsive table-striped table-hover table-bordered align-middle text-center p-3">
+										<thead>
+											<tr>
+												<th scope="col">
+													<input type="checkbox" id="checkbox" value="">
+												</th>
+												<th scope="col">
+													ID
+												</th>
+												<th scope="col">
+													Titre
+												</th>
+												<th scope="col">
+													Code court
+												</th>
+												<th scope="col">
+													Auteur
+												</th>
+												<th scope="col">
+													Date
+												</th>
+												<th scope="col">
+													Modifier
+												</th>
+												<th scope="col">
+													Supprimer
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th scope="row">
+													<input type="checkbox" id="checkbox" value="">
+												</th>
+												<td>
+													'. $table->ID .'</td>
+												</td>
+												<td>
+													<a class="text-decoration-none" href="'. $table->guid .'">'. $table->post_title .'
+												</td>
+												<td>
+													'. $table->post_content .'</td>
+												<td>
+													'. get_the_author_meta( 'display_name' , $table->post_author ).'
+												</td>
+												<td>
+													'. $table->post_date .'
+												</td>
+												<td>
+													<a href="#">✏️
+												</td>
+												<td>
+													<a href="#">❌
+												</td>
+											</tr>
+											<tr>
+												<th scope="row">
+													<input type="checkbox" id="checkbox" value=""></th>
+												<td>
+													'. $table->ID .'</td>
+												</td>
+												<td>
+													<a class="text-decoration-none" href="'. $table->guid .'">'. $table->post_title .'
+												</td>
+												<td>
+													'. $table->post_content .'
+												</td>
+												<td>
+													'. get_the_author_meta( 'display_name' , $table->post_author ).'
+												</td>
+												<td>
+													'. $table->post_date .'
+												</td>
+												<td>
+													<a href="#">✏️
+												</td>
+												<td>
+													<a href="#">❌
+												</td>
+											</tr>
+										</body>
+									</table>
+								</div>
+							</body>
+						</html>';
+		}		
+
 	echo $content;
-								
 
 }
 
 function wp_action_form_include() {
-	
+
+
 	//Déclaration de la variable en 'string' pour contenir l'HTML
 	$content = '';
 	
@@ -137,39 +170,56 @@ function wp_action_form_include() {
 						<title>Document</title>
 						<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 						<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
-						<script src="https://www.google.com/recaptcha/api.js"></script>
-						<script>
-							function onSubmit(token) {
-								document.getElementById("1").submit();
-							}
-						</script>
+						<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+                        <script src="'.plugin_dir_url(__FILE__).'js/wp-action-form.js"></script>
+						<script src="https://www.google.com/recaptcha/api.js?render=6LcYu_gaAAAAANJVIQPE35j97DxUCXXozlLiXhpK"></script>
 					</head>
 					<body>
-						<form id="1" accept-charset="UTF-8" name="contact_form" method="post" action="'.plugin_dir_url(__FILE__).'process/validation.php">
+						<form id="action_form" accept-charset="UTF-8" name="action_form" method="post" action="javascript:void(0)">
+						
 							<div class="form-floating mb-3 mt-3">
 							'.wp_nonce_field('nonce_verification').'
-								<input type="text" class="form-control" id="prenom" name="name" placeholder="Prénom" required/>
+								<input type="text" class="form-control" id="name" name="name" placeholder="Prénom" required/>
 								<label for="name">Prénom</label>
 							</div>
 								
 							<div class="form-floating mb-3 mt-3">
-								<input type="email" class="form-control" id="mail" name="email" placeholder="Adresse mail" required/>
+								<input type="email" class="form-control" id="email" name="email" placeholder="Adresse mail" required/>
 								<label for="email">Adresse mail</label>
 							</div>
 								
 							<div class="form-floating mb-3 mt-3">
-								<textarea class="form-control" style="height: 100px" name="objectif" placeholder="Quel est votre objectif ?" required></textarea>
+								<textarea class="form-control" style="height: 100px" id="objectif" name="objectif" placeholder="Quel est votre objectif ?" required></textarea>
 								<label for="floatingTextarea2">Quel est votre objectif ?</label>
 							</div>
 
-     						<input type="hidden" name="g-recaptcha-response" id="recaptcha">
+        					<input type="hidden" name="g-recaptcha-response" value="" id="g-recaptcha-response">
 
-							<button type="submit" id="envoi_button" name="wp_action_form_submit" class="btn btn-primary mb-3 mt-3 g-recaptcha" data-sitekey="6LcYu_gaAAAAANJVIQPE35j97DxUCXXozlLiXhpK" data-callback="onSubmit" data-action="submit">
-								<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
-									<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
-								</svg> Envoyer
+							<button type="submit" id="submit" name="wp_action_form_submit" class="btn btn-primary mb-3 mt-3 g-recaptcha">
+								<div id="submitContent">
+									<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+										<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+									</svg> Envoyer
+								</div>
+								<div id="spinner" class="spinner-border spinner-border-sm" style="display:none"></div>
 							</button>
-						</form>
+							
+							</form>
+							
+							<div id="success_message" class="alert alert-success position-absolute start-50 translate-middle" style="display:none">
+								<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+									<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+								</svg>
+								Le formulaire a été envoyé avec succès.
+							</div>
+
+							<div id="error_message" class="alert alert-danger position-absolute start-50 translate-middle" style="display:none">
+								<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+									<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+								</svg>
+								Le formulaire n\'a pas pu être envoyé suite à une erreur. Veuillez réessayer.
+							</div>
+
 					</body>
 				</html>';
 								
@@ -237,52 +287,4 @@ function wp_action_form_whatsapp_include() {
 }
 add_shortcode( 'wp-action-form-whatsapp', 'wp_action_form_whatsapp_include' );
 
-//clées reCaptcha
-$public_key='6LcYu_gaAAAAANJVIQPE35j97DxUCXXozlLiXhpK';
-$secret_key='6LcYu_gaAAAAABimzPHTm0YalpPykqaShey0KstW';
-
-// if(isset($_POST['_wpnonce'])){
-// 	$recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
-// 	$recaptcha_secret = '6LcYu_gaAAAAABimzPHTm0YalpPykqaShey0KstW';
-// 	$recaptcha_response = $_POST['g-recaptcha-response'];
-	
-// 	$recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '& response=' . $recaptcha_response);
-// 	$recaptcha = json_decode($recaptcha, true);
-	
-// 	if ($recaptcha['success'] == 1 AND $recaptcha['score'] >= 0.5 AND $recaptcha['action'] == "login") {
-		
-// 		//succés
-// 		console.log("succés recaptcha");
-
-		
-// 	}else {
-		
-// 		//reCaptcha non vérifié, derirection vers l'erreur
-// 		console.log("erreur recaptcha");
-		
-// 	}
-	
-// }
-
-
-//  if(isset($_POST['wp_action_form_submit'])) 
-// {
-// 		//La réponse donnée par le formulaire soumis */
-// 		$response_key = $_POST['g-recaptcha-response'];
-// 		//Envoi les données à l'API pour obtenir une réponse  */
-// 		$response = file_get_contents($url.'?secret='.$private_key.'&response='.$response_key.'&remoteip='.$_SERVER['REMOTE_ADDR']);
-// 		//json décode la réponse en un objet */
-// 		$response = json_decode($response);
-	
-// 		//if success */
-// 		if($response->success == 1)
-// 		{
-// 				echo "Vous avez passé la validation !";
-// 			}
-// 			else
-// 			{
-// 					echo "Vous êtes un robot et nous n'aimons pas les robots.";
-// 				}
-// 			}
-			
 ?>
