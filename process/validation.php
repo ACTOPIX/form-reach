@@ -42,15 +42,19 @@
                               echo ("recaptchaValidation=false") ; exit;
                          }else{
                               echo ("recaptchaValidation=true");
-                         //Envoi des données vers la database
-                                   $data= array(
-                                        'name' => $_POST['name'],
-                                        'email' => $_POST['email'],
-                                        'objectif' => $_POST['objectif'],
-                                   );
-                                   $table_name = 'actopix';
 
-                                   $result = $wpdb->insert($table_name, $data, $format=NULL);
+                         //Envoi des données vers la database
+
+                                   global $wpdp;
+                                   $data= array(
+                                             'name' => sanitize_text_field($_POST['name']),
+                                             'email' => sanitize_text_field($_POST['email']),
+                                             'objectif' => sanitize_textarea_field($_POST['objectif']),
+                                             );
+
+                                   $table_name =  $wpdb->prefix . 'actopix';
+
+                                   $result = $wpdb->insert($table_name, $data);
 
                                    if ($result===0) {
                                         echo "<script>alert('Impossible d'enregistrer les données.');</script>";
@@ -65,9 +69,9 @@
                                    
                               //Obtention et filtre des données de l'utilisateur
                                    $name = sanitize_text_field($_POST['name']); 
-                                   $email = sanitize_email($_POST['email']);
-                                   // $fichier = ($_POST['file']);
+                                   $email = sanitize_text_field($_POST['email']);
                                    $objectif = sanitize_textarea_field($_POST['objectif']);
+                                   // $fichier = ($_POST['file']);
                               
                               //Supression des backslash potentiels lors de l'utilisation d'apostrophes
                                    $Newobjectif = str_replace("\\","",$objectif);
