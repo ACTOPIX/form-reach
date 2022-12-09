@@ -98,15 +98,8 @@
                                    $headers2 = "From: Wordpress@wp-action-form.actopix.com"; // Mail que l'utilisateur recevra
 
                               //fonction mail PHP
-                                   $result1 = wp_mail($to, $subject, $message, $headers); // Mail envoyé à notre l'adresse
+                                   $result1 = wp_mail($to, $subject, $message, $headers); // Mail envoyé à l'adresse de l'admin
                                    $result2 = wp_mail($email, $subject2, $message2, $headers2); //Mail de confirmation envoyé au client
-
-                              //Vérification de l'envoie des mails
-                                   if ($result1 && $result2) {
-                                        $succés = "Votre message a été soumis avec succès !";
-                                   } else {
-                                        $echec = "Erreur : le message n'a pas été envoyé. Veuillez réessayer plus tard";
-                                   }
                               
 
                               //Redirection vers le formulaire et réinitialisation de ce dernier
