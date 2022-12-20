@@ -22,7 +22,64 @@
   </li>
 </ul>
 
+<!-- Boutton toggle changement de formulaire WhatsAPP -->
 
+<input type="checkbox" id="switch" /><label for="switch">Toggle</label>
+
+<style>
+
+/* input[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 200px;
+	height: 100px;
+	background: grey;
+	display: block;
+	border-radius: 100px;
+	position: relative;
+}
+
+label:after {
+	content: '';
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 90px;
+	height: 90px;
+	background: #fff;
+	border-radius: 90px;
+	transition: 0.3s;
+}
+
+input:checked + label {
+	background: #25D366;
+}
+
+input:checked + label:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+label:active:after {
+	width: 130px;
+}
+
+// centering
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+} */
+
+</style>
+<!-- Boutton toggle changement de formulaire WhatsAPP -->
 
   <div id="wpaf_formulaire" class="tab-pane fade show active mt-3" role="tabpanel">
 
@@ -661,7 +718,7 @@
 			</div>
 		</div>
 
-		<textarea style="width:100%" id="contenuFinal" name="wpaf_contenu_formulaire" rows="24" class="large-tet code mt-3"><?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_contenu_formulaire'][0] ); ?></textarea>
+		<textarea style="width:100%" id="wpaf_contenu_formulaire" name="wpaf_contenu_formulaire" rows="24" class="large-tet code mt-3"><?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_contenu_formulaire'][0] ); ?></textarea>
 
   </div>
 

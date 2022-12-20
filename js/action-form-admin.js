@@ -267,7 +267,7 @@ $("#wpaf_generatedTextareaShortcode").val('[input'+ wpaf_label + wpaf_name + wpa
 var retour = "\n\n";
 
 function transfertText(){
- 	document.getElementById("contenuFinal").append(document.getElementById("wpaf_generatedTextShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").append(document.getElementById("wpaf_generatedTextShortcode").value + retour);
 
 	if(document.getElementById("wpaf_generator-text-required").checked){
 		document.getElementById("wpaf_generator-text-required").checked=false;
@@ -303,7 +303,7 @@ function transfertText(){
 }
 
 function transfertEmail(){
- 	document.getElementById("contenuFinal").append(document.getElementById("wpaf_generatedEmailShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").append(document.getElementById("wpaf_generatedEmailShortcode").value + retour);
 
 	if(document.getElementById("wpaf_generator-email-required").checked){
 		document.getElementById("wpaf_generator-email-required").checked=false;
@@ -339,7 +339,7 @@ function transfertEmail(){
 }
 
 function transfertTextarea(){
- 	document.getElementById("contenuFinal").append(document.getElementById("wpaf_generatedTextareaShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").append(document.getElementById("wpaf_generatedTextareaShortcode").value + retour);
 
 	if(document.getElementById("wpaf_generator-textarea-required").checked){
 		document.getElementById("wpaf_generator-textarea-required").checked=false;
@@ -375,7 +375,7 @@ function transfertTextarea(){
 }
 
 function transfertTel(){
- 	document.getElementById("contenuFinal").append(document.getElementById("wpaf_generatedTelShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").append(document.getElementById("wpaf_generatedTelShortcode").value + retour);
 
 	if(document.getElementById("wpaf_generator-tel-required").checked){
 		document.getElementById("wpaf_generator-tel-required").checked=false;
