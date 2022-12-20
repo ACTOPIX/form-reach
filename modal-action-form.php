@@ -52,6 +52,11 @@
 									</tr>
 
 									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-text-label">Label :</label></th>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-text-label" onchange="modalTextGenerator()" value=""></td>
+									</tr>
+
+									<tr>
 										<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Nom :</label></th>
 										<td ><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name" onchange="modalTextGenerator()" value=""></td>
 									</tr>
@@ -63,7 +68,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" name="placeholder"  id="wpaf_generator-text-placeholder" class="option" data-onclick="modalTextGenerator()"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" name="placeholder"  id="wpaf_generator-text-placeholder" class="option" onclick="modalTextGenerator()"> Utilisez ce texte comme texte indicatif du champ.</td>
 									</tr>
 
 									<tr>
@@ -114,6 +119,11 @@
 											<label><input type="checkbox" id="wpaf_generator-email-required" name="required" onclick="modalEmailGenerator()"> Champ obligatoire</label>
 											</fieldset>
 										</td>
+									</tr>
+
+									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-email-label">Label :</label></th>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-text-email" onchange="modalTextGenerator()" value=""></td>
 									</tr>
 
 									<tr>
@@ -183,6 +193,11 @@
 									</tr>
 
 									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-textarea-label">Label :</label></th>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-textarea-label" onchange="modalTextGenerator()" value=""></td>
+									</tr>
+									
+									<tr>
 										<th class="text-end" scope="row"><label for="wpaf_generator-textarea-name">Nom :</label></th>
 										<td ><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-textarea-name" onchange="modalTextareaGenerator()"></td>
 									</tr>
@@ -247,6 +262,11 @@
 											<label><input type="checkbox"  id="wpaf_generator-tel-required"name="required" onclick="modalTelGenerator()"> Champ obligatoire</label>
 											</fieldset>
 										</td>
+									</tr>
+
+									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-tel-label">Label :</label></th>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-tel-label" onchange="modalTextGenerator()" value=""></td>
 									</tr>
 
 									<tr>
@@ -315,6 +335,11 @@
 									</tr>
 
 									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-text-label">Label :</label></th>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-text-label" onchange="modalTextGenerator()" value=""></td>
+									</tr>
+
+									<tr>
 										<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Nom :</label></th>
 										<td ><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name"></td>
 									</tr>
@@ -377,6 +402,11 @@
 											<label><input type="checkbox" name="required"> Champ obligatoire</label>
 											</fieldset>
 										</td>
+									</tr>
+
+									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-text-label">Label :</label></th>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-text-label" onchange="modalTextGenerator()" value=""></td>
 									</tr>
 
 									<tr>
@@ -445,6 +475,11 @@
 									</tr>
 
 									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-text-label">Label :</label></th>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-text-label" onchange="modalTextGenerator()" value=""></td>
+									</tr>
+
+									<tr>
 										<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Nom :</label></th>
 										<td ><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name"></td>
 									</tr>
@@ -507,6 +542,11 @@
 											<label><input type="checkbox" name="required"> Champ obligatoire</label>
 											</fieldset>
 										</td>
+									</tr>
+
+									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-text-label">Label :</label></th>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-text-label" onchange="modalTextGenerator()" value=""></td>
 									</tr>
 
 									<tr>
@@ -575,6 +615,11 @@
 									</tr>
 
 									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-text-label">Label :</label></th>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-text-label" onchange="modalTextGenerator()" value=""></td>
+									</tr>
+
+									<tr>
 										<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Nom :</label></th>
 										<td ><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name"></td>
 									</tr>
@@ -616,7 +661,7 @@
 			</div>
 		</div>
 
-		<textarea style="width:100%" id="contenuFinal" name="contenu_formulaire" rows="24" class="large-tet code mt-3"></textarea>
+		<textarea style="width:100%" id="contenuFinal" name="wpaf_contenu_formulaire" rows="24" class="large-tet code mt-3"><?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_contenu_formulaire'][0] ); ?></textarea>
 
   </div>
 
@@ -674,7 +719,5 @@
 		</div>
 	</div>
 </div>
-	
-
-	</body>
-	</html>
+</body>
+</html>

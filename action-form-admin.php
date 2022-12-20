@@ -121,18 +121,7 @@ function register_metabox_callback($post){
 	add_post_meta( get_the_ID(), 'wpaf_contenu', "Merci de nous avoir contactés, nous avons bien reçu votre message. Nous vous répondrons sous peu !", true );
 	add_post_meta( get_the_ID(), 'wpaf_succes', "Votre message a été envoyé avec succès.", true );
 	add_post_meta( get_the_ID(), 'wpaf_erreur', "Une erreur s'est produite. Votre message n'a pas pu être envoyé.", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_text', "Texte", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_e-mail', "E-mail", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_tel', "Tél", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_menu_deroulant', "Menu déroulant", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_cases_a_cocher', "Cases à cocher", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_boutons_radio', "Boutons radio", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_zone_de_text', "Zone de text", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_date', "Date", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_fichier', "Fichier", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_confirmation', "Confirmation", true );
-	add_post_meta( get_the_ID(), 'wpaf_button_envoyer', "Envoyer", true );
-	add_post_meta( get_the_ID(), 'wpaf_contenu_formulaire', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_contenu_formulaire', "'. <script> </script> .'", true );
 //Ajoue des meta values
 
 	$wp_stored_meta = get_post_meta( $post ->ID);
@@ -150,6 +139,7 @@ function action_form_input_type($atts){
 	$atts = shortcode_atts(
 		array(
 			'type' => 'text',
+			'name' => 'default',
 			'id' => 'default',
 			'placeholder' => null,
 			'required' => null,
@@ -160,7 +150,7 @@ function action_form_input_type($atts){
 
 	return '<div class="form-floating mb-3 mt-3">
 				<label for="'. ( $atts['id']) .'">'.( $atts['label']).'</label>
-				<input type="'. ( $atts['type'] ).'" class="form-control '.( $atts['class']).'" id="'.( $atts['id']).'" name="text" placeholder="'.( $atts['placeholder']).'" required="'.( $atts['required']).'" value="'.($atts['value']).'"/>
+				<input type="'. ( $atts['type'] ).'" class="form-control '.+( $atts['class']).'" id="'.( $atts['id']).'" name="'. ( $atts['name'] ).'" placeholder="'.( $atts['placeholder']).'" required="'.( $atts['required']).'" value="'.($atts['value']).'"/>
 			</div>';
 }
 add_shortcode('input','action_form_input_type');
@@ -201,50 +191,6 @@ function wp_meta_save($post_id) {
 
 	if ( isset($_POST['wpaf_erreur'])){
 		update_post_meta($post_id,'wpaf_erreur',sanitize_text_field($_POST['wpaf_erreur']) );
-	}
-
-	if ( isset($_POST['wpaf_button_text'])){
-		update_post_meta($post_id,'wpaf_button_text',sanitize_text_field($_POST['wpaf_button_text']) );
-	}
-
-	if ( isset($_POST['wpaf_button_e-mail'])){
-		update_post_meta($post_id,'wpaf_button_e-mail',sanitize_text_field($_POST['wpaf_button_e-mail']) );
-	}
-
-	if ( isset($_POST['wpaf_button_tel'])){
-		update_post_meta($post_id,'wpaf_button_tel',sanitize_text_field($_POST['wpaf_button_tel']) );
-	}
-
-	if ( isset($_POST['wpaf_button_menu_deroulant'])){
-		update_post_meta($post_id,'wpaf_button_menu_deroulant',sanitize_text_field($_POST['wpaf_button_menu_deroulant']) );
-	}
-
-	if ( isset($_POST['wpaf_button_cases_a_cocher'])){
-		update_post_meta($post_id,'wpaf_button_cases_a_cocher',sanitize_text_field($_POST['wpaf_button_cases_a_cocher']) );
-	}
-
-	if ( isset($_POST['wpaf_button_boutons_radio'])){
-		update_post_meta($post_id,'wpaf_button_boutons_radio',sanitize_text_field($_POST['wpaf_button_boutons_radio']) );
-	}
-
-	if ( isset($_POST['wpaf_button_zone_de_text'])){
-		update_post_meta($post_id,'wpaf_button_zone_de_text',sanitize_text_field($_POST['wpaf_button_zone_de_text']) );
-	}
-
-	if ( isset($_POST['wpaf_button_date'])){
-		update_post_meta($post_id,'wpaf_button_date',sanitize_text_field($_POST['wpaf_button_date']) );
-	}
-
-	if ( isset($_POST['wpaf_button_fichier'])){
-		update_post_meta($post_id,'wpaf_button_fichier',sanitize_text_field($_POST['wpaf_button_fichier']) );
-	}
-
-	if ( isset($_POST['wpaf_button_confirmation'])){
-		update_post_meta($post_id,'wpaf_button_confirmation',sanitize_text_field($_POST['wpaf_button_confirmation']) );
-	}
-
-	if ( isset($_POST['wpaf_button_envoyer'])){
-		update_post_meta($post_id,'wpaf_button_envoyer',sanitize_text_field($_POST['wpaf_button_envoyer']) );
 	}
 
 	if ( isset($_POST['wpaf_contenu_formulaire'])){

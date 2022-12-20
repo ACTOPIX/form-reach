@@ -7,12 +7,16 @@ function modalTextGenerator(){
 		var wpaf_required = '';
 	};
 
-//Placeholder checkboxe 2 generator
-	if (document.getElementById("wpaf_generator-text-placeholder").checked){
-		var wpaf_placeholder = ' placeholder="placeholder"';
-	} else {
-		var wpaf_placeholder = '';
+
+//Label shortcode generator
+	if(document.getElementById("wpaf_generator-text-label").value.length>0){
+
+		var wpaf_label = ' label="'+document.getElementById("wpaf_generator-text-label").value+'"';
+	}else{
+
+		var wpaf_label =	'';
 	};
+
 
 //Name shortcode generator
 	if(document.getElementById("wpaf_generator-text-name").value.length>0){
@@ -50,7 +54,16 @@ function modalTextGenerator(){
 		var wpaf_value = '';
 	};
 
-$("#wpaf_generatedTextShortcode").val('[input'+ wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
+//Placeholder checkboxe 2 generator
+	if (document.getElementById("wpaf_generator-text-placeholder").checked){
+		var wpaf_placeholder = ' placeholder="'+document.getElementById("wpaf_generator-text-value").value+'"';
+		var wpaf_value = '';
+
+	} else {
+		var wpaf_placeholder = '';
+	};
+
+$("#wpaf_generatedTextShortcode").val('[input' + wpaf_label + wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
 };
 
 
@@ -70,6 +83,16 @@ function modalEmailGenerator(){
 	} else {
 		var wpaf_placeholder = '';
 	};
+
+
+//Label shortcode generator
+if(document.getElementById("wpaf_generator-email-label").value.length>0){
+
+	var wpaf_label = ' label="'+document.getElementById("wpaf_generator-email-label").value+'"';
+}else{
+
+	var wpaf_label =	'';
+};
 
 //Name shortcode generator
 	if(document.getElementById("wpaf_generator-email-name").value.length>0){
@@ -107,7 +130,7 @@ function modalEmailGenerator(){
 		var wpaf_value = '';
 	};
 
-$("#wpaf_generatedEmailShortcode").val('[input'+ wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
+$("#wpaf_generatedEmailShortcode").val('[input'+ wpaf_label + wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
 };
 
 
@@ -125,6 +148,15 @@ function modalTelGenerator(){
 		var wpaf_placeholder = ' placeholder="placeholder"';
 	} else {
 		var wpaf_placeholder = '';
+	};
+
+//Label shortcode generator
+	if(document.getElementById("wpaf_generator-tel-label").value.length>0){
+
+		var wpaf_label = ' label="'+document.getElementById("wpaf_generator-tel-label").value+'"';
+	}else{
+
+		var wpaf_label =	'';
 	};
 
 //Name shortcode generator
@@ -163,7 +195,7 @@ function modalTelGenerator(){
 		var wpaf_value = '';
 	};
 
-$("#wpaf_generatedTelShortcode").val('[input'+ wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
+$("#wpaf_generatedTelShortcode").val('[input'+ wpaf_label + wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
 };
 
 
@@ -182,6 +214,15 @@ function modalTextareaGenerator(){
 		var wpaf_placeholder = ' placeholder="placeholder"';
 	} else {
 		var wpaf_placeholder = '';
+	};
+
+//Label shortcode generator
+	if(document.getElementById("wpaf_generator-textarea-label").value.length>0){
+
+		var wpaf_label = ' label="'+document.getElementById("wpaf_generator-textarea-label").value+'"';
+	}else{
+
+		var wpaf_label =	'';
 	};
 
 //Name shortcode generator
@@ -220,7 +261,7 @@ function modalTextareaGenerator(){
 		var wpaf_value = '';
 	};
 
-$("#wpaf_generatedTextareaShortcode").val('[input'+ wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
+$("#wpaf_generatedTextareaShortcode").val('[input'+ wpaf_label + wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
 };
 
 var retour = "\n\n";
@@ -234,6 +275,10 @@ function transfertText(){
 
 	if (document.getElementById("wpaf_generator-text-placeholder").checked){
 		document.getElementById("wpaf_generator-text-placeholder").checked=false;
+	}
+
+	if(document.getElementById("wpaf_generator-text-label").value.length>0){
+		$("#wpaf_generator-text-label").val("");
 	}
 
 	if(document.getElementById("wpaf_generator-text-name").value.length>0){
@@ -253,7 +298,7 @@ function transfertText(){
 	}
 
 	if(document.getElementById("wpaf_generatedTextShortcode").value.length>0){
-		$("#wpaf_generatedTextShortcode").val("[input]")
+		$("#wpaf_generatedTextShortcode").val("[input]");
 	}
 }
 
@@ -266,6 +311,10 @@ function transfertEmail(){
 
 	if (document.getElementById("wpaf_generator-email-placeholder").checked){
 		document.getElementById("wpaf_generator-email-placeholder").checked=false;
+	}
+
+	if(document.getElementById("wpaf_generator-email-label").value.length>0){
+		$("#wpaf_generator-email-label").val("");
 	}
 
 	if(document.getElementById("wpaf_generator-email-name").value.length>0){
@@ -300,6 +349,10 @@ function transfertTextarea(){
 		document.getElementById("wpaf_generator-textarea-placeholder").checked=false;
 	}
 
+	if(document.getElementById("wpaf_generator-textarea-label").value.length>0){
+		$("#wpaf_generator-textarea-label").val("");
+	}
+
 	if(document.getElementById("wpaf_generator-textarea-name").value.length>0){
 		$("#wpaf_generator-textarea-name").val("");
 	}
@@ -330,6 +383,10 @@ function transfertTel(){
 
 	if (document.getElementById("wpaf_generator-tel-placeholder").checked){
 		document.getElementById("wpaf_generator-tel-placeholder").checked=false;
+	}
+
+	if(document.getElementById("wpaf_generator-tel-label").value.length>0){
+		$("#wpaf_generator-tel-label").val("");
 	}
 
 	if(document.getElementById("wpaf_generator-tel-name").value.length>0){

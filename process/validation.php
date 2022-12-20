@@ -65,7 +65,7 @@
 
 
                               //Adresse mail de réception
-                                   $to = get_option('admin_email');
+                                   $to = esc_attr ( $wp_stored_meta['wpaf_pour'][0] );
                                    
                               //Obtention et filtre des données de l'utilisateur
                                    $name = sanitize_text_field($_POST['name']); 
@@ -80,7 +80,7 @@
                                    $subject = "Message d'un utilisateur";
                               
                               //Sujet du mail de confirmation pour l'utilisateur
-                                   $subject2 = "Confirmation : Votre message a bien été envoyé"; 
+                                   $subject2 = esc_attr ( $wp_stored_meta['wpaf_objet'][0] ); 
                               
                               //Email que nous recevrons
                                    $message = "Prénom de l'utilisateur : " . $name . "\n\n"
@@ -89,13 +89,10 @@
                                    // . "Fichier envoyé : ". $fichier;
 
                               //Message de confirmation pour l'utilisateur
-                                   $message2 = "Cher " . $name . ",\n\n"
-                                   . "Merci de nous avoir contactés. Nous vous répondrons sous peu !" . "\n\n"
-                                   . "Vous avez soumis le message suivant : " . "\n" . $Newobjectif. "\n\n";
-                                   // . "Fichier envoyé : ". $fichier;
+                                   $message2 = esc_attr ( $wp_stored_meta['wpaf_contenu'][0] );
                               //Headers
                                    $headers = "From: Wordpress@wp-action-form.actopix.com"; // Mail de l'utilisateur que nous recevrons
-                                   $headers2 = "From: Wordpress@wp-action-form.actopix.com"; // Mail que l'utilisateur recevra
+                                   $headers2 = esc_attr ( $wp_stored_meta['wpaf_de'][0] ); // Mail que l'utilisateur recevra
 
                               //fonction mail PHP
                                    $result1 = wp_mail($to, $subject, $message, $headers); // Mail envoyé à l'adresse de l'admin
