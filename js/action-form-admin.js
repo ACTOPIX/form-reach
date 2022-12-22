@@ -86,13 +86,13 @@ function modalEmailGenerator(){
 
 
 //Label shortcode generator
-if(document.getElementById("wpaf_generator-email-label").value.length>0){
+	if(document.getElementById("wpaf_generator-email-label").value.length>0){
 
-	var wpaf_label = ' label="'+document.getElementById("wpaf_generator-email-label").value+'"';
-}else{
-
-	var wpaf_label =	'';
-};
+		var wpaf_label = ' label="'+document.getElementById("wpaf_generator-email-label").value+'"';
+	}else{
+		
+		var wpaf_label =	'';
+	};
 
 //Name shortcode generator
 	if(document.getElementById("wpaf_generator-email-name").value.length>0){
@@ -409,3 +409,23 @@ function transfertTel(){
 		$("#wpaf_generatedTelShortcode").val("[input]")
 	}
 }
+
+	function switchWhatsapp() {
+
+		if(document.getElementById("wpaf_whatsapp_switch").checked){
+
+			document.getElementById("wpaf_whatsapp_iconsvg").setAttribute("style","visibility : visible");
+			document.getElementById("wpaf_mail_iconsvg").setAttribute("style","visibility : hidden");
+			document.getElementById("wpaf_span_whatsapp").setAttribute("style","display : block");
+			document.getElementById("wpaf_span_mail").setAttribute("style","display : none");
+
+
+		}else{
+
+			document.getElementById("wpaf_whatsapp_iconsvg").setAttribute("style","visibility : hidden");
+			document.getElementById("wpaf_mail_iconsvg").setAttribute("style","visibility : visible");
+			document.getElementById("wpaf_span_whatsapp").setAttribute("style","display : none");
+			document.getElementById("wpaf_span_mail").setAttribute("style","display : block");
+
+		};
+	};

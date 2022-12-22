@@ -121,7 +121,9 @@ function register_metabox_callback($post){
 	add_post_meta( get_the_ID(), 'wpaf_contenu', "Merci de nous avoir contactés, nous avons bien reçu votre message. Nous vous répondrons sous peu !", true );
 	add_post_meta( get_the_ID(), 'wpaf_succes', "Votre message a été envoyé avec succès.", true );
 	add_post_meta( get_the_ID(), 'wpaf_erreur', "Une erreur s'est produite. Votre message n'a pas pu être envoyé.", true );
-	add_post_meta( get_the_ID(), 'wpaf_contenu_formulaire', "'. <script> </script> .'", true );
+	add_post_meta( get_the_ID(), 'wpaf_contenu_formulaire', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_whatsapp_switch', "", true );
+
 //Ajoue des meta values
 
 	$wp_stored_meta = get_post_meta( $post ->ID);
@@ -196,25 +198,32 @@ function wp_meta_save($post_id) {
 	if ( isset($_POST['wpaf_contenu_formulaire'])){
 		update_post_meta($post_id,'wpaf_contenu_formulaire',sanitize_text_field($_POST['wpaf_contenu_formulaire']) );
 	}
+
+	if ( isset($_POST['wpaf_whatsapp_switch'])){
+		update_post_meta($post_id,'wpaf_whatsapp_switch', "1" );
+	}else{
+		update_post_meta($post_id,'wpaf_whatsapp_switch', "0" );
+	}
 }
 add_action('save_post','wp_meta_save');
 
 
 
-function admin (){
-	
-	add_menu_page( 'WP Action Form - Admin', 'WP Admin', 'manage_options', 'wp-admin', 'admin_page' );
+function wp_add_custom_submenu(){
+
+    add_submenu_page("edit.php?post_type=wp_action_form", "Entrées de Formulaire","Entrées de Formulaire","manage_options","entrées-formulaire","entrees_formulaire");
+
 }
 
-add_action( "admin_menu", "admin" );
+add_action("admin_menu","wp_add_custom_submenu");
 
 
-function admin_page(){
+function entrees_formulaire(){
 						?>
 						<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 						<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
 						<div class="container pt-5">
-							<h1 class="pb-5">Formulaire de contact</h1>
+							<h1 class="pb-5">Entrées des Formulaires de Contact</h1>
 
 							<div class="row justify-content-between">
 								<div class="col-md-3 col-9">
