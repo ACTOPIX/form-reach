@@ -47,17 +47,3 @@ $(document).ready(function(){
             });
         });
 });
-
-function switchWhatsappSubmit(){
-
-	if(document.getElementById("wpaf_whatsapp_switch").checked){
-
-		document.getElementById("wpaf_whatsapp_submit").setAttribute("style","display:block")
-		document.getElementById("wpaf_mail_submit").setAttribute("style","display:none")
-
-	}else{
-
-		document.getElementById("wpaf_whatsapp_submit").setAttribute("style","display:none")
-		document.getElementById("wpaf_mail_submit").setAttribute("style","display:block")
-	}
-}

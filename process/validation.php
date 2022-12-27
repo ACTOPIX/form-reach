@@ -1,10 +1,14 @@
 <?php
 
+
   //Appel de wp-load
 	$path = preg_replace('/wp-content.*$/','',__DIR__);
 	require_once($path."wp-load.php");
 
-  // Si le bouton submit est cliqué, envoi du mail
+          $postID = get_queried_object_id();
+          $wp_stored_meta_validation = get_post_meta( $postID);
+
+  // Vérification nonce
      if(isset($_POST['_wpnonce'])){
 
           //Validation nonce
@@ -43,7 +47,7 @@
                          }else{
                               echo ("recaptchaValidation=true");
 
-                         //Envoi des données vers la database
+                              //Envoi des données vers la database
 
                                    global $wpdp;
                                    $data= array(
@@ -52,7 +56,7 @@
                                              'objectif' => sanitize_textarea_field($_POST['objectif']),
                                              );
 
-                                   $table_name =  $wpdb->prefix . 'actopix';
+                                   $table_name =  $wpdb->prefix . 'formulaire';
 
                                    $result = $wpdb->insert($table_name, $data);
 
@@ -63,50 +67,51 @@
                                         echo "<script>alert('Données enregistrées.');</script>";
                                    }
 
-
                               //Adresse mail de réception
-                                   $to = esc_attr ( $wp_stored_meta['wpaf_pour'][0] );
-                                   
+                                   // $to = esc_attr ( $wp_stored_meta_validation['wpaf_pour'][0]);
+                                   $to = "axel.barel@gmail.com";
+
+                                        
                               //Obtention et filtre des données de l'utilisateur
                                    $name = sanitize_text_field($_POST['name']); 
                                    $email = sanitize_text_field($_POST['email']);
                                    $objectif = sanitize_textarea_field($_POST['objectif']);
                                    // $fichier = ($_POST['file']);
-                              
+                                   
                               //Supression des backslash potentiels lors de l'utilisation d'apostrophes
                                    $Newobjectif = str_replace("\\","",$objectif);
-                              
+                                   
                               //Sujet du mail que nous recevrons
-                                   $subject = "Message d'un utilisateur";
-                              
+                                   $subject = esc_attr ( $wp_stored_meta_validation['wpaf_objet'][0] );
+                                   
                               //Sujet du mail de confirmation pour l'utilisateur
-                                   $subject2 = esc_attr ( $wp_stored_meta['wpaf_objet'][0] ); 
-                              
+                                   $subject2 = "Confirmation";
+                                   
                               //Email que nous recevrons
-                                   $message = "Prénom de l'utilisateur : " . $name . "\n\n"
-                                   . "Adresse mail : " . $email . "\n\n"
-                                   . "Message soumis par l'utilisateur : " . "\n" . $Newobjectif . "\n\n";
+                                   // $message = "Prénom de l'utilisateur : " . $name . "\n\n"
+                                   // . "Adresse mail : " . $email . "\n\n"
+                                   // . "Message soumis par l'utilisateur : " . "\n" . $Newobjectif . "\n\n";
                                    // . "Fichier envoyé : ". $fichier;
-
+                                   $message = esc_attr ( $wp_stored_meta_validation['wpaf_contenu'][0] );
                               //Message de confirmation pour l'utilisateur
-                                   $message2 = esc_attr ( $wp_stored_meta['wpaf_contenu'][0] );
+                                   $message2 = "";
                               //Headers
-                                   $headers = "From: Wordpress@wp-action-form.actopix.com"; // Mail de l'utilisateur que nous recevrons
-                                   $headers2 = esc_attr ( $wp_stored_meta['wpaf_de'][0] ); // Mail que l'utilisateur recevra
+                                   $headers = esc_attr ( $wp_stored_meta_validation['wpaf_de'][0] ); // Mail de l'utilisateur que nous recevrons
+                                   $headers2 = "From: Wordpress@wp-action-form.actopix.com";// Mail que l'utilisateur recevra
 
                               //fonction mail PHP
                                    $result1 = wp_mail($to, $subject, $message, $headers); // Mail envoyé à l'adresse de l'admin
                                    $result2 = wp_mail($email, $subject2, $message2, $headers2); //Mail de confirmation envoyé au client
-                              
+                                   
 
                               //Redirection vers le formulaire et réinitialisation de ce dernier
                                    // header("Location:https://wp-action-form.actopix.com/wp-action-form/");
                          }
 
                          // Si le bouton WhatsApp est cliqué, envoi du message
-                         if(isset($_POST['whatsapp'])) {
+                         if(isset($_POST['wpaf_whatsapp_submit'])) {
                               //Compte WhatsApp visé
-                                   $tel = "+33661486926";
+                                   $tel = esc_attr ( $wp_stored_meta_validation['wpaf_whatsapp_tel'][0] );;
                                    
                               //Obtention et filtre des données de l'utilisateur
                                    $name = sanitize_text_field($_POST['name']); 
@@ -156,4 +161,5 @@
                          // else{
                          //      echo 'You are not a human';
                          // }
-     }}}	
+
+     }}}

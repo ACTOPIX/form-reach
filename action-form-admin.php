@@ -10,7 +10,7 @@ function cw_post_type_news() {
 	'add_new_item' => __('Formulaire de Contact'),
 	'new_item' => __('Nouveau Wp Admin'),
 	'edit_item' => __('Paramètres des Formulaires'),
-	'view_item' => __('V0ir Wp Admin'),
+	'view_item' => __('Vpir Wp Admin'),
 	// 'all_items' => __(''),
 	'search_items' => __('Search Wp Admin'),
 	'not_found' => __('No Wp Admin found.'),
@@ -50,14 +50,6 @@ function smashing_wp_action_form_columns( $columns ) {
     );
 	  return $columns;
 }
-
-// add_action( 'manage_wp_action_form_posts_custom_column', 'smashing_wp_action_form_column', 10, 2);
-// function smashing_wp_action_form_column( $column, $post_id ) {
-//   // Image column
-//   if ( 'shortcode' === $column ) {
-//     echo get_the_post_thumbnail( $post_id, array(80, 80) );
-//   }
-// }
 
 //Customisation du tableau admin
 
@@ -117,12 +109,15 @@ function register_metabox_callback($post){
 //Ajoue des meta values
 	add_post_meta( get_the_ID(), 'wpaf_pour', get_option('admin_email'), true );
 	add_post_meta( get_the_ID(), 'wpaf_de', "Action Form", true );
-	add_post_meta( get_the_ID(), 'wpaf_objet', "Confirmation", true );
-	add_post_meta( get_the_ID(), 'wpaf_contenu', "Merci de nous avoir contactés, nous avons bien reçu votre message. Nous vous répondrons sous peu !", true );
-	add_post_meta( get_the_ID(), 'wpaf_succes', "Votre message a été envoyé avec succès.", true );
-	add_post_meta( get_the_ID(), 'wpaf_erreur', "Une erreur s'est produite. Votre message n'a pas pu être envoyé.", true );
+	add_post_meta( get_the_ID(), 'wpaf_objet', "Message d'un utilisateur", true );
+	add_post_meta( get_the_ID(), 'wpaf_contenu', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_succes', "Le formulaire a été envoyé avec succès.", true );
+	add_post_meta( get_the_ID(), 'wpaf_erreur', "Le formulaire n\'a pas pu être envoyé suite à une erreur. Veuillez réessayer.", true );
 	add_post_meta( get_the_ID(), 'wpaf_contenu_formulaire', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_whatsapp_switch', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_recaptcha_switch', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_whatsapp_tel', "", true );
+
 
 //Ajoue des meta values
 
@@ -133,7 +128,6 @@ function register_metabox_callback($post){
 include 'modal-action-form.php';
 		
 }
-
 
 //shortcode générateur de balise - formulaire
 function action_form_input_type($atts){
@@ -148,13 +142,26 @@ function action_form_input_type($atts){
 			'label' => null,
 			'class' => null,
 			'value'=>null,
+			'cols'=>null,
+			'rows'=>null,
 		), $atts, 'input' );
 
-	return '<div class="form-floating mb-3 mt-3">
-				<label for="'. ( $atts['id']) .'">'.( $atts['label']).'</label>
-				<input type="'. ( $atts['type'] ).'" class="form-control '.+( $atts['class']).'" id="'.( $atts['id']).'" name="'. ( $atts['name'] ).'" placeholder="'.( $atts['placeholder']).'" required="'.( $atts['required']).'" value="'.($atts['value']).'"/>
-			</div>';
+		if(strpos(( $atts['type'] ), "textarea") !== false){
+
+			return '<div class=" mb-3 mt-3">
+						<label class ="form-label" for="'. ( $atts['id']) .'">'.( $atts['label']).'</label>
+						<textarea type="'. ( $atts['type'] ).'" class="form-control '.+( $atts['class']).'" id="'.( $atts['id']).'" name="'. ( $atts['name'] ).'" placeholder="'.( $atts['placeholder']).'" required="'.( $atts['required']).'" value="'.($atts['value']).'"  cols="'.( $atts['cols']).'" rows="'.( $atts['rows']).'"></textarea>
+					</div>';
+
+		}else{
+
+			return '<div class=" mb-3 mt-3">
+						<label class ="form-label" for="'. ( $atts['id']) .'">'.( $atts['label']).'</label>
+						<input type="'. ( $atts['type'] ).'" class="form-control '.+( $atts['class']).'" id="'.( $atts['id']).'" name="'. ( $atts['name'] ).'" placeholder="'.( $atts['placeholder']).'" required="'.( $atts['required']).'" value="'.($atts['value']).'"/>
+					</div>';
+		}
 }
+
 add_shortcode('input','action_form_input_type');
 
 
@@ -173,14 +180,26 @@ function wp_meta_save($post_id) {
 
 	if ( isset($_POST['wpaf_pour'])){
 	update_post_meta($post_id,'wpaf_pour',sanitize_text_field($_POST['wpaf_pour']) );
+	
+		// if( isset($_POST['wpaf_pour'])==" "){
+		// 	update_post_meta($post_id,'wpaf_pour',get_option('admin_email') );
+		// }
 	}
 
 	if ( isset($_POST['wpaf_de'])){
 	update_post_meta($post_id,'wpaf_de',sanitize_text_field($_POST['wpaf_de']) );
+
+		// if( isset($_POST['wpaf_de'])==" "){
+		// 		update_post_meta($post_id,'wpaf_de', "Action Form");
+		// 	}
 	}
 
 	if ( isset($_POST['wpaf_objet'])){
 	update_post_meta($post_id,'wpaf_objet',sanitize_text_field($_POST['wpaf_objet']) );
+
+		// if( isset($_POST['wpaf_objet'])==" "){
+		// 	update_post_meta($post_id,'wpaf_objet', "Message d'un utilisateur");
+		// }
 	}
 
 	if ( isset($_POST['wpaf_contenu'])){
@@ -189,20 +208,38 @@ function wp_meta_save($post_id) {
 
 	if ( isset($_POST['wpaf_succes'])){
 		update_post_meta($post_id,'wpaf_succes',sanitize_text_field($_POST['wpaf_succes']) );
+
+		// 	if( isset($_POST['wpaf_succes'])==" "){
+		// 	update_post_meta($post_id,'wpaf_succes', "Le formulaire a été envoyé avec succès.");
+		// }
 	}
 
 	if ( isset($_POST['wpaf_erreur'])){
 		update_post_meta($post_id,'wpaf_erreur',sanitize_text_field($_POST['wpaf_erreur']) );
+
+		// 	if( isset($_POST['wpaf_erreur'])==" "){
+		// 	update_post_meta($post_id,'wpaf_erreur', "Le formulaire n\'a pas pu être envoyé suite à une erreur. Veuillez réessayer.");
+		// }
 	}
 
 	if ( isset($_POST['wpaf_contenu_formulaire'])){
 		update_post_meta($post_id,'wpaf_contenu_formulaire',sanitize_text_field($_POST['wpaf_contenu_formulaire']) );
 	}
 
+	if ( isset($_POST['wpaf_whatsapp_tel'])){
+		update_post_meta($post_id,'wpaf_whatsapp_tel',sanitize_text_field($_POST['wpaf_whatsapp_tel']) );
+	}
+
 	if ( isset($_POST['wpaf_whatsapp_switch'])){
 		update_post_meta($post_id,'wpaf_whatsapp_switch', "1" );
 	}else{
 		update_post_meta($post_id,'wpaf_whatsapp_switch', "0" );
+	}
+
+	if ( isset($_POST['wpaf_recaptcha_switch'])){
+		update_post_meta($post_id,'wpaf_recaptcha_switch', "1" );
+	}else{
+		update_post_meta($post_id,'wpaf_recaptcha_switch', "0" );
 	}
 }
 add_action('save_post','wp_meta_save');
@@ -220,6 +257,7 @@ add_action("admin_menu","wp_add_custom_submenu");
 
 function entrees_formulaire(){
 						?>
+
 						<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 						<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
 						<div class="container pt-5">
@@ -262,19 +300,16 @@ function entrees_formulaire(){
 													ID
 												</th>
 												<th scope="col">
-													Titre
+													Nom
 												</th>
 												<th scope="col">
-													Code court
+													Adresse Email
 												</th>
 												<th scope="col" class="display-sm-none">
-													Auteur
+													Contenu du formulaire
 												</th>
 												<th scope="col">
 													Date
-												</th>
-												<th scope="col">
-													Modifier
 												</th>
 												<th scope="col">
 													Supprimer
@@ -285,10 +320,10 @@ function entrees_formulaire(){
 												<?
 													//Récupération des données de la la database
 													global $wpdb;
-													$table="wp39_posts";
+													$table="formulaire";
 
 													//Affichage des données dans le tableau admin
-													$result =$wpdb->get_results("SELECT * FROM `wp39_posts` WHERE `post_type` = 'wp_action_form';");
+													$result =$wpdb->get_results("SELECT * FROM `formulaire`;");
 
 													foreach ($result as $table) {
 												?>
@@ -311,18 +346,15 @@ function entrees_formulaire(){
 														<?echo ($table->ID)?></td>
 													</td>
 													<td>
-														<a class="text-decoration-none" href="<?echo ($table->guid)?>"><?echo ($table->post_title)?>
+														<a class="text-decoration-none" href="<?echo ($table->name)?>
 													</td>
 													<td>
-														<?echo ($table->post_content)?></td>
+														<?echo ($table->email)?></td>
 													<td class="display-sm-none">
-														<?echo (get_the_author_meta( 'display_name' , $table->post_author ))?>
+														<?echo ( $table->objectif )?>
 													</td>
 													<td>
-														<?echo ($table->post_date)?>
-													</td>
-													<td>
-														<a>✏️
+														<?echo ($table->created_at)?>
 													</td>
 													<td>
 														<span onclick="delete" style="cursor:pointer">❌</span>
@@ -339,3 +371,86 @@ function entrees_formulaire(){
 						</div>
 					<?
 				}
+
+
+
+function wp_add_custom_submenu_reCAPTCHA(){
+
+	add_submenu_page("edit.php?post_type=wp_action_form", "reCAPTCHA Google v3","reCAPTCHA Google v3","manage_options","wp-reCAPTCHAGooglev3","recaptcha");
+
+}
+
+add_action("admin_menu","wp_add_custom_submenu_reCAPTCHA");
+
+function recaptcha(){
+	?>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+		<div class="card" id="recaptcha">
+			<h4 class="ms-1.7 mb-5">Google reCAPTCHA V3</h4>
+			<div>
+			<input type="checkbox" class="mb-5" name="wpaf_recaptcha_switch" id="wpaf_recaptcha_switch" onclick="switchRecaptcha()"/><label id="wpaf_recaptcha_label"for="wpaf_recaptcha_switch">Toggle</label>
+			<p class="float-end text-secondary">Protection contre le contenu indésirable</p>
+			</div>
+			<div>
+				<p>reCAPTCHA vous protège contre les indésirables et autres types d’abus automatisés. Avec le module d’intégration reCAPTCHA de Wp Action Form, vous pouvez bloquer les envois abusifs de formulaires par des robots spammeurs.</p>
+				<p><strong><a href="https://www.google.com/recaptcha/about/">reCAPTCHA (v3)</a></strong></p>
+					<table class="form-table">
+						<tbody>
+							<tr>
+								<th scope="row"><label for="sitekey">Clé du site</label></th>
+									<td><input type="text" aria-required="true" value="" id="sitekey" name="sitekey" class="regular-text code"></td>
+							</tr>
+							<tr>
+								<th scope="row"><label for="secret">Clé secrète</label></th>
+								<td><input type="text" aria-required="true" value="" id="secret" name="secret" class="regular-text code"></td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Enregistrer les changements"></p>
+				</form>
+			</div>
+		</div>
+
+<style>
+#wpaf_recaptcha_switch{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+	user-select: none;
+}
+#wpaf_recaptcha_label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 50px;
+	height: 25.5px;
+	background: grey;
+	display: block;
+	border-radius: 100px;
+	position: relative;
+	user-select: none;
+	float:left;
+}
+#wpaf_recaptcha_label:after {
+	content: '';
+	position: absolute;
+	top: 2.562px;
+	left: 2.5px;
+	width: 20px;
+	height: 20px;
+	background: #fff;
+	border-radius: 90px;
+	transition: 0.3s;
+}
+#wpaf_recaptcha_switch:checked + #wpaf_recaptcha_label {
+	background: #2271b1;
+}
+#wpaf_recaptcha_switch:checked + #wpaf_recaptcha_label:after {
+	left: calc(100% - 2.5px);
+	transform: translateX(-100%);
+}
+#wpaf_recaptcha_label:active:after {
+	width: 32.5px;
+}
+	<?php
+}

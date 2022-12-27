@@ -5,27 +5,27 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	<script src="<?echo plugin_dir_url(__FILE__)?>js/action-form-admin.js"></script>
-	<script src="<?echo plugin_dir_url(__FILE__)?>js/wp-action-form.js"></script>
+	<scrip src="<?echo plugin_dir_url(__FILE__)?>js/wp-action-form.js"></script>
 
 </head>
-<body onload="switchWhatsapp()">
+<body onload="switchWhatsapp(),modalTextGenerator(),modalTextareaGenerator(),modalEmailGenerator(),modalTelGenerator()">
  
 <div class="tab-content" id="wpaf_myTabContent">
 
 <ul class="nav nav-tabs" id="wpaf_myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="wpaf_home-tab" data-bs-toggle="tab" data-bs-target="#wpaf_formulaire" type="button" role="tab" aria-controls="home" aria-selected="true">formulaire</button>
+    <button class="nav-link active" id="wpaf_home-tab" data-bs-toggle="tab" data-bs-target="#wpaf_formulaire" type="button" role="tab" aria-controls="home" aria-selected="true">Formulaire</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="wpaf_profile-tab" data-bs-toggle="tab" data-bs-target="#wpaf_email" type="button" role="tab" aria-controls="profile" aria-selected="false">email</button>
+    <button class="nav-link" id="wpaf_profile-tab" data-bs-toggle="tab" data-bs-target="#wpaf_email" type="button" role="tab" aria-controls="profile" aria-selected="false"><?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 1 ) { ?>WhatsApp<?php }else{?> Email<?php } ?></button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="wpaf_contact-tab" data-bs-toggle="tab" data-bs-target="#wpaf_message" type="button" role="tab" aria-controls="contact" aria-selected="false">message</button>
+    <button class="nav-link" id="wpaf_contact-tab" data-bs-toggle="tab" data-bs-target="#wpaf_message" type="button" role="tab" aria-controls="contact" aria-selected="false">Message</button>
   </li>
 
 <!-- Boutton toggle changement de formulaire WhatsAPP -->
 <p class="wpaf_type_text">Formulaire <span id="wpaf_span_mail" style="display:none" class="wpaf_span">Mail</span><span id="wpaf_span_whatsapp" class="wpaf_span"style="display:none">WhatsApp</span></p>
-<input type="checkbox" name="wpaf_whatsapp_switch" id="wpaf_whatsapp_switch" onclick="switchWhatsapp(),switchWhatsappSubmit()" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 1 ) { ?>checked="checked"<?php }else{?><?php } ?> /><label id="wpaf_whatsapp_label"for="wpaf_whatsapp_switch">Toggle</label>
+<input type="checkbox" name="wpaf_whatsapp_switch" id="wpaf_whatsapp_switch" onclick="switchWhatsapp()" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 1 ) { ?>checked="checked"<?php }else{?><?php } ?> /><label id="wpaf_whatsapp_label"for="wpaf_whatsapp_switch">Toggle</label>
 
 <style>
 #wpaf_whatsapp_switch{
@@ -144,7 +144,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" name="placeholder"  id="wpaf_generator-text-placeholder" class="option" onclick="modalTextGenerator()"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" name="placeholder"  id="wpaf_generator-text-placeholder" class="option" onclick="modalTextGenerator()" ><label for="wpaf_generator-text-placeholder">Utilisez ce texte comme texte indicatif du champ.</label></td>
 									</tr>
 
 									<tr>
@@ -199,7 +199,7 @@
 
 									<tr>
 										<th class="text-end" scope="row"><label for="wpaf_generator-email-label">Label :</label></th>
-										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-email-label" onchange="modalTextGenerator()"></td>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-email-label" onchange="modalEmailGenerator()"></td>
 									</tr>
 
 									<tr>
@@ -214,7 +214,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" id="wpaf_generator-email-placeholder" name="placeholder" class="option" onclick="modalEmailGenerator()"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" id="wpaf_generator-email-placeholder" name="placeholder" class="option" onclick="modalEmailGenerator()"><label for="wpaf_generator-email-placeholder">Utilisez ce texte comme texte indicatif du champ.</label></td>
 									</tr>
 
 									<tr>
@@ -269,8 +269,16 @@
 									</tr>
 
 									<tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-textarea-rows">Lignes :</label></th>
+										<td ><input type="number" name="rows" class="tg-name oneline" id="wpaf_generator-textarea-rows" style="width:11%;padding-right: 0px;" min="0" max="50" value="0" onchange="modalTextareaGenerator()"></td>
+									</tr>
+
+									</tr>
+										<th class="text-end" scope="row"><label for="wpaf_generator-textarea-cols">Colonnes :</label></th>
+										<td ><input type="number" name="cols" class="tg-name oneline" id="wpaf_generator-textarea-cols" style="width:11%;padding-right: 0px;" min="0" max="50" value="0" onchange="modalTextareaGenerator()"></td>
+									<tr>
 										<th class="text-end" scope="row"><label for="wpaf_generator-textarea-label">Label :</label></th>
-										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-textarea-label" onchange="modalTextGenerator()"></td>
+										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-textarea-label" onchange="modalTextareaGenerator()"></td>
 									</tr>
 									
 									<tr>
@@ -285,7 +293,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" id="wpaf_generator-textarea-placeholder" name="placeholder" class="option" onclick="modalTextareaGenerator()"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" id="wpaf_generator-textarea-placeholder" name="placeholder" class="option" onclick="modalTextareaGenerator()"><label for="wpaf_generator-textarea-placeholder">Utilisez ce texte comme texte indicatif du champ.</label></td>
 									</tr>
 
 									<tr>
@@ -311,6 +319,7 @@
 							<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="transfertTextarea()">Terminer</button>
 						</div>
 					</div>
+					<style>input[type=number]::-webkit-inner-spin-button { opacity: 1}</style>
 				</div>
 			</div>
 		</div>
@@ -357,7 +366,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" id="wpaf_generator-tel-placeholder" name="placeholder" class="option" onclick="modalTelGenerator()"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" id="wpaf_generator-tel-placeholder" name="placeholder" class="option" onclick="modalTelGenerator()"><label for="wpaf_generator-tel-placeholder">Utilisez ce texte comme texte indicatif du champ.</label></td>
 									</tr>
 
 									<tr>
@@ -427,7 +436,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="wpaf_generator-text-placeholder">Utilisez ce texte comme texte indicatif du champ.</label></td>
 									</tr>
 
 									<tr>
@@ -497,7 +506,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="wpaf_generator-text-placeholder">Utilisez ce texte comme texte indicatif du champ.</label></td>
 									</tr>
 
 									<tr>
@@ -567,7 +576,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="wpaf_generator-text-placeholder">Utilisez ce texte comme texte indicatif du champ.</label></td>
 									</tr>
 
 									<tr>
@@ -637,7 +646,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="wpaf_generator-text-placeholder">Utilisez ce texte comme texte indicatif du champ.</label></td>
 									</tr>
 
 									<tr>
@@ -707,7 +716,7 @@
 
 									<tr>
 										<td></td>
-										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"> Utilisez ce texte comme texte indicatif du champ.</td>
+										<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="wpaf_generator-text-placeholder">Utilisez ce texte comme texte indicatif du champ.</label></td>
 									</tr>
 
 									<tr>
@@ -741,8 +750,29 @@
 
   </div>
 
+<?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 1 )
+{ ?>
 
-	<div id="wpaf_email" class="tab-pane fade mt-3" role="tabpanel">
+<div id="wpaf_email" class="tab-pane fade mt-3" role="tabpanel">
+
+			<table>
+				<tbody>
+					<tr>
+						<th scope="row" style="text-align:right;">
+							<label for="wpaf_whatsapp_tel">Numéro :</label>
+						</th>
+						<td>
+							<input type="text" name="wpaf_whatsapp_tel" id="wpaf_whatsapp_tel" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_whatsapp_tel'])) echo esc_attr ( $wp_stored_meta['wpaf_whatsapp_tel'][0] ); ?> "/>
+						</td>
+					</tr>
+			</tbody>
+			</table>
+	</div>
+
+<?php }else{
+?> 
+
+<div id="wpaf_email" class="tab-pane fade mt-3" role="tabpanel">
 
 			<table>
 				<tbody>
@@ -751,7 +781,7 @@
 							<label for="wpaf_pour">Pour :</label>
 						</th>
 						<td>
-							<input type="text" name="wpaf_pour" id="wpaf_pour" class="large-text code" size"70" value="<?php if (! empty ($wp_stored_meta['wpaf_pour'])) echo esc_attr ( $wp_stored_meta['wpaf_pour'][0] ); ?> "/>
+							<input type="text" name="wpaf_pour" id="wpaf_pour" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_pour'])) echo esc_attr ( $wp_stored_meta['wpaf_pour'][0] ); ?> "/>
 						</td>
 					</tr>
 					<tr>
@@ -759,7 +789,7 @@
 							<label for="wpaf_de">De :</label>
 						</th>
 						<td>
-							<input type="text" name="wpaf_de" id="wpaf_de" class="large-text code" size"70" value="<?php if (! empty ($wp_stored_meta['wpaf_de'])) echo esc_attr ( $wp_stored_meta['wpaf_de'][0] ); ?> "/>
+							<input type="text" name="wpaf_de" id="wpaf_de" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_de'])) echo esc_attr ( $wp_stored_meta['wpaf_de'][0] ); ?> "/>
 						</td>
 					</tr>
 					<tr>
@@ -767,7 +797,7 @@
 							<label for="wpaf_objet" >Objet :</label>
 						</th>
 						<td>
-							<input type="text" name="wpaf_objet" id="wpaf_objet" class="large-text code" size"70" value="<?php if (! empty ($wp_stored_meta['wpaf_objet'])) echo esc_attr ( $wp_stored_meta['wpaf_objet'][0] ); ?> "/>
+							<input type="text" name="wpaf_objet" id="wpaf_objet" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_objet'])) echo esc_attr ( $wp_stored_meta['wpaf_objet'][0] ); ?> "/>
 						</td>
 					</tr>
 					<tr>
@@ -775,12 +805,15 @@
 							<label for="wpaf_contenu">Contenu du message :</label>
 						</th>
 						<td>
-							<textarea cols="100" rows="18" name="wpaf_contenu" id="wpaf_contenu" class="large-text code" size"70"> <?php if (! empty ($wp_stored_meta['wpaf_contenu'])) echo esc_attr ( $wp_stored_meta['wpaf_contenu'][0] ); ?></textarea>
+							<textarea cols="100" rows="18" name="wpaf_contenu" id="wpaf_contenu" class="large-text code"> <?php if (! empty ($wp_stored_meta['wpaf_contenu'])) echo esc_attr ( $wp_stored_meta['wpaf_contenu'][0] ); ?></textarea>
 						</td>
 					</tr>
 			</tbody>
 			</table>
 	</div>
+
+<?php } ?>
+	
 	
 	<div id="wpaf_message" class="tab-pane fade mt-3" role="tabpanel">
 		<div class="mb-3">
