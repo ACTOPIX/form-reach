@@ -305,7 +305,7 @@ function modalTextareaGenerator(){
 $("#wpaf_generatedTextareaShortcode").val('[input' + wpaf_type + wpaf_rows + wpaf_cols +wpaf_label + wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
 };
 
-var retour = "\n\n";
+var retour = ".\r\n";
 
 function transfertText(){
  	document.getElementById("wpaf_contenu_formulaire").append(document.getElementById("wpaf_generatedTextShortcode").value + retour);

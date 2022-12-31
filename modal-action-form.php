@@ -701,12 +701,12 @@
 
 									<tr>
 										<th class="text-end" scope="row"><label for="wpaf_generator-text-label">Label :</label></th>
-										<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-text-label" onchange="modalTextGenerator()" value=""></td>
+										<td><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-text-label" onchange="modalTextGenerator()" value=""></td>
 									</tr>
 
 									<tr>
 										<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Nom :</label></th>
-										<td ><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name"></td>
+										<td><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name"></td>
 									</tr>
 
 									<tr>
@@ -746,8 +746,8 @@
 			</div>
 		</div>
 
-		<textarea style="width:100%" id="wpaf_contenu_formulaire" name="wpaf_contenu_formulaire" rows="24" class="large-tet code mt-3"><?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_contenu_formulaire'][0] ); ?></textarea>
-
+		<textarea style="width:100%;white-space: pre-wrap;" id="wpaf_contenu_formulaire" name="wpaf_contenu_formulaire" rows="24" class="large-tet code mt-3"><?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_contenu_formulaire'][0] ); ?></textarea>
+		
   </div>
 
 <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 1 )
