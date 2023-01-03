@@ -82,7 +82,6 @@ $(document).ready(function(){
                                         $('#submitContentWhatsapp').show()
                                         $('#success_message').fadeIn(500).delay(5000).fadeOut(500)
                                         document.getElementById('action_form_whatsapp'). reset()
-                                        alert(data);
                                         window.location = data;
                                     }
                                 },

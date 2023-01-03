@@ -8,20 +8,29 @@
 
 if ( !defined( 'ABSPATH' ) ) exit;
 
-// Act on plugin activation
+// agie sur l'activation du plugin
 register_activation_hook( __FILE__, "activate_myplugin" );
 
-// Act on plugin de-activation
+// agie sur la désactivation du plugin
 register_deactivation_hook( __FILE__, "deactivate_myplugin" );
 
-// Activate Plugin
+// agie sur la suppression du plugin
+register_uninstall_hook( __FILE__, "delete_myplugin" );
+
+// Activation Plugin
 function activate_myplugin() {
 
 	init_db_action_form() ;
-
 }
 
+//Désactivation Plugin
 function deactivate_myplugin(){
+
+	delete_db_action_form();
+}
+
+//Supression Plugin
+function delete_myplugin(){
 
 	delete_db_action_form();
 }

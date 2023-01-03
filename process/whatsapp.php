@@ -74,7 +74,7 @@
                                 //Obtention et filtrage des données de l'utilisateur
                                     // $name = sanitize_text_field($_POST['name']); 
                                     // $email = sanitize_email($_POST['adresse']);
-                                    $contenu = sanitize_textarea_field($_POST['message']); //valeur temporaire pour le test avant d'utiliser la fonction du dessus
+                                    $contenu = sanitize_textarea_field($_POST['message']);
                                     // $fichier = ($_POST['file']);
                                                                                                 
                                     $contenuFiltered = rawurlencode($contenu);
