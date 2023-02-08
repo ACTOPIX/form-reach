@@ -72,7 +72,7 @@ $(document).ready(function(){
                                 $('#spinnerWhatsapp').show()
                             },
                             success: function (data) {
-                                    if (data=="false"){
+                                    if (data=="recaptchaValidation=false"){
                                         $('#spinnerWhatsapp').hide()
                                         $('#submitContentWhatsapp').show()
                                         $('#error_message').fadeIn(500).delay(5000).fadeOut(500)

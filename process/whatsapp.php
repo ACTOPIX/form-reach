@@ -40,56 +40,42 @@
                          {
                               echo ("recaptchaValidation=false") ; exit;
                          }else{
-                              //Envoi des données vers la database
-                                   // global $wpdp;
-                                   // $data= array(
-                                   //           "name' => sanitize_text_field($_POST['name']),
-                                   //           'email' => sanitize_text_field($_POST['email']),
-                                   //           'objectif' => sanitize_textarea_field($_POST['objectif']),
-                                   //           );
-                                   // $table_name =  $wpdb->prefix . 'formulaire';
-                                   // $result = $wpdb->insert($table_name, $data);
 
                               //Récupération et initialisation de l'ID concerné
                                    $postID = sanitize_text_field($_POST['wpaf_container_post']);
                                    $wp_stored_meta_whatsapp = get_post_meta($postID);
 
                               //Obtention et filtrage des données de l'utilisateur
-                                //    function wpaf_mail_construct_input_generator($val,$key){
-                                //              if (str_contains('['.$key.']', $contenuAdministrateur)) { 
-                                //                   return $val;
-                                //              }
-                                //         }
-                                        
-                                //    foreach ($_POST as $key=>$val) {
-                                //         if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "wpaf_mail_submit" ||$key == "wpaf_whatsapp_submit" || $key == "wpaf_container_post")){
-                                //              $valFiltered = str_replace("\\","",$val);
-                                //              $keyFiltered = str_replace("\\","",$key);
+                              $contenu ="";
+                              foreach ($_POST as $key=>$val) {
+                                   if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "wpaf_mail_submit" ||$key == "wpaf_whatsapp_submit" || $key == "wpaf_container_post")){
+                                        $valFiltered = str_replace("\\","",$val);
+                                        $keyFiltered = str_replace("\\","",$key);
+                                        $contenu .= "$keyFiltered : $valFiltered <br/>";
+                                   }
+                              }
 
-                                //              wpaf_mail_construct_input_generator($valFiltered,$keyFiltered);
-                                                  
-                                //         }
-                                //    }
+                              //Envoi dans la base de données
+                              global $wpdp;
+                              $table_name =  $wpdb->prefix . 'formulaire';
 
-                                //Obtention et filtrage des données de l'utilisateur
-                                    // $name = sanitize_text_field($_POST['name']); 
-                                    // $email = sanitize_email($_POST['adresse']);
-                                    $contenu = sanitize_textarea_field($_POST['message']);
-                                    // $fichier = ($_POST['file']);
-                                                                                                
-                                    $contenuFiltered = rawurlencode($contenu);
+                              $data= array(
+                                        'type' => 'WhatsApp',
+                                        'Contenu' => $contenu
+                                        );
 
-                                //Compte WhatsApp Administrateur
-                                    $tel = esc_attr ( $wp_stored_meta_whatsapp['wpaf_whatsapp_tel'][0] );
+                              $result = $wpdb->insert($table_name, $data);
 
-                                //Message qui sera envoyé
-                                    $link = "https://wa.me/" . $tel . "?text=" . $contenuFiltered;
-                                    echo $link;        
+                              //Filtrage pour le lien
+                              $whatsappContenu = str_replace("<br/>","",$contenu);
+                              $contenuFiltered = rawurlencode($whatsappContenu);
 
-                                // //Redirection vers WhatsApp
-                                //     header("Location: $link");
-                                //     (die);
+                              //Compte WhatsApp Administrateur
+                                   $tel = esc_attr ( $wp_stored_meta_whatsapp['wpaf_whatsapp_tel'][0] );
 
+                              //Message qui sera envoyé
+                                   $link = "https://wa.me/" . $tel . "?text=" . $contenuFiltered;
+                                   echo $link;
                               }
 
                          }

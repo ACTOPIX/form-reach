@@ -305,10 +305,10 @@ function modalTextareaGenerator(){
 $("#wpaf_generatedTextareaShortcode").val('[input' + wpaf_type + wpaf_rows + wpaf_cols +wpaf_label + wpaf_name + wpaf_value + wpaf_id + wpaf_class + wpaf_required + wpaf_placeholder +']');
 };
 
-var retour = "\r\n";
+var retour = "\n";
 
 function transfertText(){
- 	document.getElementById("wpaf_contenu_formulaire").append(document.getElementById("wpaf_generatedTextShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").append(retour + document.getElementById("wpaf_generatedTextShortcode").value + retour);
 
 	if(document.getElementById("wpaf_generator-text-required").checked){
 		document.getElementById("wpaf_generator-text-required").checked=false;
@@ -344,7 +344,7 @@ function transfertText(){
 }
 
 function transfertEmail(){
- 	document.getElementById("wpaf_contenu_formulaire").append(document.getElementById("wpaf_generatedEmailShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").append(retour + document.getElementById("wpaf_generatedEmailShortcode").value + retour);
 
 	if(document.getElementById("wpaf_generator-email-required").checked){
 		document.getElementById("wpaf_generator-email-required").checked=false;
@@ -380,7 +380,7 @@ function transfertEmail(){
 }
 
 function transfertTextarea(){
- 	document.getElementById("wpaf_contenu_formulaire").append(document.getElementById("wpaf_generatedTextareaShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").append(retour + document.getElementById("wpaf_generatedTextareaShortcode").value + retour);
 
 	if(document.getElementById("wpaf_generator-textarea-required").checked){
 		document.getElementById("wpaf_generator-textarea-required").checked=false;
@@ -424,7 +424,7 @@ function transfertTextarea(){
 }
 
 function transfertTel(){
- 	document.getElementById("wpaf_contenu_formulaire").append(document.getElementById("wpaf_generatedTelShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").append(retour + document.getElementById("wpaf_generatedTelShortcode").value + retour);
 
 	if(document.getElementById("wpaf_generator-tel-required").checked){
 		document.getElementById("wpaf_generator-tel-required").checked=false;
