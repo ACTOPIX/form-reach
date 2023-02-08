@@ -90,8 +90,6 @@ function wp_action_form_include($id) {
 		<script src="https://www.google.com/recaptcha/api.js?render=6LcYu_gaAAAAANJVIQPE35j97DxUCXXozlLiXhpK"></script>
 
 		<form <?php if ($wp_stored_meta_front['wpaf_whatsapp_switch'][0] == 1){?>id="action_form_whatsapp"<?php }else{ ?> id="action_form_mail" <?php } ?> accept-charset="UTF-8" name="action_form_mail" method="post" action="javascript:void(0)">
-
-
 						
 			<? echo wp_nonce_field('nonce_verification')?>
 
@@ -139,14 +137,6 @@ function wp_action_form_include($id) {
 				</svg>
 				<?echo $wp_stored_meta_front['wpaf_erreur'][0]?>
 			</div>
-
-
-						
-	<!-- Pour ajouter un input file, rajouter ces lignes
-		<div class="mb-3">
-			<label for="formFileMultiple" class="form-label"></label>
-			<input class="form-control" type="file" name="file" accept=".jpg, .jpeg, .png" multiple>
-		</div> -->
 	<?
 
 	return ob_get_clean();

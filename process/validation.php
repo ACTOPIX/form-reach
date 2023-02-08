@@ -50,32 +50,29 @@
 
 
                               //Définition des variables
+                                   $postID = sanitize_text_field($_POST['wpaf_container_post']);
+                                   $wp_stored_meta_validation_mail = get_post_meta($postID);
+                                   $contenuAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_contenu'][0] ));
 
-                                   //Obtention et filtrage des données de l'utilisateur + définition du contenu
-                                   function wpaf_mail_construct_input_generator($valFiltered,$keyFiltered){
-                                        $postID = sanitize_text_field($_POST['wpaf_container_post']);
-                                        $wp_stored_meta_validation_mail = get_post_meta($postID);
 
-                                        $contenuAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_contenu'][0] ));
+                              //Obtention et filtrage des données de l'utilisateur + définition du contenu
 
-                                        if (str_contains("[$keyFiltered]", $contenuAdministrateur)) {
-                                             $contenuFiltered = str_replace("[$keyFiltered]", $valFiltered,$contenuAdministrateur)
-                                             return $contenuFiltered;
-                                        };
-                                   }
-
-                                   $contenu ="";
+                                   $contenuFormPost ="";
                                    foreach ($_POST as $key=>$val) {
                                         if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "wpaf_mail_submit" ||$key == "wpaf_whatsapp_submit" || $key == "wpaf_container_post")){
                                              $valFiltered = str_replace("\\","",$val);
                                              $keyFiltered = str_replace("\\","",$key);
-                                             
-                                             wpaf_mail_construct_input_generator($valFiltered,$keyFiltered);
 
-                                             $contenu .= "$keyFiltered : $valFiltered <br/>";
-                                                       
+                                             $keyShortcode[] = "[$keyFiltered]";
+                                             $valShortcode[] = $valFiltered;
+
+                                             $contenuFormPost .= "$keyFiltered : $valFiltered <br/>";
                                         }
                                    }
+                                   
+                                   if ($keyFiltered) {
+                                        $contenuReplace = str_replace($keyShortcode,$valShortcode, $contenuAdministrateur);
+                                   };
 
                                    //Adresses mails 
                                         $toAdministrateur = esc_attr ( $wp_stored_meta_validation_mail['wpaf_pour'][0]);
@@ -89,7 +86,7 @@
                                         // $titreUtilisateur = "From: Wordpress@wp-action-form.actopix.com";
 
                                    //Envoi des mails
-                                        $mailAdministrateur = wp_mail($toAdministrateur, $sujetAdministrateur, $contenuFiltered, $titreAdministrateur);
+                                        $mailAdministrateur = wp_mail($toAdministrateur, $sujetAdministrateur, $contenuReplace, $titreAdministrateur);
                                         // $mailUtilisateur = wp_mail($toUtilisateur, $sujetUtilisateur, $contenuUtilisateur, $titreUtilisateur);
 
                               
@@ -99,13 +96,13 @@
 
                               $data= array(
                                         'Type' => 'Mail',
-                                        'Contenu' => $contenu
+                                        'Contenu' => $contenuFormPost
                                         );
 
                               $result = $wpdb->insert($table_name, $data);                                   
 
                          }
                     }             
-               }        
-     }
+               }
+          }        
 ?>
