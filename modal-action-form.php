@@ -746,7 +746,7 @@
 			</div>
 		</div>
 
-		<textarea style="width:100%;white-space: pre-wrap;" id="wpaf_contenu_formulaire" name="wpaf_contenu_formulaire" rows="24" class="large-tet code mt-3"><?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_contenu_formulaire'][0] ); ?></textarea>
+		<textarea style="white-space:pre-line;width:100%;" id="wpaf_contenu_formulaire" name="wpaf_contenu_formulaire" rows="24" class="large-tet code mt-3"><?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_contenu_formulaire'][0] ); ?></textarea>
 		
   </div>
 

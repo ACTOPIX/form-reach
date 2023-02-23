@@ -69,12 +69,13 @@
                               //Filtrage pour le lien
                               $whatsappContenu = str_replace("<br/>","",$contenu);
                               $contenuFiltered = rawurlencode($whatsappContenu);
+                              $contenuFilteredSpace = str_replace("%20","+",$contenuFiltered);
 
                               //Compte WhatsApp Administrateur
                                    $tel = esc_attr ( $wp_stored_meta_whatsapp['wpaf_whatsapp_tel'][0] );
 
                               //Message qui sera envoyé
-                                   $link = "https://wa.me/" . $tel . "?text=" . $contenuFiltered;
+                                   $link = "https://api.whatsapp.com/send/?phone=" . $tel . "&text=" . $contenuFilteredSpace;
                                    echo $link;
                               }
 

@@ -105,13 +105,26 @@ function register_metabox_callback($post){
 
 
 //shortcode générateur de balise - formulaire
+
+class Wpaf_Id {
+    public static function counter() {
+        static $counter = 0;
+        $counter++;
+        return $counter;
+    }
+}
+
 function action_form_input_type($atts){
 
+
+	$id_auto=Wpaf_Id::counter();
+	echo"<script>console.log($id_auto);</script>";
+	
 	$atts = shortcode_atts(
 							array(
 								'type' => 'text',
 								'name' => 'default',
-								'id' => 'default',
+								'id' => $id_auto,
 								'placeholder' => null,
 								'required' => null,
 								'label' => null,
@@ -121,18 +134,19 @@ function action_form_input_type($atts){
 								'rows'=>null,
 							), $atts, 'input'
 						);
+	
 
 	if(strpos(( $atts['type'] ), "textarea") !== false){
 
 		return '<div class=" mb-3 mt-3">
-					<label class ="form-label" for="'. ( $atts['id']) .'">'.( $atts['label']).'</label>
-					<textarea type="'. ( $atts['type'] ).'" class="form-control '.+( $atts['class']).'" id="'.( $atts['id']).'" name="'. ( $atts['name'] ).'" placeholder="'.( $atts['placeholder']).'" required="'.( $atts['required']).'" value="'.($atts['value']).'"  cols="'.( $atts['cols']).'" rows="'.( $atts['rows']).'"></textarea>
+					<label class ="form-label" for="'. ($atts['name']).'_'.( $atts['id']) .'">'.( $atts['label']).'</label>
+					<textarea type="'. ( $atts['type'] ).'" class="form-control '.+( $atts['class']).'" id="'.($atts['name']).'_'.( $atts['id']).'" name="'. ( $atts['name'] ).'" placeholder="'.( $atts['placeholder']).'" required="'.( $atts['required']).'" value="'.($atts['value']).'"  cols="'.( $atts['cols']).'" rows="'.( $atts['rows']).'"></textarea>
 				</div>';
 	}else{
 
 		return '<div class=" mb-3 mt-3">
-					<label class ="form-label" for="'. ( $atts['id']) .'">'.( $atts['label']).'</label>
-					<input type="'. ( $atts['type'] ).'" class="form-control '.+( $atts['class']).'" id="'.( $atts['id']).'" name="'. ( $atts['name'] ).'" placeholder="'.( $atts['placeholder']).'" required="'.( $atts['required']).'" value="'.($atts['value']).'"/>
+					<label class ="form-label" for="'. ($atts['name']).'_'.( $atts['id']) .'">'.( $atts['label']).'</label>
+					<input type="'. ( $atts['type'] ).'" class="form-control '.+( $atts['class']).'" id="'.($atts['name']).'_'.( $atts['id']).'" name="'. ( $atts['name'] ).'" placeholder="'.( $atts['placeholder']).'" required="'.( $atts['required']).'" value="'.($atts['value']).'"/>
 				</div>';
 	}
 }
@@ -200,7 +214,7 @@ add_action("admin_menu","wp_add_custom_submenu");
 function entrees_formulaire(){
 	?>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></>
 		<div class="container pt-5">
 			<h1 class="pb-5">Entrées des Formulaires de Contact</h1>
 
