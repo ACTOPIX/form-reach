@@ -762,7 +762,7 @@
 							<label for="wpaf_whatsapp_tel">Numéro :</label>
 						</th>
 						<td>
-							<input type="text" name="wpaf_whatsapp_tel" id="wpaf_whatsapp_tel" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_whatsapp_tel'])) echo esc_attr ( $wp_stored_meta['wpaf_whatsapp_tel'][0] ); ?> "/>
+							<input type="text" name="wpaf_whatsapp_tel" id="wpaf_whatsapp_tel" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_whatsapp_tel'])) echo esc_attr ( $wp_stored_meta['wpaf_whatsapp_tel'][0] ); ?>"/>
 						</td>
 					</tr>
 			</tbody>
@@ -781,7 +781,7 @@
 							<label for="wpaf_pour">Pour :</label>
 						</th>
 						<td>
-							<input type="text" name="wpaf_pour" id="wpaf_pour" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_pour'])) echo esc_attr ( $wp_stored_meta['wpaf_pour'][0] ); ?> "/>
+							<input type="text" name="wpaf_pour" id="wpaf_pour" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_pour'])) echo esc_attr ( $wp_stored_meta['wpaf_pour'][0] ); ?>"/>
 						</td>
 					</tr>
 					<tr>
@@ -789,7 +789,7 @@
 							<label for="wpaf_de">De :</label>
 						</th>
 						<td>
-							<input type="text" name="wpaf_de" id="wpaf_de" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_de'])) echo esc_attr ( $wp_stored_meta['wpaf_de'][0] ); ?> "/>
+							<input type="text" name="wpaf_de" id="wpaf_de" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_de'])) echo esc_attr ( $wp_stored_meta['wpaf_de'][0] ); ?>"/>
 						</td>
 					</tr>
 					<tr>
@@ -797,7 +797,7 @@
 							<label for="wpaf_objet" >Objet :</label>
 						</th>
 						<td>
-							<input type="text" name="wpaf_objet" id="wpaf_objet" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_objet'])) echo esc_attr ( $wp_stored_meta['wpaf_objet'][0] ); ?> "/>
+							<input type="text" name="wpaf_objet" id="wpaf_objet" class="large-text code" value="<?php if (! empty ($wp_stored_meta['wpaf_objet'])) echo esc_attr ( $wp_stored_meta['wpaf_objet'][0] ); ?>"/>
 						</td>
 					</tr>
 					<tr>
@@ -818,12 +818,12 @@
 	<div id="wpaf_message" class="tab-pane fade mt-3" role="tabpanel">
 		<div class="mb-3">
 			<label for="wpaf_succes" class="form-label"><strong>Le message de l'expéditeur a été envoyé :</strong></label>
-			<input type="text" name="wpaf_succes" id="wpaf_succes" class="large-text w-100"  value="<?php if (! empty ($wp_stored_meta['wpaf_succes'])) echo esc_attr ( $wp_stored_meta['wpaf_succes'][0] ); ?> "/>   
+			<input type="text" name="wpaf_succes" id="wpaf_succes" class="large-text w-100"  value="<?php if (! empty ($wp_stored_meta['wpaf_succes'])) echo esc_attr ( $wp_stored_meta['wpaf_succes'][0] );?>"/>   
 		</div>
 
 		<div class="mb-3">
 			<label for="wpaf_erreur" class="form-label"><strong>Le message de l'expéditeur n'a pas pu être envoyé :</strong></label>
-			<input type="text"  name="wpaf_erreur" id="wpaf_erreur" class="large-text w-100"   value="<?php if (! empty ($wp_stored_meta['wpaf_erreur'])) echo esc_attr ( $wp_stored_meta['wpaf_erreur'][0] ); ?> "/> 
+			<input type="text"  name="wpaf_erreur" id="wpaf_erreur" class="large-text w-100"   value="<?php if (! empty ($wp_stored_meta['wpaf_erreur'])) echo esc_attr ( $wp_stored_meta['wpaf_erreur'][0] );?>"/> 
 		</div>
 	</div>
 </div>

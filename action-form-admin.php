@@ -181,7 +181,7 @@ function wp_meta_save($post_id) {
 		update_post_meta($post_id,'wpaf_erreur',sanitize_text_field($_POST['wpaf_erreur']) );
 	}
 	if ( isset($_POST['wpaf_contenu_formulaire'])){
-		update_post_meta($post_id,'wpaf_contenu_formulaire',sanitize_text_field($_POST['wpaf_contenu_formulaire']) );
+		update_post_meta($post_id,'wpaf_contenu_formulaire',$_POST['wpaf_contenu_formulaire']);
 	}
 	if ( isset($_POST['wpaf_whatsapp_tel'])){
 		update_post_meta($post_id,'wpaf_whatsapp_tel',sanitize_text_field($_POST['wpaf_whatsapp_tel']) );
