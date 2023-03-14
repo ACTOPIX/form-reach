@@ -96,6 +96,10 @@ function register_metabox_callback($post){
 	add_post_meta( get_the_ID(), 'wpaf_whatsapp_switch', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_recaptcha_switch', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_whatsapp_tel', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_default_mail', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_default_whatsapp', "", true );
+
+
 
 	$wp_stored_meta = get_post_meta( $post ->ID);
 	wp_nonce_field( basename(__FILE__), 'wp_formulaire_nonce');
@@ -195,6 +199,18 @@ function wp_meta_save($post_id) {
 		update_post_meta($post_id,'wpaf_recaptcha_switch', "1" );
 	}else{
 		update_post_meta($post_id,'wpaf_recaptcha_switch', "0" );
+	}
+	if ( isset($_POST['wpaf_default_mail'])){
+		update_post_meta($post_id,'wpaf_default_mail', '[input type="text" label="Nom" name="nom" required="required" placeholder="Veuillez saisir votre nom"]
+
+[input type="text" label="Prénom" name="prenom" required="required" placeholder="Veuillez saisir votre prénom"]
+
+[input type="email" label="Adresse mail" name="mail" required="required" placeholder="Veuillez saisir votre e-mail"]
+
+[input type="textarea" rows="10" cols="0" label="Message" name="message" required="required" placeholder="Veuillez saisir le contenu de votre message"]' );
+	}
+	if ( isset($_POST['wpaf_default_whatsapp'])){
+		update_post_meta($post_id,'wpaf_default_whatsapp', "whatsapp" );
 	}
 }
 add_action('save_post','wp_meta_save');
@@ -308,7 +324,7 @@ function entrees_formulaire(){
 											<?echo ($table->created_at)?>
 										</td>
 										<td>
-											<button class="bg-transparent border-0" name="supprimer" value="<?php echo $supprimerId ?>">❌</button>
+											<button class="remove btn btn-danger btn-sm" name="supprimer" value="<?php echo $supprimerId ?>">Supprimer</button>
 										</td>
 									</tr>
 									<?

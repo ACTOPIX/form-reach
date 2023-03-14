@@ -22,11 +22,14 @@
   <li class="nav-item" role="presentation">
     <button class="nav-link" id="wpaf_contact-tab" data-bs-toggle="tab" data-bs-target="#wpaf_message" type="button" role="tab" aria-controls="contact" aria-selected="false">Message</button>
   </li>
+<!-- Boutton de création de formulaire par défaut -->
+<input type="button" id="defaultForm" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> onclick="buttonDefaultMail()"<?php }else{?> onclick="buttonDefaultWhatsapp()" <?php } ?> value="Défaut"/>
 
 <!-- Boutton toggle changement de formulaire WhatsAPP -->
 <p class="wpaf_type_text">Formulaire <span id="wpaf_span_mail" style="display:none" class="wpaf_span">Mail</span><span id="wpaf_span_whatsapp" class="wpaf_span"style="display:none">WhatsApp</span></p>
 <input type="checkbox" name="wpaf_whatsapp_switch" id="wpaf_whatsapp_switch" onclick="switchWhatsapp()" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 1 ) { ?>checked="checked"<?php }else{?><?php } ?> /><label id="wpaf_whatsapp_label"for="wpaf_whatsapp_switch">Toggle</label>
 
+<!-- Style du boutton toggle changement de formulaire WhatsAPP -->
 <style>
 #wpaf_whatsapp_switch{
 	height: 0;

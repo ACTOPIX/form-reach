@@ -459,6 +459,14 @@ function transfertTel(){
 	}
 }
 
+function buttonDefaultMail() {
+	document.getElementById('wpaf_contenu_formulaire').value ="<?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_default_mail'][0] ); ?>";
+}
+
+function buttonDefaultWhatsapp() {
+		document.getElementById('wpaf_contenu_formulaire').value ="<?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_default_whatsapp'][0] ); ?>";
+}
+
 function switchWhatsapp() {
 
 	if(document.getElementById("wpaf_whatsapp_switch").checked){
