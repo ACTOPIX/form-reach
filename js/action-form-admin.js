@@ -460,29 +460,20 @@ function transfertTel(){
 }
 
 function buttonDefaultMail() {
-	document.getElementById('wpaf_contenu_formulaire').value ="<?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_default_mail'][0] ); ?>";
+	var defaultMail = document.getElementsByName("contenuFormulaireMail")[0].value;
+	console.log(defaultMail);
+	document.getElementById('wpaf_contenu_formulaire').value = defaultMail;
 }
 
 function buttonDefaultWhatsapp() {
-		document.getElementById('wpaf_contenu_formulaire').value ="<?php if (! empty ($wp_stored_meta['wpaf_contenu_formulaire'])) echo esc_textarea ( $wp_stored_meta['wpaf_default_whatsapp'][0] ); ?>";
+	var defaultWhatsapp = document.getElementsByName("contenuFormulaireWhatsapp")[0].value;
+
+	document.getElementById('wpaf_contenu_formulaire').value = defaultWhatsapp;
 }
 
 function switchWhatsapp() {
 
-	if(document.getElementById("wpaf_whatsapp_switch").checked){
-
-		document.getElementById("wpaf_whatsapp_iconsvg").setAttribute("style","visibility : visible");
-		document.getElementById("wpaf_mail_iconsvg").setAttribute("style","visibility : hidden");
-		document.getElementById("wpaf_span_whatsapp").setAttribute("style","display : block");
-		document.getElementById("wpaf_span_mail").setAttribute("style","display : none");
-
-
-	}else{
-
-		document.getElementById("wpaf_whatsapp_iconsvg").setAttribute("style","visibility : hidden");
-		document.getElementById("wpaf_mail_iconsvg").setAttribute("style","visibility : visible");
-		document.getElementById("wpaf_span_whatsapp").setAttribute("style","display : none");
-		document.getElementById("wpaf_span_mail").setAttribute("style","display : block");
-
-	};
+	var form = document.getElementById("post");
+	form.submit();
+	
 };

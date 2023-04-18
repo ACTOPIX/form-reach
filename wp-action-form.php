@@ -26,7 +26,7 @@ function activate_myplugin() {
 //Désactivation Plugin
 function deactivate_myplugin(){
 
-	delete_db_action_form();
+	// delete_db_action_form();
 }
 
 //Supression Plugin
@@ -93,7 +93,7 @@ function wp_action_form_include($id) {
 						
 			<? echo wp_nonce_field('nonce_verification')?>
 
-			<?echo $wp_stored_meta_front["wpaf_contenu_formulaire"][0]?>
+			<?if ($wp_stored_meta_front['wpaf_whatsapp_switch'][0] == 1){ echo $wp_stored_meta_front["wpaf_contenu_formulaire_whatsapp"][0]; }else{ echo $wp_stored_meta_front["wpaf_contenu_formulaire_mail"][0]; } ?>
 
 			<div id="wpaf_mail_submit" <?php if ($wp_stored_meta_front['wpaf_whatsapp_switch'][0] == 1){?>style="display:none"<?php }else{ ?> style="display:block" <?php } ?>>
 				<button type="submit" id="submit" name="wpaf_mail_submit" class="btn btn-primary mb-3 mt-3 g-recaptcha">

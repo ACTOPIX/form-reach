@@ -7,10 +7,10 @@ function cw_post_type_news() {
 	'menu_name' => _x( 'Formulaires de Contact', 'admin menu'),
 	'name_admin_bar' => _x( 'Formulaire', 'admin bar'),
 	'add_new' => _x('Ajouter', 'ajouter'),
-	'add_new_item' => __('Formulaire de Contact'),
+	'add_new_item' => __('Action Form'),
 	'new_item' => __('Nouveau Wp Admin'),
 	'edit_item' => __('Paramètres des Formulaires'),
-	'view_item' => __('Vpir Wp Admin'),
+	'view_item' => __('Voir Wp Admin'),
 	// 'all_items' => __(''),
 	'search_items' => __('Search Wp Admin'),
 	'not_found' => __('No Wp Admin found.'),
@@ -92,7 +92,21 @@ function register_metabox_callback($post){
 	add_post_meta( get_the_ID(), 'wpaf_contenu', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_succes', "Le formulaire a été envoyé avec succès.", true );
 	add_post_meta( get_the_ID(), 'wpaf_erreur', "Le formulaire n\'a pas pu être envoyé suite à une erreur. Veuillez réessayer.", true );
-	add_post_meta( get_the_ID(), 'wpaf_contenu_formulaire', "", true );
+
+	add_post_meta( get_the_ID(), 'wpaf_contenu_formulaire_mail', "[input type='text' label='Nom' name='nom' required='required' placeholder='Veuillez saisir votre nom']
+
+[input type='text' label='Prénom' name='prenom' required='required' placeholder='Veuillez saisir votre prénom']
+
+[input type='email' label='Adresse mail' name='mail' required='required' placeholder='Veuillez saisir votre e-mail']
+
+[input type='textarea' rows='10' cols='0' label='Message' name='message' required='required' placeholder='Veuillez saisir le contenu de votre message']", true );
+
+	add_post_meta( get_the_ID(), 'wpaf_contenu_formulaire_whatsapp', "[input type='text' label='Nom' name='nom' required='required' placeholder='Veuillez saisir votre nom']
+
+[input type='text' label='Prénom' name='prenom' required='required' placeholder='Veuillez saisir votre prénom']
+
+[input type='textarea' rows='10' cols='0' label='Message' name='message' required='required' placeholder='Veuillez saisir le contenu de votre message']", true );
+
 	add_post_meta( get_the_ID(), 'wpaf_whatsapp_switch', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_recaptcha_switch', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_whatsapp_tel', "", true );
@@ -184,8 +198,11 @@ function wp_meta_save($post_id) {
 	if ( isset($_POST['wpaf_erreur'])){
 		update_post_meta($post_id,'wpaf_erreur',sanitize_text_field($_POST['wpaf_erreur']) );
 	}
-	if ( isset($_POST['wpaf_contenu_formulaire'])){
-		update_post_meta($post_id,'wpaf_contenu_formulaire',$_POST['wpaf_contenu_formulaire']);
+	if ( isset($_POST['wpaf_contenu_formulaire_mail'])){
+		update_post_meta($post_id,'wpaf_contenu_formulaire_mail',$_POST['wpaf_contenu_formulaire_mail']);
+	}
+	if ( isset($_POST['wpaf_contenu_formulaire_whatsapp'])){
+		update_post_meta($post_id,'wpaf_contenu_formulaire_whatsapp',$_POST['wpaf_contenu_formulaire_whatsapp']);
 	}
 	if ( isset($_POST['wpaf_whatsapp_tel'])){
 		update_post_meta($post_id,'wpaf_whatsapp_tel',sanitize_text_field($_POST['wpaf_whatsapp_tel']) );
@@ -200,18 +217,7 @@ function wp_meta_save($post_id) {
 	}else{
 		update_post_meta($post_id,'wpaf_recaptcha_switch', "0" );
 	}
-	if ( isset($_POST['wpaf_default_mail'])){
-		update_post_meta($post_id,'wpaf_default_mail', '[input type="text" label="Nom" name="nom" required="required" placeholder="Veuillez saisir votre nom"]
 
-[input type="text" label="Prénom" name="prenom" required="required" placeholder="Veuillez saisir votre prénom"]
-
-[input type="email" label="Adresse mail" name="mail" required="required" placeholder="Veuillez saisir votre e-mail"]
-
-[input type="textarea" rows="10" cols="0" label="Message" name="message" required="required" placeholder="Veuillez saisir le contenu de votre message"]' );
-	}
-	if ( isset($_POST['wpaf_default_whatsapp'])){
-		update_post_meta($post_id,'wpaf_default_whatsapp', "whatsapp" );
-	}
 }
 add_action('save_post','wp_meta_save');
 
@@ -221,7 +227,7 @@ function wp_add_custom_submenu(){
 					"edit.php?post_type=wp_action_form",
 					"Entrées de Formulaire",
 					"Entrées de Formulaire",
-					"manage_options","entrées-formulaire",
+					"manage_options","entrees-formulaire",
 					"entrees_formulaire"
 				);
 }
@@ -230,9 +236,19 @@ add_action("admin_menu","wp_add_custom_submenu");
 function entrees_formulaire(){
 	?>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
 		<div class="container pt-5">
 			<h1 class="pb-5">Entrées des Formulaires de Contact</h1>
+
+			<?
+			global $wpdb;
+			$table = $wpdb->prefix . "formulaire";
+
+			if ($table == 0){
+				echo "<h5 class='text-center'>Aucun message à afficher pour le moment.</h5></br></br>
+				<h6 class='text-center text-muted'>Ici s'afficheront les messages envoyés par les utilisateurs.</h6>";
+			}else{
+			?>
 
 			<div class="row justify-content-between">
 				<div class="col-md-3 col-9">
@@ -329,6 +345,7 @@ function entrees_formulaire(){
 									</tr>
 									<?
 										}
+										}
 									?>
 							</body>
 						</table>
@@ -364,7 +381,7 @@ function recaptcha(){
 			</div>
 			<div>
 				<p>reCAPTCHA vous protège contre les indésirables et autres types d’abus automatisés. 
-					Avec le module d’intégration reCAPTCHA de Wp Action Form, vous pouvez bloquer les envois abusifs de formulaires par des robots spammeurs.</p>
+					Avec le module d’intégration reCAPTCHA d'Action Form, vous pouvez bloquer les envois abusifs de formulaires par des robots spammeurs.</p>
 				<p><strong><a href="https://www.google.com/recaptcha/about/">reCAPTCHA (v3)</a></strong></p>
 					<table class="form-table">
 						<tbody>
