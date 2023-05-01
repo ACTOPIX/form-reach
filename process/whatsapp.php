@@ -68,14 +68,14 @@
 
                               //Filtrage pour le lien
                               $whatsappContenu = str_replace("<br/>","",$contenu);
-                              $contenuFiltered = rawurlencode($whatsappContenu);
-                              $contenuFilteredSpace = str_replace("%20","+",$contenuFiltered);
+                              $contenuFiltered = urlencode(str_replace("<br/>", "\n", $contenu));
+                              // $contenuFilteredSpace = str_replace("%20","+",$contenuFiltered);
 
                               //Compte WhatsApp Administrateur
-                                   $tel = esc_attr ( $wp_stored_meta_whatsapp['wpaf_whatsapp_tel'][0] );
+                                   $tel = esc_attr ( $wp_stored_meta_whatsapp['wpaf_whatsapp_tel_international'][0] );
 
                               //Message qui sera envoyé
-                                   $link = "https://api.whatsapp.com/send/?phone=" . $tel . "&text=" . $contenuFilteredSpace;
+                                   $link = "https://api.whatsapp.com/send/?phone=" . $tel . "&text=" . $contenuFiltered;
                                    echo $link;
                               }
 

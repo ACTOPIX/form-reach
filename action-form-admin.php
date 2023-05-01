@@ -47,7 +47,18 @@ function smashing_wp_action_form_columns( $columns ) {
 }
 add_filter( 'manage_wp_action_form_posts_columns', 'smashing_wp_action_form_columns' );
 
-//Customisation des actions au survol des formulaires
+add_action( 'manage_wp_action_form_posts_custom_column', 'wp_action_form_column', 10, 2);
+
+// Ajoue du shortcode final dans le tableau Administrateur
+function wp_action_form_column( $column, $post_id ) {
+  if ( 'shortcode' === $column ) {
+	?>
+	<input type="text" readonly="readonly" onfocus="this.select()" value='[wp-action-form id="<?echo $post_id?>"]'>
+	<?
+  }
+}
+
+// Customisation des actions au survol des formulaires
 function modify_list_row_actions( $actions, $post ) {
 
 	unset( $actions['view'] );
@@ -55,7 +66,7 @@ function modify_list_row_actions( $actions, $post ) {
 }
 add_filter( 'post_row_actions', 'modify_list_row_actions', 10, 2 );
 
-//Supression du modificateur de contenu wordpress
+// Supression du modificateur de contenu wordpress
 function hide_editor() {
 
 	$post_type="wp_action_form";
@@ -64,14 +75,14 @@ function hide_editor() {
 }
 add_action( 'init', 'hide_editor' );
 
-//Supression de la metabox Slug
+// Supression de la metabox Slug
 function my_add_meta_boxes() {
 	
 	remove_meta_box( 'slugdiv', 'wp_action_form', 'normal' );
 }
 add_action( 'add_meta_boxes', 'my_add_meta_boxes' );
 
-//Customisation page de modification
+// Customisation page de modification
 function register_metabox_post_type(){
 
 	add_meta_box(
@@ -85,7 +96,7 @@ add_action('add_meta_boxes','register_metabox_post_type');
 
 function register_metabox_callback($post){
 
-//Ajoue des meta values
+// Ajoue des meta values
 	add_post_meta( get_the_ID(), 'wpaf_pour', get_option('admin_email'), true );
 	add_post_meta( get_the_ID(), 'wpaf_de', "Action Form", true );
 	add_post_meta( get_the_ID(), 'wpaf_objet', "Message d'un utilisateur", true );
@@ -110,8 +121,13 @@ function register_metabox_callback($post){
 	add_post_meta( get_the_ID(), 'wpaf_whatsapp_switch', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_recaptcha_switch', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_whatsapp_tel', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_whatsapp_tel_international', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_whatsapp_flag', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_default_mail', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_default_whatsapp', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_key_site', "", true );
+	add_post_meta( get_the_ID(), 'wpaf_key_secret', "", true );
+
 
 
 
@@ -122,7 +138,7 @@ function register_metabox_callback($post){
 }
 
 
-//shortcode générateur de balise - formulaire
+// Shortcode générateur de balise - formulaire
 
 class Wpaf_Id {
     public static function counter() {
@@ -136,7 +152,6 @@ function action_form_input_type($atts){
 
 
 	$id_auto=Wpaf_Id::counter();
-	echo"<script>console.log($id_auto);</script>";
 	
 	$atts = shortcode_atts(
 							array(
@@ -170,7 +185,7 @@ function action_form_input_type($atts){
 }
 add_shortcode('input','action_form_input_type');
 
-//meta values bdd
+// Meta values bdd
 function wp_meta_save($post_id) {
 
 	$is_autosave = wp_is_post_autosave( $post_id);
@@ -206,6 +221,18 @@ function wp_meta_save($post_id) {
 	}
 	if ( isset($_POST['wpaf_whatsapp_tel'])){
 		update_post_meta($post_id,'wpaf_whatsapp_tel',sanitize_text_field($_POST['wpaf_whatsapp_tel']) );
+	}
+	if ( isset( $_POST['wpaf_whatsapp_flag'])){
+		update_post_meta( $post_id, 'wpaf_whatsapp_flag', sanitize_text_field( $_POST['wpaf_whatsapp_flag']) );
+	}
+	if ( isset( $_POST['wpaf_whatsapp_tel_international'])){
+		update_post_meta( $post_id, 'wpaf_whatsapp_tel_international', sanitize_text_field( $_POST['wpaf_whatsapp_tel_international']) );
+	}
+	if ( isset( $_POST['wpaf_key_site'])){
+		update_post_meta( $post_id, 'wpaf_key_site', sanitize_text_field( $_POST['wpaf_key_site']) );
+	}
+	if ( isset( $_POST['wpaf_key_secret'])){
+		update_post_meta( $post_id, 'wpaf_key_secret', sanitize_text_field( $_POST['wpaf_key_secret']) );
 	}
 	if ( isset($_POST['wpaf_whatsapp_switch'])){
 		update_post_meta($post_id,'wpaf_whatsapp_switch', "1" );
@@ -243,8 +270,9 @@ function entrees_formulaire(){
 			<?
 			global $wpdb;
 			$table = $wpdb->prefix . "formulaire";
+			$row_count = $wpdb->get_var("SELECT COUNT(*) FROM $table");
 
-			if ($table == 0){
+			if ($row_count == 0){
 				echo "<h5 class='text-center'>Aucun message à afficher pour le moment.</h5></br></br>
 				<h6 class='text-center text-muted'>Ici s'afficheront les messages envoyés par les utilisateurs.</h6>";
 			}else{
@@ -304,7 +332,7 @@ function entrees_formulaire(){
 							</thead>
 							<tbody>
 								<?
-									//Récupération des données de la la database
+									// Récupération des données de la la database
 										global $wpdb;
 										$table = $wpdb->prefix . "formulaire";
 
@@ -317,7 +345,7 @@ function entrees_formulaire(){
 															);
 										};
 										
-										//Affichage des données dans le tableau admin
+										// Affichage des données dans le tableau admin
 										$result =$wpdb->get_results("SELECT * FROM $table;");
 
 										foreach ($result as $table) {
@@ -369,10 +397,23 @@ function wp_add_custom_submenu_reCAPTCHA(){
 }
 add_action("admin_menu","wp_add_custom_submenu_reCAPTCHA");
 
-function recaptcha(){
+
+function recaptcha($post){
+
+	$wp_stored_meta = get_post_meta( $post ->ID);
+
+	error_log( $wp_stored_meta );
+
+	$key_site = get_option('wpaf_key_site');
+	$key_secret = get_option('wpaf_key_secret');
+
 	?>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-		<scrip src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+		<head>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+			<scrip src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+			<script src="<?php echo plugin_dir_url(__FILE__); ?>js/action-form-admin.js"></script>
+		</head>
+
 		<div class="card" id="recaptcha">
 			<h4 class="ms-1.7 mb-5">Google reCAPTCHA V3</h4>
 			<div>
@@ -383,19 +424,20 @@ function recaptcha(){
 				<p>reCAPTCHA vous protège contre les indésirables et autres types d’abus automatisés. 
 					Avec le module d’intégration reCAPTCHA d'Action Form, vous pouvez bloquer les envois abusifs de formulaires par des robots spammeurs.</p>
 				<p><strong><a href="https://www.google.com/recaptcha/about/">reCAPTCHA (v3)</a></strong></p>
+				<form method="post">
 					<table class="form-table">
 						<tbody>
 							<tr>
-								<th scope="row"><label for="sitekey">Clé du site</label></th>
-									<td><input type="text" aria-required="true" value="" id="sitekey" name="sitekey" class="regular-text code"></td>
+								<th scope="row"><label for="wpaf_key_site">Clé du site</label></th>
+								<td><input type="text" id="wpaf_key_site" name="wpaf_key_site" class="regular-text code" aria-required="true" value="<?php if (!empty($wp_stored_meta['wpaf_key_site'])) echo esc_attr(get_post_meta($post->ID, $wp_stored_meta['wpaf_key_site'][0], true)); ?>"></td>
 							</tr>
 							<tr>
-								<th scope="row"><label for="secret">Clé secrète</label></th>
-								<td><input type="text" aria-required="true" value="" id="secret" name="secret" class="regular-text code"></td>
+								<th scope="row"><label for="wpaf_key_secret">Clé secrète</label></th>
+								<td><input type="text" id="wpaf_key_secret" name="wpaf_key_secret" class="regular-text code" aria-required="true" value="<?php if (!empty($wp_stored_meta['wpaf_key_secret'])) echo esc_attr($wp_stored_meta['wpaf_key_secret'][0]); ?>"></td>
 							</tr>
 						</tbody>
 					</table>
-					<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Enregistrer les changements"></p>
+					<p class="submit"><input type="submit" name="wpaf_recaptcha_submit" id="wpaf_recaptcha_submit" class="button button-primary" value="Enregistrer les changements"></p>
 				</form>
 			</div>
 		</div>

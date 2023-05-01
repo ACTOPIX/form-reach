@@ -308,7 +308,7 @@ $("#wpaf_generatedTextareaShortcode").val('[input' + wpaf_type + wpaf_rows + wpa
 var retour = "\n";
 
 function transfertText(){
- 	document.getElementById("wpaf_contenu_formulaire").append(retour + document.getElementById("wpaf_generatedTextShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").value += retour + document.getElementById("wpaf_generatedTextShortcode").value + retour;
 
 	if(document.getElementById("wpaf_generator-text-required").checked){
 		document.getElementById("wpaf_generator-text-required").checked=false;
@@ -344,7 +344,7 @@ function transfertText(){
 }
 
 function transfertEmail(){
- 	document.getElementById("wpaf_contenu_formulaire").append(retour + document.getElementById("wpaf_generatedEmailShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").value += retour + document.getElementById("wpaf_generatedEmailShortcode").value + retour;
 
 	if(document.getElementById("wpaf_generator-email-required").checked){
 		document.getElementById("wpaf_generator-email-required").checked=false;
@@ -380,7 +380,7 @@ function transfertEmail(){
 }
 
 function transfertTextarea(){
- 	document.getElementById("wpaf_contenu_formulaire").append(retour + document.getElementById("wpaf_generatedTextareaShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").value += retour + document.getElementById("wpaf_generatedTextareaShortcode").value + retour;
 
 	if(document.getElementById("wpaf_generator-textarea-required").checked){
 		document.getElementById("wpaf_generator-textarea-required").checked=false;
@@ -424,7 +424,7 @@ function transfertTextarea(){
 }
 
 function transfertTel(){
- 	document.getElementById("wpaf_contenu_formulaire").append(retour + document.getElementById("wpaf_generatedTelShortcode").value + retour);
+ 	document.getElementById("wpaf_contenu_formulaire").value += retour + document.getElementById("wpaf_generatedTelShortcode").value + retour;
 
 	if(document.getElementById("wpaf_generator-tel-required").checked){
 		document.getElementById("wpaf_generator-tel-required").checked=false;
@@ -471,9 +471,55 @@ function buttonDefaultWhatsapp() {
 	document.getElementById('wpaf_contenu_formulaire').value = defaultWhatsapp;
 }
 
-function switchWhatsapp() {
+// Sélectionne le formulaire à surveiller
+const formulaire = document.getElementById("post");
 
-	var form = document.getElementById("post");
-	form.submit();
-	
-};
+// Initialise la variable de modification non enregistrée à false
+let modificationNonEnregistree = false;
+
+// Initialise la variable pour savoir si le bouton switch a été utilisé pour soumettre le formulaire
+let switchSubmitted = false;
+
+// Ajoute un gestionnaire d'événements "input" au formulaire pour détecter les modifications
+formulaire.addEventListener('input', function(e) {
+  modificationNonEnregistree = true;
+});
+
+// Ajoute un gestionnaire d'événements "change" au formulaire pour détecter les modifications
+formulaire.addEventListener('change', function(e) {
+  modificationNonEnregistree = true;
+});
+
+// Ajoute un gestionnaire d'événements "submit" au formulaire pour désactiver la boîte de dialogue de confirmation
+formulaire.addEventListener('submit', function(event) {
+  modificationNonEnregistree = false;
+  // Si le formulaire a été soumis par le bouton switch, on met switchSubmitted à true
+  if (event.submitter.id === 'wpaf_whatsapp_switch') {
+    switchSubmitted = true;
+  }
+});
+
+// Ajoute un gestionnaire d'événements "beforeunload" à la fenêtre pour afficher la boîte de dialogue de confirmation
+window.addEventListener('beforeunload', function(e) {
+  // Vérifie s'il y a des modifications non enregistrées
+  if (modificationNonEnregistree && !switchSubmitted) {
+    // Affiche la boîte de dialogue de confirmation
+    e.preventDefault();
+    e.returnValue = '';
+    window.alert('Vous avez des modifications non enregistrées !');
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+
+	const switchButton = document.getElementById('wpaf_whatsapp_switch');
+
+	// Ajoute un gestionnaire d'événements "click" au bouton de switch
+	switchButton.addEventListener('click', function(e) {
+		// Met switchSubmitted à true pour indiquer que le formulaire a été soumis par le bouton switch
+		switchSubmitted = true;
+		// Soumet le formulaire pour enregistrer les modifications
+		formulaire.submit();
+	});
+});
+
