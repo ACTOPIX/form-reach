@@ -125,8 +125,6 @@ function register_metabox_callback($post){
 	add_post_meta( get_the_ID(), 'wpaf_whatsapp_flag', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_default_mail', "", true );
 	add_post_meta( get_the_ID(), 'wpaf_default_whatsapp', "", true );
-	add_post_meta( get_the_ID(), 'wpaf_key_site', "", true );
-	add_post_meta( get_the_ID(), 'wpaf_key_secret', "", true );
 
 
 
@@ -227,12 +225,6 @@ function wp_meta_save($post_id) {
 	}
 	if ( isset( $_POST['wpaf_whatsapp_tel_international'])){
 		update_post_meta( $post_id, 'wpaf_whatsapp_tel_international', sanitize_text_field( $_POST['wpaf_whatsapp_tel_international']) );
-	}
-	if ( isset( $_POST['wpaf_key_site'])){
-		update_post_meta( $post_id, 'wpaf_key_site', sanitize_text_field( $_POST['wpaf_key_site']) );
-	}
-	if ( isset( $_POST['wpaf_key_secret'])){
-		update_post_meta( $post_id, 'wpaf_key_secret', sanitize_text_field( $_POST['wpaf_key_secret']) );
 	}
 	if ( isset($_POST['wpaf_whatsapp_switch'])){
 		update_post_meta($post_id,'wpaf_whatsapp_switch', "1" );
@@ -384,105 +376,109 @@ function entrees_formulaire(){
 	<?
 }
 
+// Création du sous-menu
 function wp_add_custom_submenu_reCAPTCHA(){
 
 	add_submenu_page(
-					"edit.php?post_type=wp_action_form",
-					"reCAPTCHA Google v3",
-					"reCAPTCHA Google v3",
-					"manage_options",
-					"wp-reCAPTCHAGooglev3",
-					"recaptcha"
-				);
+		"edit.php?post_type=wp_action_form",
+		"reCAPTCHA Google v3",
+		"reCAPTCHA Google v3",
+		"manage_options",
+		"wp-reCAPTCHAGooglev3",
+		"recaptcha_options_page"
+	);
 }
-add_action("admin_menu","wp_add_custom_submenu_reCAPTCHA");
 
-
-function recaptcha($post){
-
-	$wp_stored_meta = get_post_meta( $post ->ID);
-
-	error_log( $wp_stored_meta );
-
-	$key_site = get_option('wpaf_key_site');
-	$key_secret = get_option('wpaf_key_secret');
-
+function recaptcha_options_page() {
 	?>
-		<head>
-			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-			<scrip src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
-			<script src="<?php echo plugin_dir_url(__FILE__); ?>js/action-form-admin.js"></script>
-		</head>
+	<head>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+		<scrip src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+		<script src="<?php echo plugin_dir_url(__FILE__); ?>js/action-form-admin.js"></script>
+	</head>
 
-		<div class="card" id="recaptcha">
-			<h4 class="ms-1.7 mb-5">Google reCAPTCHA V3</h4>
-			<div>
-			<input type="checkbox" class="mb-5" name="wpaf_recaptcha_switch" id="wpaf_recaptcha_switch" onclick="switchRecaptcha()"/><label id="wpaf_recaptcha_label"for="wpaf_recaptcha_switch">Toggle</label>
-			<p class="float-end text-secondary">Protection contre le contenu indésirable</p>
-			</div>
-			<div>
-				<p>reCAPTCHA vous protège contre les indésirables et autres types d’abus automatisés. 
-					Avec le module d’intégration reCAPTCHA d'Action Form, vous pouvez bloquer les envois abusifs de formulaires par des robots spammeurs.</p>
-				<p><strong><a href="https://www.google.com/recaptcha/about/">reCAPTCHA (v3)</a></strong></p>
-				<form method="post">
+		<div class="card">
+			<h4 class="ms-1.7 mb-5">Google reCAPTCHA v3</h4>
+			<form method="post" action="options.php">
+				<?php settings_fields( 'recaptcha_options_group' ); ?>
+				<?php do_settings_sections( 'recaptcha_options_page' ); ?>
+				<div>
+					<input type="checkbox" class="mb-5" name="wpaf_recaptcha_switch" id="wpaf_recaptcha_switch" value="1" <?php checked( 1, get_option( 'wpaf_recaptcha_switch' ) ); ?>/><label id="wpaf_recaptcha_label"for="wpaf_recaptcha_switch">Toggle</label>
+					<p class="float-end text-secondary">Protection contre le contenu indésirable</p>
+				</div>
+				<div>
+					<p>
+					reCAPTCHA vous protège contre les indésirables et autres types d’abus automatisés. 
+					Avec le module d’intégration reCAPTCHA d'Action Form, vous pouvez bloquer les envois abusifs de formulaires par des robots spammeurs.
+					</p>
+					<p><strong><a href="https://www.google.com/recaptcha/about/" target="_blank">reCAPTCHA (v3)</a></strong></p>
 					<table class="form-table">
 						<tbody>
-							<tr>
+							<tr valign="top">
 								<th scope="row"><label for="wpaf_key_site">Clé du site</label></th>
-								<td><input type="text" id="wpaf_key_site" name="wpaf_key_site" class="regular-text code" aria-required="true" value="<?php if (!empty($wp_stored_meta['wpaf_key_site'])) echo esc_attr(get_post_meta($post->ID, $wp_stored_meta['wpaf_key_site'][0], true)); ?>"></td>
+								<td><input type="text" name="wpaf_key_site" size="44" value="<?php echo esc_attr( get_option('wpaf_key_site') ); ?>"/></td>
 							</tr>
-							<tr>
+							<tr valign="top">
 								<th scope="row"><label for="wpaf_key_secret">Clé secrète</label></th>
-								<td><input type="text" id="wpaf_key_secret" name="wpaf_key_secret" class="regular-text code" aria-required="true" value="<?php if (!empty($wp_stored_meta['wpaf_key_secret'])) echo esc_attr($wp_stored_meta['wpaf_key_secret'][0]); ?>"></td>
+								<td><input type="password" name="wpaf_key_secret" size="44" value="<?php echo esc_attr( get_option('wpaf_key_secret') ); ?>"/></td>
 							</tr>
 						</tbody>
 					</table>
-					<p class="submit"><input type="submit" name="wpaf_recaptcha_submit" id="wpaf_recaptcha_submit" class="button button-primary" value="Enregistrer les changements"></p>
+					<?php submit_button(); ?>
 				</form>
 			</div>
 		</div>
 
 		<!-- style du bouton reCAPTCHA -->
-		<style>
-			#wpaf_recaptcha_switch{
-				height: 0;
-				width: 0;
-				visibility: hidden;
-				user-select: none;
-			}
-			#wpaf_recaptcha_label {
-				cursor: pointer;
-				text-indent: -9999px;
-				width: 50px;
-				height: 25.5px;
-				background: grey;
-				display: block;
-				border-radius: 100px;
-				position: relative;
-				user-select: none;
-				float:left;
-			}
-			#wpaf_recaptcha_label:after {
-				content: '';
-				position: absolute;
-				top: 2.562px;
-				left: 2.5px;
-				width: 20px;
-				height: 20px;
-				background: #fff;
-				border-radius: 90px;
-				transition: 0.3s;
-			}
-			#wpaf_recaptcha_switch:checked + #wpaf_recaptcha_label {
-				background: #2271b1;
-			}
-			#wpaf_recaptcha_switch:checked + #wpaf_recaptcha_label:after {
-				left: calc(100% - 2.5px);
-				transform: translateX(-100%);
-			}
-			#wpaf_recaptcha_label:active:after {
-				width: 32.5px;
-			}
-		</style>
+				<style>
+					#wpaf_recaptcha_switch{
+						height: 0;
+						width: 0;
+						visibility: hidden;
+						user-select: none;
+					}
+					#wpaf_recaptcha_label {
+						cursor: pointer;
+						text-indent: -9999px;
+						width: 50px;
+						height: 25.5px;
+						background: grey;
+						display: block;
+						border-radius: 100px;
+						position: relative;
+						user-select: none;
+						float:left;
+					}
+					#wpaf_recaptcha_label:after {
+						content: '';
+						position: absolute;
+						top: 2.562px;
+						left: 2.5px;
+						width: 20px;
+						height: 20px;
+						background: #fff;
+						border-radius: 90px;
+						transition: 0.3s;
+					}
+					#wpaf_recaptcha_switch:checked + #wpaf_recaptcha_label {
+						background: #2271b1;
+					}
+					#wpaf_recaptcha_switch:checked + #wpaf_recaptcha_label:after {
+						left: calc(100% - 2.5px);
+						transform: translateX(-100%);
+					}
+					#wpaf_recaptcha_label:active:after {
+						width: 32.5px;
+					}
+				</style>
 	<?php
 }
+
+function register_recaptcha_settings() {
+  register_setting( 'recaptcha_options_group', 'wpaf_recaptcha_switch' );
+  register_setting( 'recaptcha_options_group', 'wpaf_key_site' );
+  register_setting( 'recaptcha_options_group', 'wpaf_key_secret' );
+}
+
+add_action("admin_menu","wp_add_custom_submenu_reCAPTCHA");
+add_action( 'admin_init', 'register_recaptcha_settings' );
