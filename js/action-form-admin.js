@@ -461,13 +461,11 @@ function transfertTel(){
 
 function buttonDefaultMail() {
 	var defaultMail = document.getElementsByName("contenuFormulaireMail")[0].value;
-	console.log(defaultMail);
 	document.getElementById('wpaf_contenu_formulaire').value = defaultMail;
 }
 
 function buttonDefaultWhatsapp() {
 	var defaultWhatsapp = document.getElementsByName("contenuFormulaireWhatsapp")[0].value;
-
 	document.getElementById('wpaf_contenu_formulaire').value = defaultWhatsapp;
 }
 
@@ -510,6 +508,7 @@ window.addEventListener('beforeunload', function(e) {
   }
 });
 
+
 document.addEventListener('DOMContentLoaded', function() {
 
 	const switchButton = document.getElementById('wpaf_whatsapp_switch');
@@ -521,5 +520,21 @@ document.addEventListener('DOMContentLoaded', function() {
 		// Soumet le formulaire pour enregistrer les modifications
 		formulaire.submit();
 	});
+
+	
 });
 
+// Submit function
+document.addEventListener('DOMContentLoaded', function() {
+
+	const saveButton = document.getElementById('wpaf_saveForm');
+
+	// Ajoute un gestionnaire d'événements "click" au bouton de switch
+	if(saveButton){
+
+		saveButton.addEventListener('click', function(e) {
+			// Soumet le formulaire pour enregistrer les modifications
+			formulaire.submit();
+		});
+	}
+});

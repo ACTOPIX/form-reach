@@ -1,23 +1,23 @@
 <?php
-     // Appel de wp-load
+     // Calling wp-load
 	$path = preg_replace('/wp-content.*$/','',__DIR__);
 	require_once($path."wp-load.php");
 
-     // Vérification nonce
+     // Nonce verification
      if(isset($_POST['_wpnonce'])){
 
           if (!wp_verify_nonce( $_POST['_wpnonce'], 'nonce_verification' )){
 
-               // La vérification du token a échoué
+               // The token verification failed
                exit;
 
           }else{
-               // La vérification du token a réussi
+               // The token verification succeeded
 
                if(esc_attr(get_option('wpaf_recaptcha_switch')) === '1') {                     
-               // Protection reCAPTCHA V3 activée, vérifie la réponse du serveur
+               // reCAPTCHA V3 protection activated, verifying server response
 
-                    $captchaSecretKey = esc_attr( get_option('wpaf_key_site') );
+                    $captchaSecretKey = esc_attr( get_option('wpaf_key_secret') );
 
                     if (isset($_POST['g-recaptcha-response'])) {
 
@@ -38,25 +38,20 @@
                          $serverResponse = curl_exec($curl);
                          
                          if(json_decode($serverResponse,true)['score'] <= 0.5) {
-                         // La vérification reCAPTCHA V3 a échoué
+                         // The reCAPTCHA V3 verification failed
                               echo ("recaptchaValidation=false") ; exit;
                          }else{
-                         // La vérification reCAPTCHA V3 a réussi, traitement des données du formulaire
+                         // reCAPTCHA V3 verification succeeded, processing form data
 
-                            // Récupération et initialisation de l'ID concerné
-                            $postID = sanitize_text_field($_POST['wpaf_container_post']);
-                            $wp_stored_meta_validation_mail = get_post_meta($postID);
-
-
-                            // Définition des variables
-                            $postID = sanitize_text_field($_POST['wpaf_container_post']);
-                            $wp_stored_meta_validation_mail = get_post_meta($postID);
-                            $contenuAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_contenu'][0] ));
+                              // Définition des variables
+                              $postID = sanitize_text_field($_POST['wpaf_container_post']);
+                              $wp_stored_meta_validation_mail = get_post_meta($postID);
+                              $contenuAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_content'][0] ));
 
 
-                            // Obtention et filtrage des données de l'utilisateur + définition du contenu
-                            $contenuFormPost ="";
-                            foreach ($_POST as $key=>$val) {
+                              // Fetching and filtering user data + defining content
+                              $contenuFormPost ="";
+                              foreach ($_POST as $key=>$val) {
                                 if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "wpaf_mail_submit" ||$key == "wpaf_whatsapp_submit" || $key == "wpaf_container_post")){
                                         $valFiltered = str_replace("\\","",$val);
                                         $keyFiltered = str_replace("\\","",$key);
@@ -65,58 +60,54 @@
                                         $valShortcode[] = $valFiltered;
 
                                         $contenuFormPost .= "$keyFiltered : $valFiltered <br/>";
-                                }
-                            }
+                                   }
+                              }
                             
-                            if ($keyFiltered) {
+                              if ($keyFiltered) {
                                 $contenuReplace = str_replace($keyShortcode,$valShortcode, $contenuAdministrateur);
-                            };
+                              };
 
-                            // Adresses mails 
-                            $toAdministrateur = esc_attr ( $wp_stored_meta_validation_mail['wpaf_pour'][0]);
-                            // $toUtilisateur =
+                              // Email adresses 
+                              $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_to'][0]);
+                              // $toUser =
 
-                            // Sujets
-                            $sujetAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_objet'][0] ));
-                            // $sujetUtilisateur = "Confirmation";                                   
-                            // En-têtes
-                            $titreAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_de'][0] ));
-                            // $titreUtilisateur = "From: Wordpress@wp-action-form.actopix.com";
+                              // Subjects
+                              $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_subject'][0] ));
+                              // $subjectUser = "Confirmation";   
 
-                            // Envoi des mails
-                            $mailAdministrateur = wp_mail($toAdministrateur, $sujetAdministrateur, $contenuReplace, $titreAdministrateur);
-                            // $mailUtilisateur = wp_mail($toUtilisateur, $sujetUtilisateur, $contenuUtilisateur, $titreUtilisateur);
+                              // Headers
+                              $headerAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_from'][0] ));
+                              // $headerUser = "From: Wordpress@wp-action-form.actopix.com";
+
+                              // Mail sending
+                              $mailAdmin = wp_mail($toAdmin, $subjectAdmin, $contenuReplace, $headerAdmin);
+                              // $mailUser = wp_mail($toUser, $subjectUser, $contentUser, $headerUser);
 
                             
-                            // Envoi dans la base de données
-                            global $wpdp;
-                            $table_name =  $wpdb->prefix . 'formulaire';
+                              // Saving to the database
+                              global $wpdp;
+                              $table_name =  $wpdb->prefix . 'form_history';
 
-                            $data= array(
-                                    'Type' => 'Mail',
-                                    'Contenu' => $contenuFormPost
-                                    );
+                              $data= array(
+                                    'type' => 'Mail',
+                                    'content' => $contenuFormPost
+                                   );
 
-                            $result = $wpdb->insert($table_name, $data);        
+                              $result = $wpdb->insert($table_name, $data);        
                          }
 
                     }
 
                } else {
-               // Protection reCAPTCHA V3 désactivée, traite les données du formulaire sans vérification
+               // reCAPTCHA V3 protection disabled, processing form data without verification
 
-                    // Récupération et initialisation de l'ID concerné
+                    // Definition of variables
                     $postID = sanitize_text_field($_POST['wpaf_container_post']);
                     $wp_stored_meta_validation_mail = get_post_meta($postID);
+                    $contenuAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_content'][0] ));
 
 
-                    // Définition des variables
-                    $postID = sanitize_text_field($_POST['wpaf_container_post']);
-                    $wp_stored_meta_validation_mail = get_post_meta($postID);
-                    $contenuAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_contenu'][0] ));
-
-
-                    // Obtention et filtrage des données de l'utilisateur + définition du contenu
+                    // Fetching and filtering user data + defining content
                     $contenuFormPost ="";
                     foreach ($_POST as $key=>$val) {
                         if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "wpaf_mail_submit" ||$key == "wpaf_whatsapp_submit" || $key == "wpaf_container_post")){
@@ -134,29 +125,30 @@
                         $contenuReplace = str_replace($keyShortcode,$valShortcode, $contenuAdministrateur);
                     };
 
-                    // Adresses mails 
-                    $toAdministrateur = esc_attr ( $wp_stored_meta_validation_mail['wpaf_pour'][0]);
-                    // $toUtilisateur =
+                    // Email adresses 
+                    $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_to'][0]);
+                    // $toUser =
 
-                    // Sujets
-                    $sujetAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_objet'][0] ));
-                    // $sujetUtilisateur = "Confirmation";                                   
-                    // En-têtes
-                    $titreAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_de'][0] ));
-                    // $titreUtilisateur = "From: Wordpress@wp-action-form.actopix.com";
+                    // Subjects
+                    $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_subject'][0] ));
+                    // $subjectUser = "Confirmation";   
 
-                    // Envoi des mails
-                    $mailAdministrateur = wp_mail($toAdministrateur, $sujetAdministrateur, $contenuReplace, $titreAdministrateur);
-                    // $mailUtilisateur = wp_mail($toUtilisateur, $sujetUtilisateur, $contenuUtilisateur, $titreUtilisateur);
+                    // Headers
+                    $headerAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_from'][0] ));
+                    // $headerUser = "From: Wordpress@wp-action-form.actopix.com";
+
+                    // Mail sending
+                    $mailAdmin = wp_mail($toAdmin, $subjectAdmin, $contenuReplace, $headerAdmin);
+                    // $mailUser = wp_mail($toUser, $subjectUser, $contentUser, $headerUser);
 
                     
-                    // Envoi dans la base de données
+                    // Sending to the database
                     global $wpdp;
-                    $table_name =  $wpdb->prefix . 'formulaire';
+                    $table_name =  $wpdb->prefix . 'form_history';
 
                     $data= array(
-                            'Type' => 'Mail',
-                            'Contenu' => $contenuFormPost
+                            'type' => 'Mail',
+                            'content' => $contenuFormPost
                             );
 
                     $result = $wpdb->insert($table_name, $data);
