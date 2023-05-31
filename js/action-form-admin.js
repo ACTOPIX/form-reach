@@ -459,82 +459,165 @@ function transfertTel(){
 	}
 }
 
+// Default values for the form construction container
 function buttonDefaultMail() {
 	var defaultMail = document.getElementsByName("contenuFormulaireMail")[0].value;
+
+	var defaultEmailSubmitText = document.getElementsByName("defaultEmailSubmitText")[0].value;
+	var defaultEmailSubmitTextColor = document.getElementsByName("defaultEmailSubmitTextColor")[0].value;
+	var defaultEmailSubmitColor = document.getElementsByName("defaultEmailSubmitColor")[0].value;
+
 	document.getElementById('wpaf_contenu_formulaire').value = defaultMail;
+
+	document.getElementById('wpaf_email_submit').value = defaultEmailSubmitText;
+	document.getElementById('wpaf_email_text_color').value = defaultEmailSubmitTextColor;
+	document.getElementById('wpaf_email_submit_color').value = defaultEmailSubmitColor;
+	document.getElementById('wpaf_color_text_code_email').value = defaultEmailSubmitTextColor;
+	document.getElementById('wpaf_color_code_email').value = defaultEmailSubmitColor;
+	
 }
 
 function buttonDefaultWhatsapp() {
 	var defaultWhatsapp = document.getElementsByName("contenuFormulaireWhatsapp")[0].value;
+
+	var defaultWhatsappSubmitText = document.getElementsByName("defaultWhatsappSubmitText")[0].value;
+	var defaultWhatsappSubmitTextColor = document.getElementsByName("defaultWhatsappSubmitTextColor")[0].value;
+	var defaultWhatsappSubmitColor = document.getElementsByName("defaultWhatsappSubmitColor")[0].value;
+
 	document.getElementById('wpaf_contenu_formulaire').value = defaultWhatsapp;
+
+	document.getElementById('wpaf_whatsapp_submit').value = defaultWhatsappSubmitText;
+	document.getElementById('wpaf_whatsapp_text_color').value = defaultWhatsappSubmitTextColor;
+	document.getElementById('wpaf_whatsapp_submit_color').value = defaultWhatsappSubmitColor;
+	document.getElementById('wpaf_color_text_code_whatsapp').value = defaultWhatsappSubmitTextColor;
+	document.getElementById('wpaf_color_code_whatsapp').value = defaultWhatsappSubmitColor;
+
+}
+
+// Default values for the email messages
+function buttonDefaultEmailMessages() {
+	var defaultEmailSuccess = document.getElementsByName("buttonDefaultEmailSuccess")[0].value;
+	var defaultEmailError = document.getElementsByName("buttonDefaultEmailError")[0].value;
+	
+	document.getElementById('wpaf_email_success').value = defaultEmailSuccess;
+	document.getElementById('wpaf_email_error').value = defaultEmailError;
+}
+
+// Default values for the whatsapp messages
+function buttonDefaultWhatsappMessages() {
+	var defaultWhatsappSuccess = document.getElementsByName("buttonDefaultWhatsappSuccess")[0].value;
+	var defaultWhatsappError = document.getElementsByName("buttonDefaultWhatsappError")[0].value;
+
+	document.getElementById('wpaf_whatsapp_success').value = defaultWhatsappSuccess;
+	document.getElementById('wpaf_whatsapp_error').value = defaultWhatsappError;
+}
+
+// Default values for the email sending
+function buttonDefaultEmailSending() {
+	var defaultEmailAdminTo = document.getElementsByName("defaultEmailAdminTo")[0].value;
+	var defaultEmailAdminFrom = document.getElementsByName("defaultEmailAdminFrom")[0].value;
+	var defaultEmailAdminSubject = document.getElementsByName("defaultEmailAdminSubject")[0].value;
+	var defaultEmailAdminContent = document.getElementsByName("defaultEmailAdminContent")[0].value;
+
+	var defaultEmailUserTo = document.getElementsByName("defaultEmailUserTo")[0].value;
+	var defaultEmailUserFrom = document.getElementsByName("defaultEmailUserFrom")[0].value;
+	var defaultEmailUserSubject = document.getElementsByName("defaultEmailUserSubject")[0].value;
+	var defaultEmailUserContent = document.getElementsByName("defaultEmailUserContent")[0].value;
+
+	
+	document.getElementById('wpaf_email_admin_to').value = defaultEmailAdminTo;
+	document.getElementById('wpaf_email_admin_from').value = defaultEmailAdminFrom;
+	document.getElementById('wpaf_email_admin_subject').value = defaultEmailAdminSubject;
+	document.getElementById('wpaf_email_admin_content').value = defaultEmailAdminContent;
+
+	document.getElementById('wpaf_email_user_to').value = defaultEmailUserTo;
+	document.getElementById('wpaf_email_user_from').value = defaultEmailUserFrom;
+	document.getElementById('wpaf_email_user_subject').value = defaultEmailUserSubject;
+	document.getElementById('wpaf_email_user_content').value = defaultEmailUserContent;
 }
 
 // Sélectionne le formulaire à surveiller
 const formulaire = document.getElementById("post");
+if(formulaire){
 
-// Initialise la variable de modification non enregistrée à false
-let modificationNonEnregistree = false;
+	// Initialise la variable de modification non enregistrée à false
+	let modificationNonEnregistree = false;
 
-// Initialise la variable pour savoir si le bouton switch a été utilisé pour soumettre le formulaire
-let switchSubmitted = false;
+	// Initialise la variable pour savoir si le bouton switch a été utilisé pour soumettre le formulaire
+	let switchSubmitted = false;
 
-// Ajoute un gestionnaire d'événements "input" au formulaire pour détecter les modifications
-formulaire.addEventListener('input', function(e) {
-  modificationNonEnregistree = true;
-});
-
-// Ajoute un gestionnaire d'événements "change" au formulaire pour détecter les modifications
-formulaire.addEventListener('change', function(e) {
-  modificationNonEnregistree = true;
-});
-
-// Ajoute un gestionnaire d'événements "submit" au formulaire pour désactiver la boîte de dialogue de confirmation
-formulaire.addEventListener('submit', function(event) {
-  modificationNonEnregistree = false;
-  // Si le formulaire a été soumis par le bouton switch, on met switchSubmitted à true
-  if (event.submitter.id === 'wpaf_whatsapp_switch') {
-    switchSubmitted = true;
-  }
-});
-
-// Ajoute un gestionnaire d'événements "beforeunload" à la fenêtre pour afficher la boîte de dialogue de confirmation
-window.addEventListener('beforeunload', function(e) {
-  // Vérifie s'il y a des modifications non enregistrées
-  if (modificationNonEnregistree && !switchSubmitted) {
-    // Affiche la boîte de dialogue de confirmation
-    e.preventDefault();
-    e.returnValue = '';
-    window.alert('Vous avez des modifications non enregistrées !');
-  }
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-
-	const switchButton = document.getElementById('wpaf_whatsapp_switch');
-
-	// Ajoute un gestionnaire d'événements "click" au bouton de switch
-	switchButton.addEventListener('click', function(e) {
-		// Met switchSubmitted à true pour indiquer que le formulaire a été soumis par le bouton switch
-		switchSubmitted = true;
-		// Soumet le formulaire pour enregistrer les modifications
-		formulaire.submit();
+	// Ajoute un gestionnaire d'événements "input" au formulaire pour détecter les modifications
+	formulaire.addEventListener('input', function(e) {
+	modificationNonEnregistree = true;
 	});
 
-	
-});
+	// Ajoute un gestionnaire d'événements "change" au formulaire pour détecter les modifications
+	formulaire.addEventListener('change', function(e) {
+	modificationNonEnregistree = true;
+	});
 
-// Submit function
-document.addEventListener('DOMContentLoaded', function() {
+	// Ajoute un gestionnaire d'événements "submit" au formulaire pour désactiver la boîte de dialogue de confirmation
+	formulaire.addEventListener('submit', function(event) {
+	modificationNonEnregistree = false;
+	// Si le formulaire a été soumis par le bouton switch, on met switchSubmitted à true
+	if (event.submitter.id === 'wpaf_whatsapp_switch') {
+		switchSubmitted = true;
+	}
+	});
 
-	const saveButton = document.getElementById('wpaf_saveForm');
+	// Ajoute un gestionnaire d'événements "beforeunload" à la fenêtre pour afficher la boîte de dialogue de confirmation
+	window.addEventListener('beforeunload', function(e) {
+	// Vérifie s'il y a des modifications non enregistrées
+	if (modificationNonEnregistree && !switchSubmitted) {
+		// Affiche la boîte de dialogue de confirmation
+		e.preventDefault();
+		e.returnValue = '';
+		window.alert('You have unsaved changes!');
+	}
+	});
 
-	// Ajoute un gestionnaire d'événements "click" au bouton de switch
-	if(saveButton){
 
-		saveButton.addEventListener('click', function(e) {
+	document.addEventListener('DOMContentLoaded', function() {
+
+		const switchButton = document.getElementById('wpaf_whatsapp_switch');
+
+		// Ajoute un gestionnaire d'événements "click" au bouton de switch
+		switchButton.addEventListener('click', function(e) {
+			// Met switchSubmitted à true pour indiquer que le formulaire a été soumis par le bouton switch
+			switchSubmitted = true;
 			// Soumet le formulaire pour enregistrer les modifications
 			formulaire.submit();
 		});
-	}
-});
+
+		
+	});
+
+	// Submit function
+	document.addEventListener('DOMContentLoaded', function() {
+
+		const saveButtonMessages = document.getElementById('wpaf_save_messages');
+		const saveButtonEmail = document.getElementById('wpaf_save_email');
+		const saveButtonFinal = document.getElementById('wpaf_save_final');
+
+		if(saveButtonMessages){
+
+			saveButtonMessages.addEventListener('click', function(e) {
+				formulaire.submit();
+			});
+		}
+
+		if(saveButtonEmail){
+
+			saveButtonEmail.addEventListener('click', function(e) {
+				formulaire.submit();
+			});
+		}
+
+		if(saveButtonFinal){
+
+			saveButtonFinal.addEventListener('click', function(e) {
+				formulaire.submit();
+			});
+		}
+	});
+};

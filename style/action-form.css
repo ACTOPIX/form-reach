@@ -228,3 +228,9 @@ code {
     outline: none;
     border: 0.01rem solid #888888;
 }
+
+/* Displays as one column*/
+.post-type-wp_action_form #poststuff #post-body.columns-2 {
+    margin-right: 0;
+}
+

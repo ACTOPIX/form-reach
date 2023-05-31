@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="<?php echo plugin_dir_url(__FILE__); ?>style/action-form.css">
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
 <script src="<?php echo plugin_dir_url(__FILE__); ?>js/action-form-admin.js"></script>
-<script src="<?php echo plugin_dir_url(__FILE__); ?>js/wp-action-form.js"></script>
+<script src="<?php echo plugin_dir_url(__FILE__); ?>js/action-form.js"></script>
 
 <section onload="modalTextGenerator(),modalTextareaGenerator(),modalEmailGenerator(),modalTelGenerator()">
 
@@ -20,7 +20,7 @@
 			<li class="nav-item" role="presentation">
 				<button class="nav-link" id="wpaf_contact-tab" data-bs-toggle="tab" data-bs-target="#wpaf_message" type="button" role="tab" aria-controls="contact" aria-selected="false">Message</button>
 			</li>
-			<li class="ms-auto d-flex align-items-center">
+			<li id="wpaf_switch_container" class="ms-auto d-flex align-items-center">
 				<!-- Email Icon -->
 				<svg id="wpaf_mail_iconsvg" id="wpaf_mail_iconsvg" xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="<?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> #0d6efd <?php }else{ ?> #a4a4a4a4 <?php } ?>" class="bi bi-envelope me-2" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/></svg>
 				
@@ -63,15 +63,19 @@
 				if (inputEmail){
 					if (inputEmail.value === '') {
 						element.classList.add('missing-information');
+						inputEmail.style.border='2px solid red';
 					}else {
 						element.classList.remove('missing-information');
+						inputEmail.style.border='1px solid grey';
 					};
 
 					inputEmail.addEventListener('input', function() {
 						if (inputEmail.value !== '') {
 							element.classList.remove('missing-information');
+							inputEmail.style.border='1px solid grey';
 						}else {
 							element.classList.add('missing-information');
+							inputEmail.style.border='2px solid red';
 						}
 					});
 				}
@@ -112,7 +116,7 @@
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-text-name"><span class="text-primary">*</span>Name: </label></th>
+											<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
 											<td><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name" onchange="modalTextGenerator()"></br>
 											<span id ="requiredNameText" class="text-danger fst-italic" style="font-size: 12px;" hidden>*This field is required</span></td>
 										</tr>
@@ -158,7 +162,7 @@
 								// Checking if the input has been filled
 								const inputName = document.getElementById("wpaf_generator-text-name");
 								if (inputName.value !== "") {
-									// Adding hidden to the button
+									inputName.style.border="solid 1px black";
 									document.getElementById("requiredNameText").setAttribute("hidden", "");
 									// Close the Bootstrap modal
 									$('#wpaf_modal_text').modal('hide');
@@ -166,6 +170,7 @@
 									transfertText();
 								}else{
 									// Removing hidden from the button
+									inputName.style.border="solid 2px red";
 									document.getElementById("requiredNameText").removeAttribute("hidden", "");
 								};
 							};
@@ -204,7 +209,7 @@
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-email-name"><span class="text-primary">*</span>Name: </label></th>
+											<th class="text-end" scope="row"><label for="wpaf_generator-email-name">Name<span class="text-primary">*</span>: </label></th>
 											<td><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-email-name" onchange="modalEmailGenerator()"></br>
 											<span id ="requiredNameEmail" class="text-danger fst-italic" style="font-size: 12px;" hidden>*This field is required</span></td>
 										</tr>
@@ -249,14 +254,14 @@
 								// Checking if the input has been filled
 								const inputName = document.getElementById("wpaf_generator-email-name");
 								if (inputName.value !== "") {
-									// Adding hidden to the button
+									inputName.style.border="solid 1px black";
 									document.getElementById("requiredNameEmail").setAttribute("hidden", "");
 									// Close the Bootstrap modal
 									$('#wpaf_modal_email').modal('hide');
 									// Call the transfert function
 									transfertEmail();
 								}else{
-									// Removing hidden from the button
+									inputName.style.border="solid 2px red";
 									document.getElementById("requiredNameEmail").removeAttribute("hidden", "");
 								};
 							};
@@ -276,34 +281,42 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
+
+							<div class="d-flex align-items-center ms-4">
+							<div class="col-6 mb-3">
+								<div class="input-group" style="width:10em;">
+									<span class="input-group-text" id="input-cols" style="font-size: 100%;"><strong>Columns:</strong></span>
+									<input type="number" name="cols" class="form-control form-control-sm small-input" id="wpaf_generator-textarea-cols" min="0" max="50" value="0" onchange="modalTextareaGenerator()">
+								</div>
+								</div>
+								<div class="col-6 mb-3">
+									<div class="input-group" style="width:8em;">
+										<span class="input-group-text" id="input-rows" style="font-size: 100%;"><strong>Rows:</strong></span>
+										<input type="number" name="rows" class="form-control form-control-sm small-input" id="wpaf_generator-textarea-rows" min="0" max="50" value="0" onchange="modalTextareaGenerator()">
+									</div>
+								</div>
+							</div>
+
+
+
 							<div class="table-responsive">
 								<table class="table table-borderless">
 									<tbody>
 										<tr>
 											<th class="text-end"scope="row">Type: </th>
 											<td>
-												<fieldset>
 												<legend class="screen-reader-text">Field type</legend>
 												<label><input type="checkbox" id="wpaf_generator-textarea-required" name="required" onclick="modalTextareaGenerator()"> Required field</label>
-												</fieldset>
 											</td>
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-textarea-rows">Rows: </label></th>
-											<td ><input type="number" name="rows" class="tg-name oneline" id="wpaf_generator-textarea-rows" style="width:11%;padding-right: 0px;" min="0" max="50" value="0" onchange="modalTextareaGenerator()"></td>
-										</tr>
-
-										</tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-textarea-cols">Columns: </label></th>
-											<td ><input type="number" name="cols" class="tg-name oneline" id="wpaf_generator-textarea-cols" style="width:11%;padding-right: 0px;" min="0" max="50" value="0" onchange="modalTextareaGenerator()"></td>
-										<tr>
 											<th class="text-end" scope="row"><label for="wpaf_generator-textarea-label">Label: </label></th>
-											<td ><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-textarea-label" onchange="modalTextareaGenerator()"></td>
+											<td><input type="text" name="label" class="tg-name oneline" id="wpaf_generator-textarea-label" onchange="modalTextareaGenerator()"></td>
 										</tr>
 										
 										<tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-textarea-name"><span class="text-primary">*</span>Name: </label></th>
+											<th class="text-end" scope="row"><label for="wpaf_generator-textarea-name">Name<span class="text-primary">*</span>: </label></th>
 											<td><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-textarea-name" onchange="modalTextareaGenerator()"></br>
 											<span id ="requiredNameTextarea" class="text-danger fst-italic" style="font-size: 12px;" hidden>*This field is required</span></td>
 										</tr>
@@ -349,14 +362,14 @@
 								// Checking if the input has been filled
 								const inputName = document.getElementById("wpaf_generator-textarea-name");
 								if (inputName.value !== "") {
-									// Adding hidden to the button
+									inputName.style.border="solid 1px black";
 									document.getElementById("requiredNameTextarea").setAttribute("hidden", "");
 									// Close the Bootstrap modal
 									$('#wpaf_modal_textarea').modal('hide');
 									// Call the transfert function
 									transfertTextarea();
 								}else{
-									// Removing hidden from the button
+									inputName.style.border="solid 2px red";
 									document.getElementById("requiredNameTextarea").removeAttribute("hidden", "");
 								};
 							};
@@ -395,7 +408,7 @@
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-tel-name"><span class="text-primary">*</span>Name: </label></th>
+											<th class="text-end" scope="row"><label for="wpaf_generator-tel-name">Name<span class="text-primary">*</span>: </label></th>
 											<td><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-tel-name" onchange="modalTelGenerator()"></br>
 											<span id ="requiredNameTel" class="text-danger fst-italic" style="font-size: 12px;" hidden>*This field is required</span></td>
 										</tr>
@@ -440,14 +453,14 @@
 								// Checking if the input has been filled
 								const inputName = document.getElementById("wpaf_generator-tel-name");
 								if (inputName.value !== "") {
-									// Adding hidden to the button
+									inputName.style.border="solid 1px black";
 									document.getElementById("requiredNameTel").setAttribute("hidden", "");
 									// Close the Bootstrap modal
 									$('#wpaf_modal_tel').modal('hide');
 									// Call the transfert function
 									transfertTel();
 								}else{
-									// Removing hidden from the button
+									inputName.style.border="solid 2px red";
 									document.getElementById("requiredNameTel").removeAttribute("hidden", "");
 								};
 							};
@@ -557,7 +570,7 @@
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-text-name"><span class="text-primary">*</span>Name: </label></th>
+											<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
 											<td ><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name"></td>
 										</tr>
 
@@ -628,7 +641,7 @@
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-text-name"><span class="text-primary">*</span>Name: </label></th>
+											<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
 											<td ><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name"></td>
 										</tr>
 
@@ -699,7 +712,7 @@
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-text-name"><span class="text-primary">*</span>Name: </label></th>
+											<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
 											<td ><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name"></td>
 										</tr>
 
@@ -770,7 +783,7 @@
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="wpaf_generator-text-name"><span class="text-primary">*</span>Name: </label></th>
+											<th class="text-end" scope="row"><label for="wpaf_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
 											<td><input type="text" name="name" class="tg-name oneline" id="wpaf_generator-text-name"></td>
 										</tr>
 
@@ -812,9 +825,9 @@
 			</div>
 
 			<!-- Modal Button: Submit -->
-			<button type="button" name="wpaf_button_modal_submit" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#wpaf_button_modal_submit"> Submit </button>
+			<button type="button" name="wpaf_button_modal_submit" id="wpaf_button_modal_submit" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#wpaf_button_modal_submit_content"> Submit </button>
 			<!-- Modal Form Tag Generator: Submit -->
-			<div class="modal fade" id="wpaf_button_modal_submit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal fade" id="wpaf_button_modal_submit_content" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -982,6 +995,84 @@
 							</div>
 						</div>
 						<div class="modal-footer position-relative">
+							<div class="position-absolute start-0 ms-3">
+								<?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 1 ) { ?> 
+									<button type="button" id="wpaf_whatsapp_submit_result" class="btn mb-3 mt-3">
+											<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" id="wpaf_whatsapp_svg_result" class="bi bi-whatsapp" viewBox="0 0 16 16">
+												<path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+											</svg>
+											<span id="wpaf_whatsapp_submit_text_result"></span>
+									</button>
+									<script>
+										// Sélectionnez les éléments HTML pertinents
+										var button = document.getElementById('wpaf_whatsapp_submit_result');
+										var buttonText = document.getElementById('wpaf_whatsapp_submit_text_result');
+										var buttonTextColorInput = document.getElementById('wpaf_whatsapp_text_color');
+										var buttonColorInput = document.getElementById('wpaf_whatsapp_submit_color');
+										var buttonTextInput = document.getElementById('wpaf_whatsapp_submit');
+										var buttonIconColor = document.getElementById('wpaf_whatsapp_svg_result');
+										var modalButton = document.getElementById('wpaf_button_modal_submit');
+
+										document.addEventListener('DOMContentLoaded', function () {
+											updateButton();
+										});
+
+										// Fonction pour mettre à jour le bouton en fonction des valeurs saisies
+										function updateButton() {
+
+											// Mettez à jour le texte et la couleur du bouton en temps réel
+											button.style.backgroundColor = buttonColorInput.value;
+											buttonText.textContent = buttonTextInput.value;
+											buttonText.style.color = buttonTextColorInput.value;
+											buttonIconColor.setAttribute('fill', buttonTextColorInput.value);
+										};
+
+										// Ajoue d'écouteurs d'événement
+										buttonColorInput.addEventListener('input', updateButton);
+										buttonTextInput.addEventListener('input', updateButton);
+										buttonTextColorInput.addEventListener('input', updateButton);
+										modalButton.addEventListener('click', updateButton);
+
+									</script>
+								<?php };?>
+
+								<?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> 
+									<button type="button" id="wpaf_email_submit_result" class="btn mb-3 mt-3">
+											<svg xmlns="http://www.w3.org/2000/svg" id="wpaf_email_svg_result" width="23" height="23" class="bi bi-envelope" viewBox="0 0 16 16">
+												<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+											</svg>
+											<span  id="wpaf_email_submit_text_result"></span>
+									</button>
+									<script>
+										// Sélectionnez les éléments HTML pertinents
+										var button = document.getElementById('wpaf_email_submit_result');
+										var buttonText = document.getElementById('wpaf_email_submit_text_result');
+										var buttonTextColorInput = document.getElementById('wpaf_email_text_color');
+										var buttonColorInput = document.getElementById('wpaf_email_submit_color');
+										var buttonTextInput = document.getElementById('wpaf_email_submit');
+										var buttonIconColor = document.getElementById('wpaf_email_svg_result');
+
+										document.addEventListener('DOMContentLoaded', function () {
+											updateButton();
+										});
+										// Ajoutez un écouteur d'événement "input" aux champs de saisie
+										buttonColorInput.addEventListener('input', updateButton);
+										buttonTextInput.addEventListener('input', updateButton);
+										buttonTextColorInput.addEventListener('input', updateButton);
+
+										// Fonction pour mettre à jour le bouton en fonction des valeurs saisies
+										function updateButton() {
+
+											// Mettez à jour le texte et la couleur du bouton en temps réel
+											button.style.backgroundColor = buttonColorInput.value;
+											buttonText.textContent = buttonTextInput.value;
+											buttonText.style.color = buttonTextColorInput.value;
+											buttonIconColor.setAttribute('fill', buttonTextColorInput.value);
+										}
+
+									</script>
+								<?php };?>
+							</div>
 							<div>
 								<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Finish</button>
 							</div>
@@ -996,14 +1087,14 @@
 			<div class="row mt-2">
 				<!-- Save form button -->
 				<div class="col-auto pe-0">
-					<button id="wpaf_saveForm" style="height:min-content;" class="btn btn-primary btn-sm">
+					<button type="submit" id="wpaf_save_final" style="height:min-content;" class="btn btn-primary btn-sm">
 						Save Changes
 					</button>
 				</div>
 
 				<!-- Restore default form button -->
 				<div class="col-auto">
-					<button id="defaultForm" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> onclick="buttonDefaultMail()"<?php }else{?> onclick="buttonDefaultWhatsapp()" <?php } ?>>
+					<button type="button" id="wpaf_default_final" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> onclick="buttonDefaultMail()"<?php }else{?> onclick="buttonDefaultWhatsapp()" <?php } ?>>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
 							<path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
@@ -1016,6 +1107,13 @@
 			<!-- Default Forms -->
 			<input type="hidden" name="contenuFormulaireMail" value="<?php echo $wp_stored_meta['wpaf_email_form_default'][0];?>" />
 			<input type="hidden" name="contenuFormulaireWhatsapp" value="<?php echo $wp_stored_meta['wpaf_whatsapp_form_default'][0];?>"/>
+			<!-- Default Submit -->
+			<input type="hidden" name="defaultEmailSubmitText" value="<?php echo $wp_stored_meta['wpaf_email_submit_text_default'][0];?>" />
+			<input type="hidden" name="defaultEmailSubmitTextColor" value="<?php echo $wp_stored_meta['wpaf_email_submit_text_color_default'][0];?>"/>
+			<input type="hidden" name="defaultEmailSubmitColor" value="<?php echo $wp_stored_meta['wpaf_email_submit_color_default'][0];?>" />
+			<input type="hidden" name="defaultWhatsappSubmitText" value="<?php echo $wp_stored_meta['wpaf_whatsapp_submit_text_default'][0];?>" />
+			<input type="hidden" name="defaultWhatsappSubmitTextColor" value="<?php echo $wp_stored_meta['wpaf_whatsapp_submit_text_color_default'][0];?>"/>
+			<input type="hidden" name="defaultWhatsappSubmitColor" value="<?php echo $wp_stored_meta['wpaf_whatsapp_submit_color_default'][0];?>" />
 		</div>
 
 		<!-- WhatsApp tab + international number & flag -->
@@ -1029,6 +1127,14 @@
 					<input type="hidden" id="wpaf_whatsapp_tel_international" name="wpaf_whatsapp_tel_international" value="<?php if (!empty($wp_stored_meta['wpaf_whatsapp_tel_international'])) echo esc_attr($wp_stored_meta['wpaf_whatsapp_tel_international'][0]); ?>" />
 				</div>
 
+				<div class="row mt-3">
+					<!-- Save form button -->
+					<div class="col-auto pe-0">
+						<button type="submit" id="wpaf_saveFormWhatsapp" style="height:min-content;" class="btn btn-primary btn-sm">
+							Save Changes
+						</button>
+					</div>
+				</div>
 				<script>
 					var phoneInput = document.querySelector('#wpaf_whatsapp_tel');
 					phoneInput.addEventListener('input', (event) => {
@@ -1037,13 +1143,13 @@
 					event.target.value = sanitizedValue;
 					});
 
-					function initWhatsApp() {
+					function initWhatsapp() {
 						var input = document.querySelector("#wpaf_whatsapp_tel");
 						var countryInput = document.querySelector("#wpaf_whatsapp_country_code");
 						const msg = document.querySelector("#wpaf_whatsapp_message");
 
 						// Error codes returned by getValidationError
-						const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+						const errorMap = ["☓ Invalid number", "☓ Invalid country code", "☓ Too short", "☓ Too long", "☓ Invalid number"];
 
 						window.intlTelInput(input, {
 							initialCountry: '<?php if (!empty($wp_stored_meta['wpaf_whatsapp_flag'])) echo esc_attr($wp_stored_meta['wpaf_whatsapp_flag'][0]); ?>',
@@ -1061,25 +1167,54 @@
 							msg.classList.add("hide");
 						};
 
-						document.getElementById('publish').addEventListener('click', function(e) {
-							if (e.defaultPrevented) {
-								// If the submission button has been disabled, we prevent the submission
-								e.preventDefault();
-							}
-						});
+						if(document.getElementById('wpaf_saveFormWhatsapp')){
 
-						input.addEventListener('keyup', () => {
+							document.getElementById('wpaf_saveFormWhatsapp').addEventListener('click', function(e) {
+								if (e.defaultPrevented) {
+									// If the submission button has been disabled, we prevent the submission
+									e.preventDefault();
+								}
+							});
+						};
+
+						input.addEventListener('input', () => {
 							reset();
 							if (input.value.trim()) {
 								if (iti.isValidNumber()) {
-									document.getElementById('publish').removeAttribute('disabled');
+									if(document.getElementById('wpaf_saveFormWhatsapp') && document.getElementById('wpaf_saveFormWhatsapp').disabled){
+										document.getElementById('wpaf_saveFormWhatsapp').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_saveFormWhatsapp').style.opacity ='1';
+									if(document.getElementById('wpaf_whatsapp_switch') && document.getElementById('wpaf_whatsapp_switch').disabled){
+										document.getElementById('wpaf_whatsapp_switch').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_switch_container').style.opacity ='1';
+									if(document.getElementById('wpaf_contact-tab') && document.getElementById('wpaf_contact-tab').disabled){
+										document.getElementById('wpaf_contact-tab').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_contact-tab').style.opacity ='1';
+									if(document.getElementById('wpaf_home-tab') && document.getElementById('wpaf_home-tab').disabled){
+										document.getElementById('wpaf_home-tab').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_home-tab').style.opacity ='1';
 									msg.innerHTML = "✓ Valid";
+									input.style.borderColor = null;
+									input.style.outlineColor = null;
 									msg.classList.remove("text-danger");
 									msg.classList.add("text-success");
 									msg.classList.remove("hide");
 								} else {
-									document.getElementById('publish').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_saveFormWhatsapp').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_saveFormWhatsapp').style.opacity ='0.4';
+									document.getElementById('wpaf_whatsapp_switch').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_switch_container').style.opacity ='0.4';
+									document.getElementById('wpaf_contact-tab').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_contact-tab').style.opacity ='0.4';
+									document.getElementById('wpaf_home-tab').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_home-tab').style.opacity ='0.4';
 									input.classList.add("error");
+									input.style.borderColor = "red";
+									input.style.outlineColor = "red";
 									const errorCode = iti.getValidationError();
 									msg.innerHTML = errorMap[errorCode];
 									msg.classList.remove("text-success");
@@ -1089,7 +1224,100 @@
 							}
 						});
 
-						var input = document.querySelector("#wpaf_whatsapp_tel");
+						input.addEventListener('click', () => {
+							reset();
+							if (input.value.trim()) {
+								if (iti.isValidNumber()) {
+									if(document.getElementById('wpaf_saveFormWhatsapp') && document.getElementById('wpaf_saveFormWhatsapp').disabled){
+										document.getElementById('wpaf_saveFormWhatsapp').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_saveFormWhatsapp').style.opacity ='1';
+									if(document.getElementById('wpaf_whatsapp_switch') && document.getElementById('wpaf_whatsapp_switch').disabled){
+										document.getElementById('wpaf_whatsapp_switch').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_switch_container').style.opacity ='1';
+									if(document.getElementById('wpaf_contact-tab') && document.getElementById('wpaf_contact-tab').disabled){
+										document.getElementById('wpaf_contact-tab').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_contact-tab').style.opacity ='1';
+									if(document.getElementById('wpaf_home-tab') && document.getElementById('wpaf_home-tab').disabled){
+										document.getElementById('wpaf_home-tab').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_home-tab').style.opacity ='1';
+									msg.innerHTML = "✓ Valid";
+									input.style.borderColor = null;
+									input.style.outlineColor = null;
+									msg.classList.remove("text-danger");
+									msg.classList.add("text-success");
+									msg.classList.remove("hide");
+								} else {
+									document.getElementById('wpaf_saveFormWhatsapp').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_saveFormWhatsapp').style.opacity ='0.4';
+									document.getElementById('wpaf_whatsapp_switch').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_switch_container').style.opacity ='0.4';
+									document.getElementById('wpaf_contact-tab').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_contact-tab').style.opacity ='0.4';
+									document.getElementById('wpaf_home-tab').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_home-tab').style.opacity ='0.4';
+									input.classList.add("error");
+									input.style.borderColor = "red";
+									input.style.outlineColor = "red";
+									const errorCode = iti.getValidationError();
+									msg.innerHTML = errorMap[errorCode];
+									msg.classList.remove("text-success");
+									msg.classList.add("text-danger");
+									msg.classList.remove("hide");
+								}
+							}
+						});
+
+						document.querySelector('#wpaf_profile-tab').addEventListener('click', () => {
+							reset();
+							if (input.value.trim()) {
+								if (iti.isValidNumber()) {
+									if(document.getElementById('wpaf_saveFormWhatsapp') && document.getElementById('wpaf_saveFormWhatsapp').disabled){
+										document.getElementById('wpaf_saveFormWhatsapp').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_saveFormWhatsapp').style.opacity ='1';
+									if(document.getElementById('wpaf_whatsapp_switch') && document.getElementById('wpaf_whatsapp_switch').disabled){
+										document.getElementById('wpaf_whatsapp_switch').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_switch_container').style.opacity ='1';
+									if(document.getElementById('wpaf_contact-tab') && document.getElementById('wpaf_contact-tab').disabled){
+										document.getElementById('wpaf_contact-tab').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_contact-tab').style.opacity ='1';
+									if(document.getElementById('wpaf_home-tab') && document.getElementById('wpaf_home-tab').disabled){
+										document.getElementById('wpaf_home-tab').removeAttribute('disabled');
+									};
+									document.getElementById('wpaf_home-tab').style.opacity ='1';
+									msg.innerHTML = "✓ Valid";
+									input.style.borderColor = null;
+									input.style.outlineColor = null;
+									msg.classList.remove("text-danger");
+									msg.classList.add("text-success");
+									msg.classList.remove("hide");
+								} else {
+									document.getElementById('wpaf_saveFormWhatsapp').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_saveFormWhatsapp').style.opacity ='0.4';
+									document.getElementById('wpaf_whatsapp_switch').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_switch_container').style.opacity ='0.4';
+									document.getElementById('wpaf_contact-tab').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_contact-tab').style.opacity ='0.4';
+									document.getElementById('wpaf_home-tab').setAttribute('disabled', 'disabled');
+									document.getElementById('wpaf_home-tab').style.opacity ='0.4';
+									input.classList.add("error");
+									input.style.borderColor = "red";
+									input.style.outlineColor = "red";
+									const errorCode = iti.getValidationError();
+									msg.innerHTML = errorMap[errorCode];
+									msg.classList.remove("text-success");
+									msg.classList.add("text-danger");
+									msg.classList.remove("hide");
+								}
+							}
+						});
+
 						var iti = window.intlTelInputGlobals.getInstance(input);
 
 						// Save the selected flag value
@@ -1104,34 +1332,16 @@
 					}
 
 					jQuery(document).ready(function() {
-						initWhatsApp();
+							initWhatsapp();
 					});
 				</script>
-				<div class="row mt-2">
-					<!-- Save form button -->
-					<div class="col-auto pe-0">
-						<button id="wpaf_saveForm" style="height:min-content;" class="btn btn-primary btn-sm">
-							Save Changes
-						</button>
-					</div>
-
-					<!-- Restore default form button -->
-					<div class="col-auto">
-						<button id="defaultForm" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> onclick="buttonDefaultMail()"<?php }else{?> onclick="buttonDefaultWhatsapp()" <?php } ?>>
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
-								<path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
-								<path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
-							</svg> Restore default
-						</button>
-					</div>
-				</div>	
 			</div>
 			
 		<?php }else{?>
 		<!-- Mail construction -->
 			<div id="wpaf_email" class="tab-pane fade mt-3 container" role="tabpanel">
 				<div class="row">
-					<div class="col-xl-8 col-lg-8 col-md-8 col-xs-12 col-sm-12">
+					<div class="col-xl-10 col-lg-10 col-md-10 col-xs-12 col-sm-12">
 							<div class="alert alert-primary d-flex align-items-center text-primary" role="alert" style="margin-right:auto;">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
 									<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
@@ -1158,8 +1368,10 @@
 					<textarea cols="100" rows="18" name="wpaf_email_admin_content" id="wpaf_email_admin_content" class="large-text code"><?php if (! empty ($wp_stored_meta['wpaf_email_admin_content'])) echo esc_attr ( $wp_stored_meta['wpaf_email_admin_content'][0] ); ?></textarea>
 				</div>
 				
-				<label for="wpaf_user_email_switch"><h2>Enable the autoresponder:</h2></label>
-				<input type="checkbox" id="wpaf_user_email_switch" name="wpaf_user_email_switch" <?php if($wp_stored_meta['wpaf_user_email_switch'][0] == 1){?>checked<?php };?>/>
+				<div class="ms-auto d-flex align-items-center">
+					<input  type="checkbox" id="wpaf_user_email_switch" name="wpaf_user_email_switch" class="me-0 mt-1"<?php if($wp_stored_meta['wpaf_user_email_switch'][0] == 1){?>checked<?php };?>/>
+					<label  for="wpaf_user_email_switch" class="ms-0 mt-1"><h2>Enable the autoresponder</h2></label>
+				</div>
 
 				<div class="form-group" id="wpaf_user_email">
 					<label for="wpaf_email_user_to"><strong>To</strong></label><br>
@@ -1194,20 +1406,31 @@
 				<div class="row mt-2">
 					<!-- Save form button -->
 					<div class="col-auto pe-0">
-						<button id="wpaf_saveForm" style="height:min-content;" class="btn btn-primary btn-sm">
+						<button type="submit" id="wpaf_save_email" style="height:min-content;" class="btn btn-primary btn-sm">
 							Save Changes
 						</button>
 					</div>
 
 					<!-- Restore default form button -->
 					<div class="col-auto">
-						<button id="defaultForm" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> onclick="buttonDefaultMail()"<?php }else{?> onclick="buttonDefaultWhatsapp()" <?php } ?>>
+						<button type="button" id="wpaf_default_email" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> onclick="buttonDefaultEmailSending()"<?php }?>>
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
 								<path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
 								<path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
 							</svg> Restore default
 						</button>
 					</div>
+
+					<!-- Default values -->
+					<input type="hidden" name="defaultEmailAdminTo" value="<?php echo $wp_stored_meta['wpaf_email_admin_to_default'][0];?>" />
+					<input type="hidden" name="defaultEmailAdminFrom" value="<?php echo $wp_stored_meta['wpaf_email_admin_from_default'][0];?>"/>
+					<input type="hidden" name="defaultEmailAdminSubject" value="<?php echo $wp_stored_meta['wpaf_email_admin_subject_default'][0];?>" />
+					<input type="hidden" name="defaultEmailAdminContent" value="<?php echo $wp_stored_meta['wpaf_email_admin_content_default'][0];?>"/>
+
+					<input type="hidden" name="defaultEmailUserTo" value="<?php echo $wp_stored_meta['wpaf_email_user_to_default'][0];?>" />
+					<input type="hidden" name="defaultEmailUserFrom" value="<?php echo $wp_stored_meta['wpaf_email_user_from_default'][0];?>"/>
+					<input type="hidden" name="defaultEmailUserSubject" value="<?php echo $wp_stored_meta['wpaf_email_user_subject_default'][0];?>" />
+					<input type="hidden" name="defaultEmailUserContent" value="<?php echo $wp_stored_meta['wpaf_email_user_content_default'][0];?>"/>
 				</div>
 			</div>
 
@@ -1238,20 +1461,26 @@
 			<div class="row mt-2">
 				<!-- Save form button -->
 				<div class="col-auto pe-0">
-					<button id="wpaf_saveForm" style="height:min-content;" class="btn btn-primary btn-sm">
+					<button type="submit" id="wpaf_save_messages" style="height:min-content;" class="btn btn-primary btn-sm">
 						Save Changes
 					</button>
 				</div>
 
 				<!-- Restore default form button -->
 				<div class="col-auto">
-					<button id="defaultForm" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> onclick="buttonDefaultMail()"<?php }else{?> onclick="buttonDefaultWhatsapp()" <?php } ?>>
+					<button type="button" id="wpaf_default_messages" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> onclick="buttonDefaultEmailMessages()"<?php }else{?> onclick="buttonDefaultWhatsappMessages()" <?php } ?>>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
 							<path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
 						</svg> Restore default
 					</button>
 				</div>
+
+				<!-- Default Forms -->
+				<input type="hidden" name="buttonDefaultEmailSuccess" value="<?php echo $wp_stored_meta['wpaf_email_success_default'][0];?>" />
+				<input type="hidden" name="buttonDefaultEmailError" value="<?php echo $wp_stored_meta['wpaf_email_error_default'][0];?>"/>
+				<input type="hidden" name="buttonDefaultWhatsappSuccess" value="<?php echo $wp_stored_meta['wpaf_whatsapp_success_default'][0];?>" />
+				<input type="hidden" name="buttonDefaultWhatsappError" value="<?php echo $wp_stored_meta['wpaf_whatsapp_error_default'][0];?>"/>
 			</div>
 		</div>
 	</div>
