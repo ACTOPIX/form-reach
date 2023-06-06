@@ -1,6 +1,8 @@
 <?
 //Custom Post type
 function cw_post_type_news() {
+	$wpaf_logo = sprintf('<img src="https://cdn.discordapp.com/attachments/170208489858269184/1114351761331847188/wpaf_logo_hd.png" alt="Logo" style="width: 150px; height: auto;">');
+
 	$labels = array(
 	'name' => _x( 'Action Form', 'plural'),
 	'singular_name' => _x( 'singular_name', 'singular'),
@@ -9,7 +11,7 @@ function cw_post_type_news() {
 	'add_new' => _x('Add New', 'add new'),
 	'add_new_item' => __('New Form'),
 	'new_item' => __('new_item'),
-	'edit_item' => __('Form edition'),
+	'edit_item' => ('Form Edition'.$wpaf_logo),
 	'view_item' => __('view_item'),
 	'search_items' => __('Search'),
 	'not_found' => __('The form you are looking for does not exist'),
@@ -81,10 +83,55 @@ function wpaf_type_column( $column, $post_id ) {
   }
 }
 
+add_action('admin_notices', 'wpaf_missing_email');
+
+function wpaf_missing_email() {
+?>
+	<script>
+
+		function validateEmails(emails) {
+			var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			var emailList = emails.split(",");
+			for (var i = 0; i < emailList.length; i++) {
+			var email = emailList[i].trim();
+			if (!emailPattern.test(email)) {
+				return false;
+			}
+			}
+			return true;
+		};
+
+		document.addEventListener("DOMContentLoaded", function() {
+			var input = document.getElementById('wpaf_email_admin_to');
+			var notice = document.getElementById('notification');
+			var isValidEmails = validateEmails(input.value);
+			
+			if (input.value === "" || !isValidEmails) {
+				if (!notice) {
+					notice = document.createElement('div');
+					notice.id = 'notification';
+					notice.className = 'notice notice-error';
+					notice.innerHTML = "<p>Please enter a valid email address in the 'Email' tab.</p>";
+					document.body.appendChild(notice);
+					input.placeholder = 'You must enter a valid email address';
+					input.classList.add('placeholder-error');
+				};
+			} else {
+			if (notice) {
+				notice.remove();
+				input.placeholder = '';
+				input.classList.remove('placeholder-error');
+			}
+			};
+		});
+	</script>
+
+<?php
+}
 
 /* Decreases the columns width */
 function my_admin_footer_function() {
-    echo '<style> @media(min-width:768px){ #cb{width:3%;} .column-type{width:4%;} .column-title{width:30%;} .column-author{width:21%;} .column-shortcode{width:21%;} .column-date{width:21%;}}</style>';
+    echo '<style> @media(min-width:783px){ #cb{width:3%;} .column-type{width:4%;} .column-title{width:30%;} .column-author{width:21%;} .column-shortcode{width:21%;} .column-date{width:21%;}} @media(max-width:782px){.column-type{display: none;} td.type.column-type svg {padding-left: 2.75em;} </style>';
 }
 add_action('admin_footer', 'my_admin_footer_function');
 

@@ -1,26 +1,18 @@
 <?php
-/**
- * Plugin Name: Action Form
- * Description: Contact form - WhatsApp & Mail
- * Version: 1.0
- * Author: Actopix
- * Author URI: https://actopix.com/
- * License: Licence du plugin (ex : GPL2)
- * License URI: URL de la licence
- * Text Domain: Domaine de traduction du plugin
- *
- * @package Action Form
+/*
+	Plugin Name: Form Reach
+	Description: Custom Contact Form Builder to WhatsApp, Email, and more !
+	Version: beta
+ 	Author: Form Reach
+	Author URI: https://formreach.com/
+	License: Licence du plugin (ex : GPL2)
+	License URI: URL de la licence
+	Text Domain: Domaine de traduction du plugin
+ 
+  @package FormReach
 */
 
-// Adding a 'View more details' link to the list of metadata displayed below the plugin description
-function action_form_row_meta( $links, $file ) {
-    if ( plugin_basename( __FILE__ ) === $file ) {
-        $links[] = '<a href="' . esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=mon-plugin&TB_iframe=true&width=600&height=550' ) ) . '" class="thickbox" aria-label="' . esc_attr__( 'Details of Action Form', 'mon-plugin' ) . '">' . esc_html__( 'View more details', 'mon-plugin' ) . '</a>';
-    }
 
-    return $links;
-}
-add_filter( 'plugin_row_meta', 'action_form_row_meta', 10, 2 );
 
 // Adding a 'Settings' link to the list of metadata displayed below the plugin description
 function action_form_settings_link($links) {

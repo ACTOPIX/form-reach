@@ -47,7 +47,7 @@
                               $postID = sanitize_text_field($_POST['wpaf_container_post']);
                               $wp_stored_meta_validation_mail = get_post_meta($postID);
                               $contenuAdministrateur = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_content'][0] ));
-
+                              $toUser = esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_user_to'][0]);
 
                               // Fetching and filtering user data + defining content
                               $contenuFormPost ="";
@@ -64,7 +64,10 @@
                               }
                             
                               if ($keyFiltered) {
-                                $contenuReplace = str_replace($keyShortcode,$valShortcode, $contenuAdministrateur);
+                                   // Admin Content
+                                   $contenuReplace = str_replace($keyShortcode,$valShortcode, $contenuAdministrateur);
+                                   // User To
+                                   $toUserKey = str_replace($keyShortcode,$valShortcode, $toUser);
                               };
 
                               if ( ($wp_stored_meta_validation_mail['wpaf_user_email_switch'][0]) == 0 ){
@@ -82,7 +85,6 @@
                               }else {
                                    // Email adresses 
                                         $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_to'][0]);
-                                        $toUser = esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_user_to'][0]);
                                    // Subjects
                                         $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_subject'][0] ));
                                         $subjectUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_user_subject'][0] ));
@@ -91,12 +93,15 @@
                                         $headerAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_from'][0] ));
                                         $headerUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_user_from'][0] ));
                                    
-                                   //Content
+                                   // User Content
                                         $contentUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_user_content'][0] ));
 
                                    // Mail sending
-                                        $mailAdmin = wp_mail($toAdmin, $subjectAdmin, $contenuReplace, $headerAdmin);
-                                        $mailUser = wp_mail($toUser, $subjectUser, $contentUser, $headerUser);
+                                        $toAdminSeveral = explode(',', $toAdmin);
+                                        $toAdminSeveral = array_map('trim', $toAdminSeveral);
+
+                                        $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
+                                        $mailUser = wp_mail($toUserKey, $subjectUser, $contentUser, $headerUser);
                               };
                             
                               // Saving to the database
@@ -137,25 +142,45 @@
                     }
                     
                     if ($keyFiltered) {
-                        $contenuReplace = str_replace($keyShortcode,$valShortcode, $contenuAdministrateur);
+                         // Admin Content
+                         $contenuReplace = str_replace($keyShortcode,$valShortcode, $contenuAdministrateur);
+                         // User To
+                         $toUserKey = str_replace($keyShortcode,$valShortcode, $toUser);
                     };
 
-                    // Email adresses 
-                    $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_to'][0]);
-                    // $toUser =
+                    if ( ($wp_stored_meta_validation_mail['wpaf_user_email_switch'][0]) == 0 ){
+                         // Email adresses 
+                              $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_to'][0]);
+                         
+                         // Subjects
+                              $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_subject'][0] ));
+                         
+                         // Headers
+                              $headerAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_from'][0] ));
+                         
+                         // Mail sending
+                              $mailAdmin = wp_mail($toAdmin, $subjectAdmin, $contenuReplace, $headerAdmin);
+                    }else {
+                         // Email adresses 
+                              $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_to'][0]);
+                         // Subjects
+                              $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_subject'][0] ));
+                              $subjectUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_user_subject'][0] ));
 
-                    // Subjects
-                    $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_subject'][0] ));
-                    // $subjectUser = "Confirmation";   
+                         // Headers
+                              $headerAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_from'][0] ));
+                              $headerUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_user_from'][0] ));
+                         
+                         // User Content
+                              $contentUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_user_content'][0] ));
 
-                    // Headers
-                    $headerAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['wpaf_email_admin_from'][0] ));
-                    // $headerUser = "From: Wordpress@wp-action-form.actopix.com";
+                         // Mail sending
+                              $toAdminSeveral = explode(',', $toAdmin);
+                              $toAdminSeveral = array_map('trim', $toAdminSeveral);
 
-                    // Mail sending
-                    $mailAdmin = wp_mail($toAdmin, $subjectAdmin, $contenuReplace, $headerAdmin);
-                    // $mailUser = wp_mail($toUser, $subjectUser, $contentUser, $headerUser);
-
+                              $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
+                              $mailUser = wp_mail($toUserKey, $subjectUser, $contentUser, $headerUser);
+                    };
                     
                     // Sending to the database
                     global $wpdp;

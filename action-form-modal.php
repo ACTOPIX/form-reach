@@ -55,33 +55,49 @@
 					
 				});
 			</script>
+			
 			<!-- Adds animation to email tab when the email is missing -->
 			<script>
-			document.addEventListener('DOMContentLoaded', function() {
-				var inputEmail = document.getElementById('wpaf_email_admin_to');
-				var element = document.getElementById('wpaf_profile-tab');
-				if (inputEmail){
-					if (inputEmail.value === '') {
+				function validateEmails(emails) {
+					var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+					var emailList = emails.split(",");
+					for (var i = 0; i < emailList.length; i++) {
+					var email = emailList[i].trim();
+					if (!emailPattern.test(email)) {
+						return false;
+					}
+					}
+					return true;
+				}
+
+				document.addEventListener('DOMContentLoaded', function() {
+					var inputEmail = document.getElementById('wpaf_email_admin_to');
+					var element = document.getElementById('wpaf_profile-tab');
+					if (inputEmail) {
+					var isValidEmails = validateEmails(inputEmail.value);
+					if (inputEmail.value === '' || !isValidEmails) {
 						element.classList.add('missing-information');
-						inputEmail.style.border='2px solid red';
-					}else {
+						inputEmail.style.border = '2px solid red';
+					} else {
 						element.classList.remove('missing-information');
-						inputEmail.style.border='1px solid grey';
-					};
+						inputEmail.style.border = '1px solid grey';
+					}
 
 					inputEmail.addEventListener('input', function() {
-						if (inputEmail.value !== '') {
-							element.classList.remove('missing-information');
-							inputEmail.style.border='1px solid grey';
-						}else {
-							element.classList.add('missing-information');
-							inputEmail.style.border='2px solid red';
+						isValidEmails = validateEmails(inputEmail.value);
+						if (inputEmail.value === '' || !isValidEmails) {
+						element.classList.add('missing-information');
+						inputEmail.style.border = '2px solid red';
+						} else {
+						element.classList.remove('missing-information');
+						inputEmail.style.border = '1px solid grey';
 						}
 					});
-				}
-				
-			});
+					}
+				});
 			</script>
+
+
 
 		<!-- Creation of containers for the content associated with tabs -->
 		<div id="wpaf_formulaire" class="tab-pane fade show active mt-3 container" role="tabpanel">
@@ -987,6 +1003,78 @@
 															});
 														</script>
 													<?php }?>
+													<div>
+														<?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 1 ) { ?>
+															<div class="d-block mb-1 mt-3"><strong>Button preview:</strong></div>
+															<button type="button" id="wpaf_whatsapp_submit_result" class="btn">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" id="wpaf_whatsapp_svg_result" class="bi bi-whatsapp" viewBox="0 0 16 16">
+																		<path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+																	</svg>
+																	<span id="wpaf_whatsapp_submit_text_result"></span>
+															</button>
+															<script>
+																var button = document.getElementById('wpaf_whatsapp_submit_result');
+																var buttonText = document.getElementById('wpaf_whatsapp_submit_text_result');
+																var buttonTextColorInput = document.getElementById('wpaf_whatsapp_text_color');
+																var buttonColorInput = document.getElementById('wpaf_whatsapp_submit_color');
+																var buttonTextInput = document.getElementById('wpaf_whatsapp_submit');
+																var buttonIconColor = document.getElementById('wpaf_whatsapp_svg_result');
+																var modalButton = document.getElementById('wpaf_button_modal_submit');
+
+																document.addEventListener('DOMContentLoaded', function () {
+																	updateButton();
+																});
+
+																function updateButton() {
+
+																	button.style.backgroundColor = buttonColorInput.value;
+																	buttonText.textContent = buttonTextInput.value;
+																	buttonText.style.color = buttonTextColorInput.value;
+																	buttonIconColor.setAttribute('fill', buttonTextColorInput.value);
+																};
+
+																buttonColorInput.addEventListener('input', updateButton);
+																buttonTextInput.addEventListener('input', updateButton);
+																buttonTextColorInput.addEventListener('input', updateButton);
+																modalButton.addEventListener('click', updateButton);
+
+															</script>
+														<?php };?>
+
+														<?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?>
+															<div class="d-block mb-1 mt-3"><strong>Button preview:</strong></div>
+															<button type="button" id="wpaf_email_submit_result" class="btn">
+																	<svg xmlns="http://www.w3.org/2000/svg" id="wpaf_email_svg_result" width="23" height="23" class="bi bi-envelope" viewBox="0 0 16 16">
+																		<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+																	</svg>
+																	<span  id="wpaf_email_submit_text_result"></span>
+															</button>
+															<script>
+																var button = document.getElementById('wpaf_email_submit_result');
+																var buttonText = document.getElementById('wpaf_email_submit_text_result');
+																var buttonTextColorInput = document.getElementById('wpaf_email_text_color');
+																var buttonColorInput = document.getElementById('wpaf_email_submit_color');
+																var buttonTextInput = document.getElementById('wpaf_email_submit');
+																var buttonIconColor = document.getElementById('wpaf_email_svg_result');
+
+																document.addEventListener('DOMContentLoaded', function () {
+																	updateButton();
+																});
+																buttonColorInput.addEventListener('input', updateButton);
+																buttonTextInput.addEventListener('input', updateButton);
+																buttonTextColorInput.addEventListener('input', updateButton);
+
+																function updateButton() {
+
+																	button.style.backgroundColor = buttonColorInput.value;
+																	buttonText.textContent = buttonTextInput.value;
+																	buttonText.style.color = buttonTextColorInput.value;
+																	buttonIconColor.setAttribute('fill', buttonTextColorInput.value);
+																}
+
+															</script>
+														<?php };?>
+													</div>
 												</div>
 											</td>
 										</tr>
@@ -995,84 +1083,6 @@
 							</div>
 						</div>
 						<div class="modal-footer position-relative">
-							<div class="position-absolute start-0 ms-3">
-								<?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 1 ) { ?> 
-									<button type="button" id="wpaf_whatsapp_submit_result" class="btn mb-3 mt-3">
-											<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" id="wpaf_whatsapp_svg_result" class="bi bi-whatsapp" viewBox="0 0 16 16">
-												<path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-											</svg>
-											<span id="wpaf_whatsapp_submit_text_result"></span>
-									</button>
-									<script>
-										// Sélectionnez les éléments HTML pertinents
-										var button = document.getElementById('wpaf_whatsapp_submit_result');
-										var buttonText = document.getElementById('wpaf_whatsapp_submit_text_result');
-										var buttonTextColorInput = document.getElementById('wpaf_whatsapp_text_color');
-										var buttonColorInput = document.getElementById('wpaf_whatsapp_submit_color');
-										var buttonTextInput = document.getElementById('wpaf_whatsapp_submit');
-										var buttonIconColor = document.getElementById('wpaf_whatsapp_svg_result');
-										var modalButton = document.getElementById('wpaf_button_modal_submit');
-
-										document.addEventListener('DOMContentLoaded', function () {
-											updateButton();
-										});
-
-										// Fonction pour mettre à jour le bouton en fonction des valeurs saisies
-										function updateButton() {
-
-											// Mettez à jour le texte et la couleur du bouton en temps réel
-											button.style.backgroundColor = buttonColorInput.value;
-											buttonText.textContent = buttonTextInput.value;
-											buttonText.style.color = buttonTextColorInput.value;
-											buttonIconColor.setAttribute('fill', buttonTextColorInput.value);
-										};
-
-										// Ajoue d'écouteurs d'événement
-										buttonColorInput.addEventListener('input', updateButton);
-										buttonTextInput.addEventListener('input', updateButton);
-										buttonTextColorInput.addEventListener('input', updateButton);
-										modalButton.addEventListener('click', updateButton);
-
-									</script>
-								<?php };?>
-
-								<?php if( ($wp_stored_meta['wpaf_whatsapp_switch'][0]) == 0 ) { ?> 
-									<button type="button" id="wpaf_email_submit_result" class="btn mb-3 mt-3">
-											<svg xmlns="http://www.w3.org/2000/svg" id="wpaf_email_svg_result" width="23" height="23" class="bi bi-envelope" viewBox="0 0 16 16">
-												<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
-											</svg>
-											<span  id="wpaf_email_submit_text_result"></span>
-									</button>
-									<script>
-										// Sélectionnez les éléments HTML pertinents
-										var button = document.getElementById('wpaf_email_submit_result');
-										var buttonText = document.getElementById('wpaf_email_submit_text_result');
-										var buttonTextColorInput = document.getElementById('wpaf_email_text_color');
-										var buttonColorInput = document.getElementById('wpaf_email_submit_color');
-										var buttonTextInput = document.getElementById('wpaf_email_submit');
-										var buttonIconColor = document.getElementById('wpaf_email_svg_result');
-
-										document.addEventListener('DOMContentLoaded', function () {
-											updateButton();
-										});
-										// Ajoutez un écouteur d'événement "input" aux champs de saisie
-										buttonColorInput.addEventListener('input', updateButton);
-										buttonTextInput.addEventListener('input', updateButton);
-										buttonTextColorInput.addEventListener('input', updateButton);
-
-										// Fonction pour mettre à jour le bouton en fonction des valeurs saisies
-										function updateButton() {
-
-											// Mettez à jour le texte et la couleur du bouton en temps réel
-											button.style.backgroundColor = buttonColorInput.value;
-											buttonText.textContent = buttonTextInput.value;
-											buttonText.style.color = buttonTextColorInput.value;
-											buttonIconColor.setAttribute('fill', buttonTextColorInput.value);
-										}
-
-									</script>
-								<?php };?>
-							</div>
 							<div>
 								<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Finish</button>
 							</div>
@@ -1347,7 +1357,7 @@
 									<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
 								</svg>
 								<div class="ms-2">
-									To retrieve the user's information, you need to use the <strong>names</strong> you assigned to your inputs and enclose them in brackets.</br> If you named your inputs 'email' and 'message,' you need to write <strong>[email]</strong> and <strong>[message]</strong>.
+									If you named your inputs 'email' and 'message,' you need to write <strong>[email]</strong> and <strong>[message]</strong> to retrieve the user's information.</br>You can also send emails to multiple addresses by separating them with a <strong>comma</strong>.
 								</div>
 							</div>
 					</div>
@@ -1386,6 +1396,7 @@
 					<label for="wpaf_email_user_content"><strong>Message content</strong></label>
 					<textarea cols="100" rows="18" name="wpaf_email_user_content" id="wpaf_email_user_content" class="large-text code"><?php if (! empty ($wp_stored_meta['wpaf_email_user_content'])) echo esc_attr ( $wp_stored_meta['wpaf_email_user_content'][0] ); ?></textarea>
 				</div>
+
 				<script>
 					const checkbox = document.getElementById("wpaf_user_email_switch");
 					var maDiv = document.getElementById("wpaf_user_email");
