@@ -1,0 +1,296 @@
+/* Changing the font in the textareas */
+.code,
+code {
+    font-family: system-ui;
+    direction: ltr;
+    unicode-bidi: embed;
+}
+
+/* Style of the toggle button */
+.slider-input {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    user-select: none;
+}
+
+.slider-label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 50px;
+    height: 25.5px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+    user-select: none;
+    float: left;
+}
+
+.slider-label:after {
+    content: '';
+    position: absolute;
+    top: 2.562px;
+    left: 2.5px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+.slider-input:checked+.slider-label {
+    background: #2271b1;
+}
+
+.slider-input:checked+.slider-label:after {
+    left: calc(100% - 2.5px);
+    transform: translateX(-100%);
+}
+
+.slider-label:active:after {
+    width: 32.5px;
+}
+
+/* Style of the toggle button to switch WhatsApp form */
+.slider-input-whatsapp {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    user-select: none;
+}
+
+.slider-label-whatsapp {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 50px;
+    height: 25.5px;
+    background: #2271b1;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+    user-select: none;
+}
+
+.slider-label-whatsapp:after {
+    content: '';
+    position: absolute;
+    top: 2.562px;
+    left: 2.5px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 22.5px;
+    transition: 0.3s;
+}
+
+.slider-input-whatsapp:checked+.slider-label-whatsapp {
+    background: #25d366;
+}
+
+.slider-input-whatsapp:checked+.slider-label-whatsapp:after {
+    left: calc(100% - 2.5px);
+    transform: translateX(-100%);
+}
+
+.slider-label-whatsapp:active:after {
+    width: 32.5px;
+}
+
+/* Animation for missing information */
+.missing-information {
+    -webkit-animation-name: bounceIn;
+    animation-name: bounceIn;
+    -webkit-animation-duration: .75s;
+    animation-duration: .75s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@-webkit-keyframes bounceIn {
+
+    0%,
+    20%,
+    40%,
+    60%,
+    80%,
+    100% {
+        -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    20% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1);
+    }
+
+    40% {
+        -webkit-transform: scale3d(.9, .9, .9);
+        transform: scale3d(.9, .9, .9);
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03, 1.03, 1.03);
+        transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    80% {
+        -webkit-transform: scale3d(.97, .97, .97);
+        transform: scale3d(.97, .97, .97);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@keyframes bounceIn {
+
+    0%,
+    20%,
+    40%,
+    60%,
+    80%,
+    100% {
+        -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    20% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1);
+    }
+
+    40% {
+        -webkit-transform: scale3d(.9, .9, .9);
+        transform: scale3d(.9, .9, .9);
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03, 1.03, 1.03);
+        transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    80% {
+        -webkit-transform: scale3d(.97, .97, .97);
+        transform: scale3d(.97, .97, .97);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+/* Input type color enhanced */
+.color {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 3rem;
+    height: 2rem;
+    background-color: transparent;
+    border: none !important;
+    outline: none;
+    cursor: pointer;
+}
+
+.color::-webkit-color-swatch {
+    border-radius: 0.3rem;
+    border: none;
+    outline: none;
+    border: 0.01rem solid #888888;
+}
+
+.color::-moz-color-swatch {
+    border-radius: 0.3rem;
+    border: none;
+    outline: none;
+    border: 0.01rem solid #888888;
+}
+
+/* Displays as one column*/
+.post-type-form_reach #poststuff #post-body.columns-2 {
+    margin-right: 0;
+}
+
+/* Placeholder error */
+.placeholder-error::-webkit-input-placeholder {
+    color: rgba(255, 0, 0, 0.563);
+}
+
+/* Flyout Menu */
+.flyout-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-image: url("../image/form-reach-logo.png");
+    background-size: cover;
+    background-position: center;
+    background-size: 85%;
+    border: 3px solid #c5b863;
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.flyout-menu {
+    position: fixed;
+    bottom: 75px;
+    right: 27px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.flyout-menu a {
+    display: block;
+    right: 30px;
+    margin-bottom: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    background-color: #242422;
+}
+
+.flyout-menu i {
+    font-size: 24px;
+    color: #c5b863;
+    text-align: center;
+    line-height: 40px;
+}
+
+/* Icon in the Wordpress Menu
+
+form-reach-admin.php :
+function add_custom_menu_style()
+
+*/
+
+/* Wordpress blue-color */
+.wp-blue {
+background-color: #2271b1 !important;
+}

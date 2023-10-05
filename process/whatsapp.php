@@ -14,10 +14,10 @@
           }else{
                // The token verification succeeded
 
-               if(esc_attr(get_option('wpaf_recaptcha_switch')) === '1') {                     
+               if(esc_attr(get_option('fr_recaptcha_switch')) === '1') {                     
                // reCAPTCHA V3 protection activated, verifying server response
 
-                    $captchaSecretKey = esc_attr( get_option('wpaf_key_secret') );
+                    $captchaSecretKey = esc_attr( get_option('fr_key_secret') );
 
                     if (isset($_POST['g-recaptcha-response'])) {
 
@@ -45,13 +45,13 @@
                          // The reCAPTCHA V3 verification has succeeded, processing the form data
 
                               // Retrieval and initialization of the concerned ID
-                              $postID = sanitize_text_field($_POST['wpaf_container_post']);
+                              $postID = sanitize_text_field($_POST['fr_container_post']);
                               $wp_stored_meta_whatsapp = get_post_meta($postID);
 
                               // Retrieval and filtering of user data
                               $content ="";
                               foreach ($_POST as $key=>$val) {
-                                   if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "wpaf_mail_submit" ||$key == "wpaf_whatsapp_submit" || $key == "wpaf_container_post")){
+                                   if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "fr_mail_submit" ||$key == "fr_whatsapp_submit" || $key == "fr_container_post")){
                                         $valFiltered = str_replace("\\","",$val);
                                         $keyFiltered = str_replace("\\","",$key);
                                         $content .= "$keyFiltered : $valFiltered <br/>";
@@ -74,7 +74,7 @@
                               $filteredContent = urlencode(str_replace("<br/>", "\n", $content));
 
                               // WhatsApp Administrator account
-                              $tel = esc_attr ( $wp_stored_meta_whatsapp['wpaf_whatsapp_tel_international'][0] );
+                              $tel = esc_attr ( $wp_stored_meta_whatsapp['fr_whatsapp_tel_international'][0] );
 
                               // Message that will be sent
                               $link = "https://api.whatsapp.com/send/?phone=" . $tel . "&text=" . $filteredContent;
@@ -87,13 +87,13 @@
                // reCAPTCHA V3 protection disabled, processing the form data without verification
 
                     // Retrieval and initialization of the concerned ID
-                    $postID = sanitize_text_field($_POST['wpaf_container_post']);
+                    $postID = sanitize_text_field($_POST['fr_container_post']);
                     $wp_stored_meta_whatsapp = get_post_meta($postID);
 
                     // Retrieval and filtering of user data
                     $content ="";
                     foreach ($_POST as $key=>$val) {
-                         if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "wpaf_mail_submit" ||$key == "wpaf_whatsapp_submit" || $key == "wpaf_container_post")){
+                         if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "fr_mail_submit" ||$key == "fr_whatsapp_submit" || $key == "fr_container_post")){
                               $valFiltered = str_replace("\\","",$val);
                               $keyFiltered = str_replace("\\","",$key);
                               $content .= "$keyFiltered : $valFiltered <br/>";
@@ -116,7 +116,7 @@
                     $filteredContent = encodeURIComponent(str_replace("<br/>", "\n", $content));
 
                     // WhatsApp Administrator account
-                    $tel = encodeURIComponent(esc_attr ( $wp_stored_meta_whatsapp['wpaf_whatsapp_tel_international'][0] ));
+                    $tel = encodeURIComponent(esc_attr ( $wp_stored_meta_whatsapp['fr_whatsapp_tel_international'][0] ));
 
                     // Message that will be sent
                     $link = "https://api.whatsapp.com/send/?phone=" . $tel . "&text=" . $filteredContent;
