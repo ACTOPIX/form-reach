@@ -5,8 +5,8 @@
 	Version: beta
  	Author: Form Reach
 	Author URI: https://form-reach.com/
-	License: Licence du plugin (ex : GPL2)
-	License URI: URL de la licence
+	License: GPLv3
+	License URI: https://www.gnu.org/licenses/gpl-3.0.html
 	Text Domain: Domaine de traduction du plugin
  
   @package FormReach
@@ -110,10 +110,8 @@ function form_reach_include($id) {
 	ob_start();
 
 	// Loading CSS files of Bootstrap
-	wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css');
+	wp_enqueue_style('bootstrap-css', plugins_url('style/style.css', __FILE__));
 
-	// Loading JavaScript files of Bootstrap
-	wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js', array('jquery'), '5.2.2', true);
 	
 	?>	
 		<?php if(esc_attr(get_option('fr_recaptcha_switch')) === '1') { ?>	
@@ -123,7 +121,7 @@ function form_reach_include($id) {
 		<section>
 			<div class="container">	
 				<div class="row">	
-					<form <?php if ($wp_stored_meta_front['fr_whatsapp_switch'][0] == 1){?>id="form_reach_whatsapp"<?php }else{ ?> id="form_reach_mail" <?php } ?> accept-charset="UTF-8" name="form_reach_mail" method="post" action="javascript:void(0)">
+					<form class="form-reach"<?php if ($wp_stored_meta_front['fr_whatsapp_switch'][0] == 1){?>id="form_reach_whatsapp"<?php }else{ ?> id="form_reach_mail" <?php } ?> accept-charset="UTF-8" name="form_reach_mail" method="post" action="javascript:void(0)">
 									
 						<? echo wp_nonce_field('nonce_verification')?>
 						
