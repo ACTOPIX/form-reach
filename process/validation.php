@@ -172,7 +172,6 @@
                          // Headers
                               $headerAdmin = array(
                                              'Content-Type: text/html; charset=UTF-8',
-                                             'From: ' . str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_from'][0] )),
                                              );
                          
                          // Mail sending
@@ -185,14 +184,9 @@
                               $subjectUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_subject'][0] ));
 
                          // Headers
-                              $headerAdmin = array(
-                                             'Content-Type: text/html; charset=UTF-8',
-                                             'From: ' . str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_from'][0] )),
-                                             );
-                              $headerUser = array(
-                                             'Content-Type: text/html; charset=UTF-8',
-                                             'From: ' . str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_from'][0] )),
-                                             );
+                              $headerAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_from'][0] ));
+                              $headerUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_from'][0] ));
+
                          
                          // User Content
                               $contentUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_content'][0] ));
@@ -205,7 +199,9 @@
                               $mailUser = wp_mail($toUserKey, $subjectUser, $contentUser, $headerUser);
                     };
                     
-                    // Sending to the database
+                    // wp_mail('axel.barel@gmail.com', 'test', 'bigtest');
+
+                    // Saving to the database
                     global $wpdp;
                     $table_name =  $wpdb->prefix . 'form_history';
 
