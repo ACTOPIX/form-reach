@@ -91,7 +91,11 @@
                                              );
                                    
                                    // Mail sending
-                                        $mailAdmin = wp_mail($toAdmin, $subjectAdmin, $contenuReplace, $headerAdmin);
+
+                                        $toAdminSeveral = explode(',', $toAdmin);
+                                        $toAdminSeveral = array_map('trim', $toAdminSeveral);
+
+                                        $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
                               }else {
                                    // Email adresses 
                                         $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_to'][0]);
@@ -175,7 +179,10 @@
                                              );
                          
                          // Mail sending
-                              $mailAdmin = wp_mail($toAdmin, $subjectAdmin, $contenuReplace, $headerAdmin);
+                              $toAdminSeveral = explode(',', $toAdmin);
+                              $toAdminSeveral = array_map('trim', $toAdminSeveral);
+
+                              $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
                     }else {
                          // Email adresses 
                               $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_to'][0]);
