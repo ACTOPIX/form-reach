@@ -81,6 +81,20 @@
                               if ( ($wp_stored_meta_validation_mail['fr_user_email_switch'][0]) == 0 ){
                                    // Email adresses 
                                         $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_to'][0]);
+
+                                   // From
+                                        $GLOBALS['admin_from_name'] = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_from'][0] ));
+
+                                        function custom_wp_mail_from_name($name) {
+                                        if (!empty($GLOBALS['form_reach_mail'])) {
+                                             if (!empty($GLOBALS['admin_from_name'])) {
+                                                  return $GLOBALS['admin_from_name'];
+                                             }
+                                        }
+                                        return $name;
+                                        }
+
+                                        add_filter('wp_mail_from_name', 'custom_wp_mail_from_name');
                                    
                                    // Subjects
                                         $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_subject'][0] ));
@@ -94,28 +108,47 @@
 
                                         $toAdminSeveral = explode(',', $toAdmin);
                                         $toAdminSeveral = array_map('trim', $toAdminSeveral);
-
+                                        $GLOBALS['form_reach_mail'] = true;
                                         $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
+                                        $GLOBALS['form_reach_mail'] = false;
                               }else {
                                    // Email adresses 
                                         $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_to'][0]);
+
+                                   // From
+                                        $GLOBALS['admin_from_name'] = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_from'][0] ));
+
+                                        function custom_wp_mail_from_name($name) {
+                                        if (!empty($GLOBALS['form_reach_mail'])) {
+                                             if (!empty($GLOBALS['admin_from_name'])) {
+                                                  return $GLOBALS['admin_from_name'];
+                                             }
+                                        }
+                                        return $name;
+                                        }
+
+                                        add_filter('wp_mail_from_name', 'custom_wp_mail_from_name');
+
                                    // Subjects
                                         $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_subject'][0] ));
                                         $subjectUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_subject'][0] ));
 
                                    // Headers
-                                        $headerAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_from'][0] ));
+                                        $headerAdmin = array(
+                                                       'Content-Type: text/html; charset=UTF-8',
+                                                       );
                                         $headerUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_from'][0] ));
                                    
                                    // User Content
                                         $contentUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_content'][0] ));
-
+                                   
                                    // Mail sending
                                         $toAdminSeveral = explode(',', $toAdmin);
                                         $toAdminSeveral = array_map('trim', $toAdminSeveral);
-
+                                        $GLOBALS['form_reach_mail'] = true;
                                         $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
                                         $mailUser = wp_mail($toUserKey, $subjectUser, $contentUser, $headerUser);
+                                        $GLOBALS['form_reach_mail'] = false;
                               };
                             
                               // Saving to the database
@@ -191,7 +224,9 @@
                               $subjectUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_subject'][0] ));
 
                          // Headers
-                              $headerAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_from'][0] ));
+                              $headerAdmin = array(
+                                             'Content-Type: text/html; charset=UTF-8',
+                                             );
                               $headerUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_from'][0] ));
 
                          
