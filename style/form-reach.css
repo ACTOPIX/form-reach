@@ -234,6 +234,10 @@ code {
     margin-right: 0;
 }
 
+#poststuff #post-body.columns-2 #side-sortables {
+    display: none;
+}
+
 /* Placeholder error */
 .placeholder-error::-webkit-input-placeholder {
     color: rgba(255, 0, 0, 0.563);
@@ -283,14 +287,50 @@ code {
     line-height: 40px;
 }
 
-/* Icon in the Wordpress Menu
-
-form-reach-admin.php :
-function add_custom_menu_style()
-
-*/
-
 /* Wordpress blue-color */
 .wp-blue {
 background-color: #2271b1 !important;
+}
+
+.handle-actions, #screen-options-link-wrap, .wpforms-edit-post-education-notice, #wpforms-notice-global-review_lite_request {
+    display: none;
+}
+.ui-draggable-handle, .ui-sortable-handle {
+    touch-action: unset;
+}
+/* Cacher le message du shortcode */
+.post-new-php .postbox-header {
+    display: none;
+}
+#titlediv #title-prompt-text {
+    line-height: 1em;
+}
+
+/* Pagination Form Log */
+@media (min-width: 768px){
+.col-md-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}.col-md-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+}.col-md-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+}.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+}.paginate_button {
+    padding-right: 10px;
+}
+.row {
+    display: flex;
+}}
+.disabled>.page-link, .page-link.disabled {
+    color: #6c757d;
+    pointer-events: none;
+}
+.wp-core-ui .button-link-delete {
+    border-color: #d63638;
 }
