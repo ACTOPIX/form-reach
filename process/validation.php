@@ -43,7 +43,7 @@
                          }else{
                          // reCAPTCHA V3 verification succeeded, processing form data
 
-                              // Définition des variables
+                              // DÃ©finition des variables
                               $postID = sanitize_text_field($_POST['fr_container_post']);
                               $wp_stored_meta_validation_mail = get_post_meta($postID);
                               
@@ -57,12 +57,12 @@
                               $contenuFormPost ="";
                               foreach ($_POST as $key=>$val) {
                                 if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "fr_mail_submit" ||$key == "fr_whatsapp_submit" || $key == "fr_container_post")){
-                                        $valFiltered = str_replace("\\","",$val);
+                                        $valFiltered = nl2br(str_replace("\\","",$val));
                                         $keyFiltered = str_replace("\\","",$key);
 
                                         $keyShortcode[] = "[$keyFiltered]";
                                         $valShortcode[] = $valFiltered;
-
+                                        
                                         $contenuFormPost .= "$keyFiltered : $valFiltered <br/>";
                                    }
                               }
@@ -105,7 +105,6 @@
                                              );
                                    
                                    // Mail sending
-
                                         $toAdminSeveral = explode(',', $toAdmin);
                                         $toAdminSeveral = array_map('trim', $toAdminSeveral);
                                         $GLOBALS['form_reach_mail'] = true;
@@ -182,7 +181,7 @@
                     $contenuFormPost ="";
                     foreach ($_POST as $key=>$val) {
                         if (!($key== "_wpnonce" || $key == "_wp_http_referer" || $key == "fr_mail_submit" ||$key == "fr_whatsapp_submit" || $key == "fr_container_post")){
-                                $valFiltered = str_replace("\\","",$val);
+                                $valFiltered = nl2br(str_replace("\\","",$val));
                                 $keyFiltered = str_replace("\\","",$key);
 
                                 $keyShortcode[] = "[$keyFiltered]";
@@ -241,8 +240,6 @@
                               $mailUser = wp_mail($toUserKey, $subjectUser, $contentUser, $headerUser);
                     };
                     
-                    // wp_mail('axel.barel@gmail.com', 'test', 'bigtest');
-
                     // Saving to the database
                     global $wpdp;
                     $table_name =  $wpdb->prefix . 'form_history';
