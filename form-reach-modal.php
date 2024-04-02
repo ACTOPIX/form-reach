@@ -1,11 +1,16 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css">
-<link rel="stylesheet" href="<?php echo plugin_dir_url(__FILE__); ?>style/form-reach.css">
-<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
-<script src="<?php echo plugin_dir_url(__FILE__); ?>js/form-reach-admin.js"></script>
-<script src="<?php echo plugin_dir_url(__FILE__); ?>js/form-reach.js"></script>
+<?php
+// Styles
+wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css');
+wp_enqueue_style('intl-tel-input-css', 'https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css');
+wp_enqueue_style('form-reach-css', plugin_dir_url(__FILE__) . 'style/form-reach.css');
+
+// Scripts
+wp_enqueue_script('jquery');
+wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js', array('jquery'), null, true);
+wp_enqueue_script('intl-tel-input-js', 'https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js', array('jquery'), null, true);
+wp_enqueue_script('form-reach-admin-js', plugin_dir_url(__FILE__) . 'js/form-reach-admin.js', array('jquery'), null, true);
+wp_enqueue_script('form-reach-js', plugin_dir_url(__FILE__) . 'js/form-reach.js', array('jquery'), null, true);
+?>
 
 <section onload="modalTextGenerator(),modalTextareaGenerator(),modalEmailGenerator(),modalTelGenerator()">
 
@@ -31,73 +36,6 @@
 				<svg id="fr_whatsapp_iconsvg" xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="<?php if( ($wp_stored_meta['fr_whatsapp_switch'][0]) == 1 ) { ?> #25d366 <?php }else{ ?> #a4a4a4a4 <?php } ?>" class="bi bi-whatsapp ms-2" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
 			</li>
 		</ul>
-
-		<!-- Adds animation to whatsapp tab when the tel is missing -->
-			<script>
-				document.addEventListener('DOMContentLoaded', function() {
-					var inputWhatsapp = document.getElementById('fr_whatsapp_tel');
-					var element = document.getElementById('fr_profile-tab');
-					if(inputWhatsapp){
-						if (inputWhatsapp.value === '') {
-							element.classList.add('missing-information');
-						}else {
-							element.classList.remove('missing-information');
-						};
-
-						inputWhatsapp.addEventListener('input', function() {
-							if (inputWhatsapp.value !== '') {
-								element.classList.remove('missing-information');
-							}else {
-								element.classList.add('missing-information');
-							}
-						});
-					}
-					
-				});
-			</script>
-			
-			<!-- Adds animation to email tab when the email is missing -->
-			<script>
-				function validateEmails(emails) {
-					var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-					var emailList = emails.split(",");
-					for (var i = 0; i < emailList.length; i++) {
-					var email = emailList[i].trim();
-					if (!emailPattern.test(email)) {
-						return false;
-					}
-					}
-					return true;
-				}
-
-				document.addEventListener('DOMContentLoaded', function() {
-					var inputEmail = document.getElementById('fr_email_admin_to');
-					var element = document.getElementById('fr_profile-tab');
-					if (inputEmail) {
-					var isValidEmails = validateEmails(inputEmail.value);
-					if (inputEmail.value === '' || !isValidEmails) {
-						element.classList.add('missing-information');
-						inputEmail.style.border = '2px solid red';
-					} else {
-						element.classList.remove('missing-information');
-						inputEmail.style.border = '1px solid grey';
-					}
-
-					inputEmail.addEventListener('input', function() {
-						isValidEmails = validateEmails(inputEmail.value);
-						if (inputEmail.value === '' || !isValidEmails) {
-						element.classList.add('missing-information');
-						inputEmail.style.border = '2px solid red';
-						} else {
-						element.classList.remove('missing-information');
-						inputEmail.style.border = '1px solid grey';
-						}
-					});
-					}
-				});
-			</script>
-
-
 
 		<!-- Creation of containers for the content associated with tabs -->
 		<div id="fr_formulaire" class="tab-pane fade show active mt-3 container" role="tabpanel">
@@ -170,27 +108,6 @@
 								<button type="button" id="fr_submit_text" class="btn btn-primary wp-blue">Finish</button>
 							</div>
 						</div>
-
-						<script>
-							document.getElementById("fr_submit_text").addEventListener("click", checkAndAddAttributes);
-
-							function checkAndAddAttributes() {
-								// Checking if the input has been filled
-								const inputName = document.getElementById("fr_generator-text-name");
-								if (inputName.value !== "") {
-									inputName.style.border="solid 1px black";
-									document.getElementById("requiredNameText").setAttribute("hidden", "");
-									// Close the Bootstrap modal
-									$('#fr_modal_text').modal('hide');
-									// Call the transfert function
-									transfertText();
-								}else{
-									// Removing hidden from the button
-									inputName.style.border="solid 2px red";
-									document.getElementById("requiredNameText").removeAttribute("hidden", "");
-								};
-							};
-						</script>
 					</div>
 				</div>
 			</div>
@@ -263,25 +180,6 @@
 								<button type="button" id="fr_submit_email"class="btn btn-primary wp-blue">Finish</button>
 							</div>
 						</div>
-						<script>
-							document.getElementById("fr_submit_email").addEventListener("click", checkAndAddAttributes);
-
-							function checkAndAddAttributes() {
-								// Checking if the input has been filled
-								const inputName = document.getElementById("fr_generator-email-name");
-								if (inputName.value !== "") {
-									inputName.style.border="solid 1px black";
-									document.getElementById("requiredNameEmail").setAttribute("hidden", "");
-									// Close the Bootstrap modal
-									$('#fr_modal_email').modal('hide');
-									// Call the transfert function
-									transfertEmail();
-								}else{
-									inputName.style.border="solid 2px red";
-									document.getElementById("requiredNameEmail").removeAttribute("hidden", "");
-								};
-							};
-						</script>
 					</div>
 				</div>
 			</div>
@@ -371,31 +269,12 @@
 							</div>
 						</div>
 						<style>input[type=number]::-webkit-inner-spin-button { opacity: 1}</style>
-						<script>
-							document.getElementById("fr_submit_textarea").addEventListener("click", checkAndAddAttributes);
-
-							function checkAndAddAttributes() {
-								// Checking if the input has been filled
-								const inputName = document.getElementById("fr_generator-textarea-name");
-								if (inputName.value !== "") {
-									inputName.style.border="solid 1px black";
-									document.getElementById("requiredNameTextarea").setAttribute("hidden", "");
-									// Close the Bootstrap modal
-									$('#fr_modal_textarea').modal('hide');
-									// Call the transfert function
-									transfertTextarea();
-								}else{
-									inputName.style.border="solid 2px red";
-									document.getElementById("requiredNameTextarea").removeAttribute("hidden", "");
-								};
-							};
-						</script>
 					</div>
 				</div>
 			</div>
 
 			<!-- Modal Button: Tel -->
-			<button type="button" name="button_tel" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#fr_modal_tel"> Tel </button>
+			<button type="button" name="button_tel" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#fr_modal_tel"> Phone </button>
 			<!-- Modal Form Tag Generator: Tel -->
 			<div class="modal fade" id="fr_modal_tel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
@@ -462,383 +341,24 @@
 								<button type="button" id="fr_submit_tel" class="btn btn-primary wp-blue">Finish</button>
 							</div>
 						</div>
-						<script>
-							document.getElementById("fr_submit_tel").addEventListener("click", checkAndAddAttributes);
-
-							function checkAndAddAttributes() {
-								// Checking if the input has been filled
-								const inputName = document.getElementById("fr_generator-tel-name");
-								if (inputName.value !== "") {
-									inputName.style.border="solid 1px black";
-									document.getElementById("requiredNameTel").setAttribute("hidden", "");
-									// Close the Bootstrap modal
-									$('#fr_modal_tel').modal('hide');
-									// Call the transfert function
-									transfertTel();
-								}else{
-									inputName.style.border="solid 2px red";
-									document.getElementById("requiredNameTel").removeAttribute("hidden", "");
-								};
-							};
-						</script>
 					</div>
 				</div>
 			</div>
 
 			<!-- Modal Button: Dropdown Menu -->
 			<button type="button" name="button_menu_deroulant" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#fr_modalMenu" disabled> Dropdown menu </button>
-			<!-- Modal Form Tag Generator: Dropdown menu -->
-			<div class="modal fade" id="fr_modalMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="fr_exampleModalLabel">Form Tag Generator: Dropdown menu</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-borderless">
-									<tbody>
-										<tr>
-											<th class="text-end"scope="row">Type: </th>
-											<td>
-												<fieldset>
-												<legend class="screen-reader-text">Field type</legend>
-												<label><input type="checkbox" name="required"> Required field</label>
-												</fieldset>
-											</td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-label">Label: </label></th>
-											<td ><input type="text" name="label" class="tg-name oneline" id="fr_generator-text-label" onchange="modalTextGenerator()" value=""></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-name"><span class="text-primary">*</span>Name: </label></th>
-											<td ><input type="text" name="name" class="tg-name oneline" id="fr_generator-text-name"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-value">Value: </label></th>
-											<td><input type="text" name="value" class="oneline" id="fr_generator-text-value"></td>
-										</tr>
-
-										<tr>
-											<td></td>
-											<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="fr_generator-text-placeholder">Use this text as placeholder for the field.</label></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-id">ID: </label></th>
-											<td><input type="text" name="id" class="idvalue oneline option" id="fr_generator-text-id"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-class">Class: </label></th>
-											<td><input type="text" name="class" class="classvalue oneline option" id="fr_generator-text-class"></td>
-										</tr>
-
-									</tbody>
-								</table>
-							</div>
-						</div>
-
-						<div class="modal-footer position-relative">
-							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" readonly="readonly" style="width:365px">
-							</div>
-							<div>
-								<button type="button" class="btn btn-primary wp-blue" data-bs-dismiss="modal" onclick="transfert()">Finish</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 
 			<!-- Modal Button: Checkbox -->
 			<button type="button" name="button_cases_a_cocher"class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#fr_modalCase" disabled> Checkbox </button>
-			<!-- Modal Form Tag Generator: Checkbox -->
-			<div class="modal fade" id="fr_modalCase" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="fr_exampleModalLabel">Form Tag Generator: Checkbox</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-borderless">
-									<tbody>
-										<tr>
-											<th class="text-end"scope="row">Type: </th>
-											<td>
-												<fieldset>
-												<legend class="screen-reader-text">Field type</legend>
-												<label><input type="checkbox" name="required"> Required field</label>
-												</fieldset>
-											</td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-label">Label: </label></th>
-											<td ><input type="text" name="label" class="tg-name oneline" id="fr_generator-text-label" onchange="modalTextGenerator()" value=""></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
-											<td ><input type="text" name="name" class="tg-name oneline" id="fr_generator-text-name"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-value">Value: </label></th>
-											<td><input type="text" name="value" class="oneline" id="fr_generator-text-value"></td>
-										</tr>
-
-										<tr>
-											<td></td>
-											<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="fr_generator-text-placeholder">Use this text as placeholder for the field.</label></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-id">ID: </label></th>
-											<td><input type="text" name="id" class="idvalue oneline option" id="fr_generator-text-id"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-class">Class: </label></th>
-											<td><input type="text" name="class" class="classvalue oneline option" id="fr_generator-text-class"></td>
-										</tr>
-
-									</tbody>
-								</table>
-							</div>
-						</div>
-
-						<div class="modal-footer position-relative">
-							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" readonly="readonly" style="width:365px">
-							</div>
-							<div>
-								<button type="button" class="btn btn-primary wp-blue" data-bs-dismiss="modal" onclick="transfert()">Finish</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 
 			<!-- Modal Button: Radio Button -->
 			<button type="button" name="button_boutons_radio" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#fr_modalRadio" disabled> Radio button </button>
-			<!-- Modal Form Tag Generator: Radio Button -->
-			<div class="modal fade" id="fr_modalRadio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Form Tag Generator: Radio button</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-borderless">
-									<tbody>
-										<tr>
-											<th class="text-end"scope="row">Type: </th>
-											<td>
-												<fieldset>
-												<legend class="screen-reader-text">Field type</legend>
-												<label><input type="checkbox" name="required"> Required field</label>
-												</fieldset>
-											</td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-label">Label: </label></th>
-											<td ><input type="text" name="label" class="tg-name oneline" id="fr_generator-text-label" onchange="modalTextGenerator()" value=""></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
-											<td ><input type="text" name="name" class="tg-name oneline" id="fr_generator-text-name"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-value">Value: </label></th>
-											<td><input type="text" name="value" class="oneline" id="fr_generator-text-value"></td>
-										</tr>
-
-										<tr>
-											<td></td>
-											<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="fr_generator-text-placeholder">Use this text as placeholder for the field.</label></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-id">ID: </label></th>
-											<td><input type="text" name="id" class="idvalue oneline option" id="fr_generator-text-id"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-class">Class: </label></th>
-											<td><input type="text" name="class" class="classvalue oneline option" id="fr_generator-text-class"></td>
-										</tr>
-
-									</tbody>
-								</table>
-							</div>
-						</div>
-
-						<div class="modal-footer position-relative">
-							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" readonly="readonly" style="width:365px">
-							</div>
-							<div>
-								<button type="button" class="btn btn-primary wp-blue" data-bs-dismiss="modal" onclick="transfert()">Finish</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 
 			<!-- Modal Button: Date -->
 			<button type="button" name="button_date" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#fr_modalDate" disabled> Date </button>
-			<!-- Modal Form Tag Generator: Date -->
-			<div class="modal fade" id="fr_modalDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="fr_exampleModalLabel">Form Tag Generator: Date</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-borderless">
-									<tbody>
-										<tr>
-											<th class="text-end"scope="row">Type: </th>
-											<td>
-												<fieldset>
-												<legend class="screen-reader-text">Field type</legend>
-												<label><input type="checkbox" name="required"> Required field</label>
-												</fieldset>
-											</td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-label">Label: </label></th>
-											<td ><input type="text" name="label" class="tg-name oneline" id="fr_generator-text-label" onchange="modalTextGenerator()" value=""></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
-											<td ><input type="text" name="name" class="tg-name oneline" id="fr_generator-text-name"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-value">Value: </label></th>
-											<td><input type="text" name="value" class="oneline" id="fr_generator-text-value"></td>
-										</tr>
-
-										<tr>
-											<td></td>
-											<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="fr_generator-text-placeholder">Use this text as placeholder for the field.</label></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-id">ID: </label></th>
-											<td><input type="text" name="id" class="idvalue oneline option" id="fr_generator-text-id"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-class">Class: </label></th>
-											<td><input type="text" name="class" class="classvalue oneline option" id="fr_generator-text-class"></td>
-										</tr>
-
-									</tbody>
-								</table>
-							</div>
-						</div>
-
-						<div class="modal-footer position-relative">
-							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" readonly="readonly" style="width:365px">
-							</div>
-							<div>
-								<button type="button" class="btn btn-primary wp-blue" data-bs-dismiss="modal" onclick="transfert()">Finish</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 			
 			<!-- Modal Button: File -->
 			<button type="button" name="button_fichier" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#fr_modalFichier" disabled> File </button>
-			<!-- Modal Form Tag Generator: File -->
-			<div class="modal fade" id="fr_modalFichier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="fr_exampleModalLabel">Form Tag Generator: File</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-borderless">
-									<tbody>
-										<tr>
-											<th class="text-end"scope="row">Type: </th>
-											<td>
-												<fieldset>
-												<legend class="screen-reader-text">Field type</legend>
-												<label><input type="checkbox" name="required"> Required field</label>
-												</fieldset>
-											</td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-label">Label: </label></th>
-											<td><input type="text" name="label" class="tg-name oneline" id="fr_generator-text-label" onchange="modalTextGenerator()" value=""></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
-											<td><input type="text" name="name" class="tg-name oneline" id="fr_generator-text-name"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-value">Value: </label></th>
-											<td><input type="text" name="value" class="oneline" id="fr_generator-text-value"></td>
-										</tr>
-
-										<tr>
-											<td></td>
-											<td class="pt-n3"><input type="checkbox" name="placeholder" class="option"><label for="fr_generator-text-placeholder">Use this text as placeholder for the field.</label></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-id">ID: </label></th>
-											<td><input type="text" name="id" class="idvalue oneline option" id="fr_generator-text-id"></td>
-										</tr>
-
-										<tr>
-											<th class="text-end" scope="row"><label for="fr_generator-text-class">Class: </label></th>
-											<td><input type="text" name="class" class="classvalue oneline option" id="fr_generator-text-class"></td>
-										</tr>
-
-									</tbody>
-								</table>
-							</div>
-						</div>
-
-						<div class="modal-footer position-relative">
-							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" readonly="readonly" style="width:365px">
-							</div>
-							<div>
-								<button type="button" class="btn btn-primary wp-blue" data-bs-dismiss="modal" onclick="transfert()">Finish</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 
 			<!-- Modal Button: Submit -->
 			<button type="button" name="fr_button_modal_submit" id="fr_button_modal_submit" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#fr_button_modal_submit_content"> Submit </button>
@@ -1516,7 +1036,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
 						<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
 					</svg>
-					<?php if ($wp_stored_meta['fr_whatsapp_switch'][0] == 1){?> <input type="text" name="fr_whatsapp_error" id="fr_whatsapp_error" class="large-text w-75" style="background-color: transparent;" value="<?php if (! empty ($wp_stored_meta['fr_whatsapp_error'])) echo esc_attr ( $wp_stored_meta['fr_whatsapp_error'][0] );?>"/><?};?>
+					<?php if ($wp_stored_meta['fr_whatsapp_switch'][0] == 1){?> <input type="text" name="fr_whatsapp_error" id="fr_whatsapp_error" class="large-text w-75" style="background-color: transparent;" value="<?php if (! empty ($wp_stored_meta['fr_whatsapp_error'])) echo esc_attr ( $wp_stored_meta['fr_whatsapp_error'][0] );?>"/><?php };?>
 					<?php if ($wp_stored_meta['fr_whatsapp_switch'][0] == 0){?> <input type="text" name="fr_email_error" id="fr_email_error" class="large-text w-75" style="background-color: transparent;" value="<?php if (! empty ($wp_stored_meta['fr_email_error'])) echo esc_attr ( $wp_stored_meta['fr_email_error'][0] );?>"/><?php };?>
 				</div>
 			</div>
@@ -1565,9 +1085,9 @@
 		<button type="button" class="flyout-button"></button>
 
 		<div class="flyout-menu" style="display:none;">
+			<a style="transform: scale(0); opacity:0;" href="https://form-reach.com/documentation" title="Documentation" target="_blank"><i class="fa fa-book"  aria-hidden="true"></i></a>
+			<a style="transform: scale(0); opacity:0;" href="https://form-reach.com/suggestion" title="Suggestion" target="_blank"><i class="fa fa-lightbulb-o"  aria-hidden="true"></i></a>
 		<a style="transform: scale(0); opacity:0;" href="https://form-reach.com/support" title="Support" target="_blank"><i class="fa fa-life-ring" aria-hidden="true"></i></a>
-		<a style="transform: scale(0); opacity:0;" href="https://form-reach.com/documentation" title="Documentation" target="_blank"><i class="fa fa-book"  aria-hidden="true"></i></a>
-		<a style="transform: scale(0); opacity:0;" href="https://form-reach.com/suggestion" title="Suggestion" target="_blank"><i class="fa fa-lightbulb-o"  aria-hidden="true"></i></a>
 		</div>
 
 		<script>
