@@ -1,480 +1,166 @@
-function modalTextGenerator(){
-
-	var fr_type = ' type="text"';
-
-//Required checkboxe 1 generator
-	if (document.getElementById("fr_generator-text-required").checked){
-		var fr_required = ' required="required"';				
-	} else {
-		var fr_required = '';
-	};
-
-
-//Label shortcode generator
-	if(document.getElementById("fr_generator-text-label").value.length>0){
-
-		var fr_label = ' label="'+document.getElementById("fr_generator-text-label").value+'"';
-	}else{
-
-		var fr_label =	'';
-	};
-
-//Name shortcode generator
-	if(document.getElementById("fr_generator-text-name").value.length>0){
-
-		var fr_name = ' name="'+document.getElementById("fr_generator-text-name").value+'"';
-	}else{
-
-		var fr_name =	'';
-	};
-
-//Class shortcode generator
-	if(document.getElementById("fr_generator-text-class").value.length>0){
-
-		var fr_class = ' class="'+document.getElementById("fr_generator-text-class").value+'"';
-	}else{
-
-		var fr_class = '';
-	};
-
-//Id shortcode generator
-	if(document.getElementById("fr_generator-text-id").value.length>0){
-
-		var fr_id = ' id="'+document.getElementById("fr_generator-text-id").value+'"';
-	}else{
-
-		var fr_id = '';
-	};
-
-//Valeur shortcode generator
-	if(document.getElementById("fr_generator-text-value").value.length>0){
-
-		var fr_value = ' value="'+document.getElementById("fr_generator-text-value").value+'"';
-		document.getElementById("fr_generator-text-placeholder").disabled=false;
-	}else{
-
-		var fr_value = '';
-		document.getElementById("fr_generator-text-placeholder").disabled=true;
-	};
-	
-
-//Placeholder checkboxe 2 generator
-	if (document.getElementById("fr_generator-text-placeholder").checked){
-		var fr_placeholder = ' placeholder="'+document.getElementById("fr_generator-text-value").value+'"';
-		var fr_value = '';
-
-	} else {
-		var fr_placeholder = '';
-	};
-
-$("#fr_generatedTextShortcode").val('[input' + fr_type + fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder +']');
-};
-
-
-
-function modalEmailGenerator(){
-
-	var fr_type = ' type="email"';
-
-//Required checkboxe 1 generator
-
-	if (document.getElementById("fr_generator-email-required").checked){
-		var fr_required = ' required="required"';				
-	} else {
-		var fr_required = '';
-	};
-
-
-//Label shortcode generator
-	if(document.getElementById("fr_generator-email-label").value.length>0){
-
-		var fr_label = ' label="'+document.getElementById("fr_generator-email-label").value+'"';
-	}else{
-		
-		var fr_label =	'';
-	};
-
-//Name shortcode generator
-	if(document.getElementById("fr_generator-email-name").value.length>0){
-
-		var fr_name = ' name="'+document.getElementById("fr_generator-email-name").value+'"';
-	}else{
-
-		var fr_name =	'';
-	};
-
-//Class shortcode generator
-	if(document.getElementById("fr_generator-email-class").value.length>0){
-
-		var fr_class = ' class="'+document.getElementById("fr_generator-email-class").value+'"';
-	}else{
-
-		var fr_class = '';
-	};
-
-//Id shortcode generator
-	if(document.getElementById("fr_generator-email-id").value.length>0){
-
-		var fr_id = ' id="'+document.getElementById("fr_generator-email-id").value+'"';
-	}else{
-
-		var fr_id = '';
-	};
-
-//Valeur shortcode generator
-	if(document.getElementById("fr_generator-email-value").value.length>0){
-
-		var fr_value = ' value="'+document.getElementById("fr_generator-email-value").value+'"';
-		document.getElementById("fr_generator-email-placeholder").disabled=false;
-	}else{
-
-		var fr_value = '';
-		document.getElementById("fr_generator-email-placeholder").disabled=true;
-	};
-
-//Placeholder checkboxe 2 generator
-	if (document.getElementById("fr_generator-email-placeholder").checked){
-		var fr_placeholder = ' placeholder="'+document.getElementById("fr_generator-email-value").value+'"';
-		var fr_value = '';
-
-	} else {
-		var fr_placeholder = '';
-	};
-
-$("#fr_generatedEmailShortcode").val('[input' + fr_type + fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder +']');
-};
-
-
-function modalTelGenerator(){
-
-	var fr_type = ' type="tel"';
-
-//Required checkboxe 1 generator
-	if (document.getElementById("fr_generator-tel-required").checked){
-		var fr_required = ' required="required"';				
-	} else {
-		var fr_required = '';
-	};
-
-//Label shortcode generator
-	if(document.getElementById("fr_generator-tel-label").value.length>0){
-
-		var fr_label = ' label="'+document.getElementById("fr_generator-tel-label").value+'"';
-	}else{
-
-		var fr_label =	'';
-	};
-
-//Name shortcode generator
-	if(document.getElementById("fr_generator-tel-name").value.length>0){
-
-		var fr_name = ' name="'+document.getElementById("fr_generator-tel-name").value+'"';
-	}else{
-
-		var fr_name = '';
-	};
-
-//Class shortcode generator
-	if(document.getElementById("fr_generator-tel-class").value.length>0){
-
-		var fr_class = ' class="'+document.getElementById("fr_generator-tel-class").value+'"';
-	}else{
-
-		var fr_class = '';
-	};
-
-//Id shortcode generator
-	if(document.getElementById("fr_generator-tel-id").value.length>0){
-
-		var fr_id = ' id="'+document.getElementById("fr_generator-tel-id").value+'"';
-	}else{
-
-		var fr_id = '';
-	};
-
-//Valeur shortcode generator
-	if(document.getElementById("fr_generator-tel-value").value.length>0){
-
-		var fr_value = ' value="'+document.getElementById("fr_generator-tel-value").value+'"';
-		document.getElementById("fr_generator-tel-placeholder").disabled=false;
-	}else{
-
-		var fr_value = '';
-		document.getElementById("fr_generator-tel-placeholder").disabled=true;
-	};
-
-//Placeholder checkboxe 2 generator
-	if (document.getElementById("fr_generator-tel-placeholder").checked){
-		var fr_placeholder = ' placeholder="'+document.getElementById("fr_generator-tel-value").value+'"';
-		var fr_value = '';
-
-	} else {
-		var fr_placeholder = '';
-	};
-
-$("#fr_generatedTelShortcode").val('[input' + fr_type + fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder +']');
-};
-
-
-
-function modalTextareaGenerator(){
-
-	var fr_type = ' type="textarea"';
-
-//Required checkboxe 1 generator
-	if (document.getElementById("fr_generator-textarea-required").checked){
-		var fr_required = ' required="required"';		
-	} else {
-		var fr_required = '';		
-	};
-
-//Label shortcode generator
-	if(document.getElementById("fr_generator-textarea-label").value.length>0){
-
-		var fr_label = ' label="'+document.getElementById("fr_generator-textarea-label").value+'"';		
-	}else{
-
-		var fr_label =	'';
-	};
-
-//cols shortcode generator
-	if(document.getElementById("fr_generator-textarea-cols").value.length>0){
-
-		var fr_cols = ' cols="'+document.getElementById("fr_generator-textarea-cols").value+'"';
-	}else{
-
-		var fr_cols =	'';
-	};
-
-//rows shortcode generator
-	if(document.getElementById("fr_generator-textarea-rows").value.length>0){
-
-		var fr_rows = ' rows="'+document.getElementById("fr_generator-textarea-rows").value+'"';
-	}else{
-
-		var fr_rows =	'';
-	};
-
-//Name shortcode generator
-	if(document.getElementById("fr_generator-textarea-name").value.length>0){
-
-		var fr_name = ' name="'+document.getElementById("fr_generator-textarea-name").value+'"';
-	}else{
-
-		var fr_name =	'';
-	};
-
-//Class shortcode generator
-	if(document.getElementById("fr_generator-textarea-class").value.length>0){
-
-		var fr_class = ' class="'+document.getElementById("fr_generator-textarea-class").value+'"';
-	}else{
-
-		var fr_class = '';
-	};
-
-//Id shortcode generator
-	if(document.getElementById("fr_generator-textarea-id").value.length>0){
-
-		var fr_id = ' id="'+document.getElementById("fr_generator-textarea-id").value+'"';
-	}else{
-
-		var fr_id = '';
-	};
-
-//Valeur shortcode generator
-	if(document.getElementById("fr_generator-textarea-value").value.length>0){
-
-		var fr_value = ' value="'+document.getElementById("fr_generator-textarea-value").value+'"';
-		document.getElementById("fr_generator-textarea-placeholder").disabled=false;
-	}else{
-
-		var fr_value = '';
-		document.getElementById("fr_generator-textarea-placeholder").disabled=true;
-	};
-
-//Placeholder checkboxe 2 generator
-	if (document.getElementById("fr_generator-textarea-placeholder").checked){
-		var fr_placeholder = ' placeholder="'+document.getElementById("fr_generator-textarea-value").value+'"';
-		var fr_value = '';
-
-	} else {
-		var fr_placeholder = '';
-	};
-
-$("#fr_generatedTextareaShortcode").val('[input' + fr_type + fr_rows + fr_cols +fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder +']');
-};
-
-var retour = "\n";
-
-function transfertText(){
- 	document.getElementById("fr_contenu_formulaire").value += retour + document.getElementById("fr_generatedTextShortcode").value + retour;
-
-	if(document.getElementById("fr_generator-text-required").checked){
-		document.getElementById("fr_generator-text-required").checked=false;
- 	}
-
-	if (document.getElementById("fr_generator-text-placeholder").checked){
-		document.getElementById("fr_generator-text-placeholder").checked=false;
-	}
-
-	if(document.getElementById("fr_generator-text-label").value.length>0){
-		$("#fr_generator-text-label").val("");
-	}
-
-	if(document.getElementById("fr_generator-text-name").value.length>0){
-		$("#fr_generator-text-name").val("");
-	}
-
-	if(document.getElementById("fr_generator-text-class").value.length>0){
-		$("#fr_generator-text-class").val("");
-	}
-
-	if(document.getElementById("fr_generator-text-id").value.length>0){
-		$("#fr_generator-text-id").val("");
-	}
-
-	if(document.getElementById("fr_generator-text-value").value.length>0){
-		$("#fr_generator-text-value").val("");
-	}
-
-	if(document.getElementById("fr_generatedTextShortcode").value.length>0){
-		$("#fr_generatedTextShortcode").val('[input type="text"');
-	}
-}
-
-function transfertEmail(){
- 	document.getElementById("fr_contenu_formulaire").value += retour + document.getElementById("fr_generatedEmailShortcode").value + retour;
-
-	if(document.getElementById("fr_generator-email-required").checked){
-		document.getElementById("fr_generator-email-required").checked=false;
- 	}
-
-	if (document.getElementById("fr_generator-email-placeholder").checked){
-		document.getElementById("fr_generator-email-placeholder").checked=false;
-	}
-
-	if(document.getElementById("fr_generator-email-label").value.length>0){
-		$("#fr_generator-email-label").val("");
-	}
-
-	if(document.getElementById("fr_generator-email-name").value.length>0){
-		$("#fr_generator-email-name").val("");
-	}
-
-	if(document.getElementById("fr_generator-email-class").value.length>0){
-		$("#fr_generator-email-class").val("");
-	}
-
-	if(document.getElementById("fr_generator-email-id").value.length>0){
-		$("#fr_generator-email-id").val("");
-	}
-
-	if(document.getElementById("fr_generator-email-value").value.length>0){
-		$("#fr_generator-email-value").val("");
-	}
-
-	if(document.getElementById("fr_generatedEmailShortcode").value.length>0){
-		$("#fr_generatedEmailShortcode").val('[input type="mail"')
-	}
-}
-
-function transfertTextarea(){
- 	document.getElementById("fr_contenu_formulaire").value += retour + document.getElementById("fr_generatedTextareaShortcode").value + retour;
-
-	if(document.getElementById("fr_generator-textarea-required").checked){
-		document.getElementById("fr_generator-textarea-required").checked=false;
- 	}
-
-	if (document.getElementById("fr_generator-textarea-placeholder").checked){
-		document.getElementById("fr_generator-textarea-placeholder").checked=false;
-	}
-
-	if(document.getElementById("fr_generator-textarea-label").value.length>0){
-		$("#fr_generator-textarea-label").val("");
-	}
-
-	if(document.getElementById("fr_generator-textarea-rows").value.length>0){
-		$("#fr_generator-textarea-rows").val("");
-	}
-
-	if(document.getElementById("fr_generator-textarea-cols").value.length>0){
-		$("#fr_generator-textarea-cols").val("");
-	}
-
-	if(document.getElementById("fr_generator-textarea-name").value.length>0){
-		$("#fr_generator-textarea-name").val("");
-	}
-
-	if(document.getElementById("fr_generator-textarea-class").value.length>0){
-		$("#fr_generator-textarea-class").val("");
-	}
-
-	if(document.getElementById("fr_generator-textarea-id").value.length>0){
-		$("#fr_generator-textarea-id").val("");
-	}
-
-	if(document.getElementById("fr_generator-textarea-value").value.length>0){
-		$("#fr_generator-textarea-value").val("");
-	}
-
-	if(document.getElementById("fr_generatedTextareaShortcode").value.length>0){
-		$("#fr_generatedTextareaShortcode").val('[input type="textarea"');
-	}
-}
-
-function transfertTel(){
- 	document.getElementById("fr_contenu_formulaire").value += retour + document.getElementById("fr_generatedTelShortcode").value + retour;
-
-	if(document.getElementById("fr_generator-tel-required").checked){
-		document.getElementById("fr_generator-tel-required").checked=false;
- 	}
-
-	if (document.getElementById("fr_generator-tel-placeholder").checked){
-		document.getElementById("fr_generator-tel-placeholder").checked=false;
-	}
-
-	if(document.getElementById("fr_generator-tel-label").value.length>0){
-		$("#fr_generator-tel-label").val("");
-	}
-
-	if(document.getElementById("fr_generator-tel-name").value.length>0){
-		$("#fr_generator-tel-name").val("");
-	}
-
-	if(document.getElementById("fr_generator-tel-class").value.length>0){
-		$("#fr_generator-tel-class").val("");
-	}
-
-	if(document.getElementById("fr_generator-tel-id").value.length>0){
-		$("#fr_generator-tel-id").val("");
-	}
-
-	if(document.getElementById("fr_generator-tel-value").value.length>0){
-		$("#fr_generator-tel-value").val("");
-	}
-
-	if(document.getElementById("fr_generatedTelShortcode").value.length>0){
-		$("#fr_generatedTelShortcode").val('[input type="tel"')
-	}
-}
-
-// Default values for the form construction container
+(function($) {
+    // Refactorisé pour utiliser jQuery dans le scope local
+    window.modalTextGenerator = function() {
+        var fr_type = ' type="text"',
+            fr_required = $('#fr_generator-text-required').is(':checked') ? ' required="required"' : '',
+            fr_label = $('#fr_generator-text-label').val() ? ' label="' + $('#fr_generator-text-label').val() + '"' : '',
+            fr_name = $('#fr_generator-text-name').val() ? ' name="' + $('#fr_generator-text-name').val() + '"' : '',
+            fr_class = $('#fr_generator-text-class').val() ? ' class="' + $('#fr_generator-text-class').val() + '"' : '',
+            fr_id = $('#fr_generator-text-id').val() ? ' id="' + $('#fr_generator-text-id').val() + '"' : '',
+            fr_value = $('#fr_generator-text-value').val() ? ' value="' + $('#fr_generator-text-value').val() + '"' : '',
+            fr_placeholder = '';
+
+        if ($('#fr_generator-text-placeholder').is(':checked')) {
+            fr_placeholder = ' placeholder="' + $('#fr_generator-text-value').val() + '"';
+            fr_value = ''; // Effacer la valeur si placeholder est coché
+        }
+
+        $('#fr_generatedTextShortcode').val('[input' + fr_type + fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder + ']');
+    };
+})(jQuery);
+
+(function($) {
+    window.modalEmailGenerator = function() {
+        var fr_type = ' type="email"',
+            fr_required = $('#fr_generator-email-required').is(':checked') ? ' required="required"' : '',
+            fr_label = $('#fr_generator-email-label').val() ? ' label="' + $('#fr_generator-email-label').val() + '"' : '',
+            fr_name = $('#fr_generator-email-name').val() ? ' name="' + $('#fr_generator-email-name').val() + '"' : '',
+            fr_class = $('#fr_generator-email-class').val() ? ' class="' + $('#fr_generator-email-class').val() + '"' : '',
+            fr_id = $('#fr_generator-email-id').val() ? ' id="' + $('#fr_generator-email-id').val() + '"' : '',
+            fr_value = $('#fr_generator-email-value').val() ? ' value="' + $('#fr_generator-email-value').val() + '"' : '',
+            fr_placeholder = '';
+
+        if ($('#fr_generator-email-placeholder').is(':checked')) {
+            fr_placeholder = ' placeholder="' + $('#fr_generator-email-value').val() + '"';
+            fr_value = ''; // Reset value if placeholder is used
+        }
+
+        $('#fr_generatedEmailShortcode').val('[input' + fr_type + fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder + ']');
+    };
+})(jQuery);
+
+(function($) {
+    window.modalTelGenerator = function() {
+        const fr_type = ' type="tel"',
+            fr_required = $('#fr_generator-tel-required').is(':checked') ? ' required="required"' : '',
+            fr_label = $('#fr_generator-tel-label').val() ? ` label="${$('#fr_generator-tel-label').val()}"` : '',
+            fr_name = $('#fr_generator-tel-name').val() ? ` name="${$('#fr_generator-tel-name').val()}"` : '',
+            fr_class = $('#fr_generator-tel-class').val() ? ` class="${$('#fr_generator-tel-class').val()}"` : '',
+            fr_id = $('#fr_generator-tel-id').val() ? ` id="${$('#fr_generator-tel-id').val()}"` : '',
+            fr_value = $('#fr_generator-tel-value').val() ? ` value="${$('#fr_generator-tel-value').val()}"` : '',
+            fr_placeholder = $('#fr_generator-tel-placeholder').is(':checked') ? ` placeholder="${$('#fr_generator-tel-value').val()}"` : '';
+
+        // Reset value if placeholder is used
+        const final_value = fr_placeholder ? '' : fr_value;
+
+        $('#fr_generatedTelShortcode').val(`[input${fr_type}${fr_label}${fr_name}${final_value}${fr_id}${fr_class}${fr_required}${fr_placeholder}]`);
+    };
+})(jQuery);
+
+(function($) {
+    window.modalTextareaGenerator = function() {
+        var fr_type = ' type="textarea"',
+            fr_required = $('#fr_generator-textarea-required').is(':checked') ? ' required="required"' : '',
+            fr_label = $('#fr_generator-textarea-label').val() ? ' label="' + $('#fr_generator-textarea-label').val() + '"' : '',
+            fr_cols = $('#fr_generator-textarea-cols').val() ? ' cols="' + $('#fr_generator-textarea-cols').val() + '"' : '',
+            fr_rows = $('#fr_generator-textarea-rows').val() ? ' rows="' + $('#fr_generator-textarea-rows').val() + '"' : '',
+            fr_name = $('#fr_generator-textarea-name').val() ? ' name="' + $('#fr_generator-textarea-name').val() + '"' : '',
+            fr_class = $('#fr_generator-textarea-class').val() ? ' class="' + $('#fr_generator-textarea-class').val() + '"' : '',
+            fr_id = $('#fr_generator-textarea-id').val() ? ' id="' + $('#fr_generator-textarea-id').val() + '"' : '',
+            fr_value = $('#fr_generator-textarea-value').val() ? ' value="' + $('#fr_generator-textarea-value').val() + '"' : '',
+            fr_placeholder = $('#fr_generator-textarea-placeholder').is(':checked') ? ' placeholder="' + $('#fr_generator-textarea-value').val() + '"' : '';
+
+        // Reset value if placeholder is checked
+        if ($('#fr_generator-textarea-placeholder').is(':checked')) {
+            fr_value = '';
+        }
+
+        $('#fr_generatedTextareaShortcode').val('[input' + fr_type + fr_rows + fr_cols + fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder + ']');
+    };
+})(jQuery);
+
+(function($) {
+	document.addEventListener("DOMContentLoaded", function() {
+		// Fonction pour vérifier et ajouter des attributs
+		function checkAndAddAttributes(type) {
+			const inputName = document.getElementById(`fr_generator-${type}-name`);
+			const requiredName = document.getElementById(`requiredName${capitalizeFirstLetter(type)}`);
+			const modalId = `fr_modal_${type}`;
+
+			if (inputName && inputName.value !== "") {
+				inputName.style.border = "solid 1px black";
+				if (requiredName) requiredName.setAttribute("hidden", true);
+				$(`#${modalId}`).modal('hide'); // Fermeture du modal Bootstrap
+				transfertField(type); // Appel de la fonction de transfert
+			} else if (inputName) {
+				inputName.style.border = "solid 2px red";
+				if (requiredName) requiredName.removeAttribute("hidden");
+			}
+		}
+
+		// Fonction pour transférer le contenu du champ
+		function transfertField(type) {
+			const formContent = document.getElementById("fr_contenu_formulaire");
+			const generatedShortcode = document.getElementById(`fr_generated${capitalizeFirstLetter(type)}Shortcode`);
+
+			if (formContent && generatedShortcode) {
+				formContent.value += "\n" + generatedShortcode.value + "\n";
+				clearFormFields(type); // Réinitialisation des champs
+			}
+		}
+
+		// Fonction pour réinitialiser les champs du formulaire
+		function clearFormFields(type) {
+			const fields = ["required", "placeholder", "label", "name", "class", "id", "value"];
+			fields.forEach(field => {
+				const element = document.getElementById(`fr_generator-${type}-${field}`);
+				if (element) {
+					if (element.type === "checkbox") {
+						element.checked = false;
+					} else {
+						element.value = "";
+					}
+				}
+			});
+			const generatedShortcode = document.getElementById(`fr_generated${capitalizeFirstLetter(type)}Shortcode`);
+			if (generatedShortcode) generatedShortcode.value = `[input type="${type}"]`;
+		}
+
+		// Fonction pour capitaliser la première lettre d'une chaîne
+		function capitalizeFirstLetter(string) {
+			return string.charAt(0).toUpperCase() + string.slice(1);
+		}
+
+		// Ajout d'écouteurs d'événements pour les boutons de soumission
+		const types = ["text", "email", "textarea", "tel"];
+		types.forEach(type => {
+			const submitButton = document.getElementById(`fr_submit_${type}`);
+			if (submitButton) {
+				submitButton.addEventListener("click", function() {
+					checkAndAddAttributes(type);
+				});
+			}
+		});
+	});
+})(jQuery);
+
+// Sets default values for the Mail form based on predefined values
 function buttonDefaultMail() {
-	var defaultMail = document.getElementsByName("contenuFormulaireMail")[0].value;
+    // Retrieve default values defined in hidden inputs or other elements
+    var defaultValues = {
+        defaultMail: document.getElementsByName("contenuFormulaireMail")[0].value,
+        defaultEmailSubmitText: document.getElementsByName("defaultEmailSubmitText")[0].value,
+        defaultEmailSubmitTextColor: document.getElementsByName("defaultEmailSubmitTextColor")[0].value,
+        defaultEmailSubmitColor: document.getElementsByName("defaultEmailSubmitColor")[0].value
+    };
 
-	var defaultEmailSubmitText = document.getElementsByName("defaultEmailSubmitText")[0].value;
-	var defaultEmailSubmitTextColor = document.getElementsByName("defaultEmailSubmitTextColor")[0].value;
-	var defaultEmailSubmitColor = document.getElementsByName("defaultEmailSubmitColor")[0].value;
-
-	document.getElementById('fr_contenu_formulaire').value = defaultMail;
-
-	document.getElementById('fr_email_submit').value = defaultEmailSubmitText;
-	document.getElementById('fr_email_text_color').value = defaultEmailSubmitTextColor;
-	document.getElementById('fr_email_submit_color').value = defaultEmailSubmitColor;
-	document.getElementById('fr_color_text_code_email').value = defaultEmailSubmitTextColor;
-	document.getElementById('fr_color_code_email').value = defaultEmailSubmitColor;
-	
+    // Apply these default values to the relevant form fields
+    document.getElementById('fr_contenu_formulaire').value = defaultValues.defaultMail;
+    document.getElementById('fr_email_submit').value = defaultValues.defaultEmailSubmitText;
+    document.getElementById('fr_email_text_color').value = defaultValues.defaultEmailSubmitTextColor;
+    document.getElementById('fr_email_submit_color').value = defaultValues.defaultEmailSubmitColor;
+    document.getElementById('fr_color_text_code_email').value = defaultValues.defaultEmailSubmitTextColor;
+    document.getElementById('fr_color_code_email').value = defaultValues.defaultEmailSubmitColor;
 }
 
 function buttonDefaultWhatsapp() {
@@ -536,109 +222,119 @@ function buttonDefaultEmailSending() {
 	document.getElementById('fr_email_user_content').value = defaultEmailUserContent;
 }
 
-// Select the form to monitor
+// Sélectionnez le formulaire à surveiller
 const formulaire = document.getElementById("post");
+
 if (formulaire) {
-	// Initialize the non-persistent modification variable to false
-	let modificationNonEnregistree = false;
+    let modificationsEnregistrees = true; // Inverser la logique pour simplifier
 
-	// Initialize the variable to track if the switch button has been used to submit the form
-	let switchSubmitted = false;
-
-	// Initialize the variable to track if the publish button has been used to submit the form
-	let publishSubmitted = false;
-
-	// Add an "input" event handler to the form to detect changes
-	formulaire.addEventListener('input', function(e) {
-		modificationNonEnregistree = true;
-	});
-
-	// Add a "change" event handler to the form to detect changes
-	formulaire.addEventListener('change', function(e) {
-		modificationNonEnregistree = true;
-	});
-
-	// Add a "submit" event handler to the form to disable the confirmation dialog box
-	formulaire.addEventListener('submit', function(event) {
-		// Reset the modification flag and switchSubmitted
-		modificationNonEnregistree = false;
-		switchSubmitted = false;
-
-		// If the form has been submitted by the switch button, set `switchSubmitted` to true
-		if (event.submitter.id === 'fr_whatsapp_switch') {
-		switchSubmitted = true;
-		}
-
-		// If the form has been submitted by the publish button, set `publishSubmitted` to true
-		if (event.submitter.id === 'fr_publish_final') {
-		publishSubmitted = true;
-		}
-	});
-
-	// Add a "beforeunload" event handler to the window to display the confirmation dialog box
-	window.addEventListener('beforeunload', function(e) {
-		// Check if there are any unsaved modifications
-		if (modificationNonEnregistree && !switchSubmitted && !publishSubmitted) {
-		// Display the confirmation dialog box
-		e.preventDefault();
-		e.returnValue = '';
-		window.alert('You have unsaved changes!');
+    // Détecte les modifications dans le formulaire
+	formulaire.addEventListener('input', (e) => {
+		// Vérifie si l'élément déclencheur est différent de l'input à exclure
+		if (e.target.id !== "fr_whatsapp_switch") {
+			modificationsEnregistrees = false;
 		}
 	});
 
 
+    // Gestionnaire d'événement 'beforeunload' pour avertir des modifications non enregistrées
+    window.addEventListener('beforeunload', (e) => {
+        if (!modificationsEnregistrees) {
+            e.preventDefault();
+            e.returnValue = ''; // Chrome requiert cette propriété pour afficher l'alerte
+        }
+    });
 
+    // Gestionnaire de clics pour les boutons de soumission pour éviter les répétitions
+    document.addEventListener('DOMContentLoaded', () => {
+        const boutonsDeSoumission = document.querySelectorAll('#fr_whatsapp_switch, #fr_save_messages, #fr_saveFormWhatsapp, #fr_save_email, #fr_save_final, #fr_publish_final');
 
-	document.addEventListener('DOMContentLoaded', function() {
+        boutonsDeSoumission.forEach(bouton => {
+            bouton.addEventListener('click', () => {
+                modificationsEnregistrees = true;
+                document.getElementById("publish").click();
+            });
+        });
+    });
+}
 
-		const switchButton = document.getElementById('fr_whatsapp_switch');
+(function($) {
+// Mise en cache des sélecteurs pour une meilleure performance
+var $h2 = $('h2');
+var $metaboxwpadmin = $('#metaboxwpadmin');
 
-		// Add a "click" event handler to the switch button
-		switchButton.addEventListener('click', function(e) {
-			// Set `switchSubmitted` to true to indicate that the form has been submitted by the switch button
-			switchSubmitted = true;
-			// Submit the form to save the modifications.
-			formulaire.submit();
-		});
+// Gestion des événements de survol
+$h2.hover(
+	function() {
+		$(this).removeClass();
+	}
+);
 
-		
-	});
+// Gestion des clics
+$metaboxwpadmin.on('click', function() {
+	$(this).attr('class', 'postbox'); // Cette ligne remplace toutes les classes par 'postbox'
+});
 
-	// Submit function
-	document.addEventListener('DOMContentLoaded', function() {
+// Fonction de configuration de la metabox, appelée initialement et sur le rechargement de la page
+function setupMetabox() {
+	$metaboxwpadmin.attr('class', 'postbox');
+	// Supprimer une classe spécifique sur $h2 si nécessaire, sinon commenter
+	$h2.removeClass('hndle');
+}
+setupMetabox();
 
-		const saveButtonMessages = document.getElementById('fr_save_messages');
-		const saveButtonWhatsapp = document.getElementById('fr_saveFormWhatsapp');
-		const saveButtonEmail = document.getElementById('fr_save_email');
-		const saveButtonFinal = document.getElementById('fr_save_final');
+// Vérification du rechargement de la page avec la Performance API
+if (performance.getEntriesByType("navigation")[0].type === "reload") {
+	setupMetabox();
+}
+})(jQuery);
 
-		if(saveButtonMessages){
+// Adds animation to whatsapp tab when the tel is missing
+document.addEventListener('DOMContentLoaded', function() {
+    var inputWhatsapp = document.getElementById('fr_whatsapp_tel');
+    var element = document.getElementById('fr_profile-tab');
 
-			saveButtonMessages.addEventListener('click', function(e) {
-				formulaire.submit();
-			});
-		}
+    function updateElementClass() {
+        if (inputWhatsapp && inputWhatsapp.value) {
+            element.classList.remove('missing-information');
+        } else {
+            element.classList.add('missing-information');
+        }
+    }
 
-		if(saveButtonWhatsapp){
+    if (inputWhatsapp) {
+        // Initialise on load
+        updateElementClass();
 
-			saveButtonWhatsapp.addEventListener('click', function(e) {
-				formulaire.submit();
-			});
-		}
+        // Update on input change
+        inputWhatsapp.addEventListener('input', updateElementClass);
+    }
+});
 
-		if(saveButtonEmail){
+//Adds animation to email tab when the email is missing
+function validateEmails(emails) {
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emails.split(",").every(email => emailPattern.test(email.trim()));
+}
 
-			saveButtonEmail.addEventListener('click', function(e) {
-				formulaire.submit();
-			});
-		}
+function updateUIBasedOnEmailValidation(inputEmail, element) {
+    var isValidEmails = validateEmails(inputEmail.value);
+    if (inputEmail.value === '' || !isValidEmails) {
+        element.classList.add('missing-information');
+        inputEmail.style.border = '2px solid red';
+    } else {
+        element.classList.remove('missing-information');
+        inputEmail.style.border = '1px solid grey';
+    }
+}
 
-		if(saveButtonFinal){
+document.addEventListener('DOMContentLoaded', function() {
+    var inputEmail = document.getElementById('fr_email_admin_to');
+    var element = document.getElementById('fr_profile-tab');
 
-			saveButtonFinal.addEventListener('click', function(e) {
-				formulaire.submit();
-			});
-		}
-	});
-};
+    if (inputEmail && element) {
+        updateUIBasedOnEmailValidation(inputEmail, element); // Initial validation on load
 
+        inputEmail.addEventListener('input', () => updateUIBasedOnEmailValidation(inputEmail, element));
+    }
+});
