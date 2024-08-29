@@ -1,85 +1,130 @@
-jQuery(document).ready(function(){
-    
-    var siteKey = jQuery('#fr_key_site').val();
-    var recaptchaSwitch = jQuery('#fr_recaptcha_switch').val();
-    
-    function handleFormSubmit(event, formId, url, successMessageSelector, spinnerSelector, submitContentSelector) {
-        event.preventDefault();
-        var form = jQuery(formId);
+jQuery(document).ready(function($) {
+    var formreach_siteKey = formReach.formreach_key_site;
+    var formreach_recaptchaSwitch = formReach.formreach_recaptcha_switch;
 
-        var processData = function(data){
-            jQuery(spinnerSelector).hide();
-            jQuery(submitContentSelector).show();
+    function handleFormSubmit(formreach_event, formreach_formId, formreach_successMessageSelector, formreach_spinnerSelector, formreach_submitContentSelector, formreach_serializeDataArray) {
+        formreach_event.preventDefault();
+        var formreach_form = $(formreach_formId);
 
-            if(data == "recaptchaValidation=false"){
-                jQuery('#error_message').fadeIn(500).delay(5000).fadeOut(500);
-            } else {
-                jQuery(successMessageSelector).fadeIn(500).delay(5000).fadeOut(500);
-                if(formId === '#form_reach_whatsapp' && data != "recaptchaValidation=false"){
-                    var options = "width=600,height=400,left=" + ((screen.width - 600) / 2) + ",top=" + ((screen.height - 400) / 2);
-                    window.open(data, '_blank', options);
+        var formreach_processDataAjax = function(formreach_response) {
+            $(formreach_spinnerSelector).hide();
+            $(formreach_submitContentSelector).show();
+
+            if (formreach_response.success) {
+                $(formreach_successMessageSelector).fadeIn(500).delay(5000).fadeOut(500);
+
+                // Email validation if response.success is true
+                if (formreach_response.emailValid === false) {
+                    $('#error_message').fadeIn(500).delay(5000).fadeOut(500);
+                    return;
                 }
+
+                switch(formreach_formId) {
+                    case '#formreach_whatsapp':
+                        var formreach_options = "width=600,height=400,left=" + ((screen.width - 600) / 2) + ",top=" + ((screen.height - 400) / 2);
+                        window.open(formreach_response.whatsapp_link, '_blank', formreach_options);
+                        break;
+                    case '#formreach_mail':
+                        // No specific action needed for mail on success
+                        break;
+                    default:
+                        console.log("Unknown form ID");
+                }
+            } else {
+                alert("An error has occurred.");
             }
-            form[0].reset();
+
+            formreach_form[0].reset();
         };
 
-        var performAjaxSubmit = function(){
-            var serializeDataArray = form.serializeArray();
+        var formreach_performAjaxSubmit = function() {
+            // formreach_form.find('[data-type="email"]').each(function() {
+            //     formreach_serializeDataArray.push({name: this.name + '_data-type', value: 'email'});
+            // });
+            // formreach_form.find('[data-type="textarea"]').each(function() {
+            //     formreach_serializeDataArray.push({name: this.name + '_data-type', value: 'textarea'});
+            // });
 
-            jQuery.ajax({
-                type: "POST",
-                url: url,
-                data: serializeDataArray,
-                beforeSend: function beforeSend() {
-                    jQuery(submitContentSelector).hide();
-                    jQuery(spinnerSelector).show();
+            var formreach_actionName = '';
+            switch(formreach_formId) {
+                case '#formreach_mail':
+                    formreach_actionName = 'submit_contact_form';
+                    break;
+                case '#formreach_whatsapp':
+                    formreach_actionName = 'submit_whatsapp_form';
+                    break;
+                default:
+                    console.log("Unknown form ID");
+            }
+            formreach_serializeDataArray.push({name: 'action', value: formreach_actionName});
+
+            $.ajax({
+                type: 'POST',
+                url: formReach.formreach_ajax_url,
+                data: formreach_serializeDataArray,
+                beforeSend: function() {
+                    $(formreach_submitContentSelector).hide();
+                    $(formreach_spinnerSelector).show();
                 },
-                success: processData,
-                error: function(){
-                    jQuery(spinnerSelector).hide();
-                    jQuery(submitContentSelector).show();
-                    jQuery('#error_message').fadeIn(500).delay(5000).fadeOut(500);
-                    form[0].reset();
+                dataType: 'json',
+                success: formreach_processDataAjax,
+                error: function() {
+                    $(formreach_spinnerSelector).hide();
+                    $(formreach_submitContentSelector).show();
+                    $('#formreach_error_message').fadeIn(500).delay(5000).fadeOut(500);
                 }
             });
         };
 
-        if (recaptchaSwitch != 1) {
-            performAjaxSubmit();
+        if (formreach_recaptchaSwitch !== "1") {
+            formreach_performAjaxSubmit();
         } else {
-            grecaptcha.ready(function () {
-                grecaptcha.execute(siteKey, {action: 'submit'}).then(function (token) {
-                    jQuery('#g-recaptcha-response').val(token);
-                    performAjaxSubmit();
+            grecaptcha.ready(function() {
+                grecaptcha.execute(formreach_siteKey, {action: 'submit'}).then(function(token) {
+                    formreach_serializeDataArray.push({name: 'recaptcha_response', value: token});
+                    formreach_performAjaxSubmit();
                 });
             });
         }
     }
 
-    jQuery('#form_reach_mail').submit(function(event){
-        handleFormSubmit(event, '#form_reach_mail', '/wp-content/plugins/form-reach/process/validation.php', '#success_message', '#spinner', '#submitContent');
+    $('#formreach_mail, #formreach_whatsapp').submit(function(formreach_event){
+        var formreach_formId = '#' + $(this).attr('id');
+        var formreach_successMessageSelector = '#formreach_success_message';
+        var formreach_spinnerSelector = '';
+        var formreach_submitContentSelector = '';
+
+        switch(formreach_formId) {
+            case '#formreach_mail':
+                formreach_spinnerSelector = '#formreach_spinner';
+                formreach_submitContentSelector = '#formreach_submitContent';
+                break;
+            case '#formreach_whatsapp':
+                formreach_spinnerSelector = '#formreach_spinnerWhatsapp';
+                formreach_submitContentSelector = '#formreach_submitContentWhatsapp';
+                break;
+            default:
+                console.log("Unknown form ID");
+        }
+
+        var formreach_serializeDataArray = $(this).serializeArray();
+        var formreach_nonce = $(this).find('input[name="formreach_send_contact_nonce"]').val();
+        formreach_serializeDataArray.push({ name: 'formreach_send_contact_nonce', value: formreach_nonce });
+        handleFormSubmit(formreach_event, formreach_formId, formreach_successMessageSelector, formreach_spinnerSelector, formreach_submitContentSelector, formreach_serializeDataArray);
     });
 
-    jQuery('#form_reach_whatsapp').submit(function(event){
-        handleFormSubmit(event, '#form_reach_whatsapp', '/wp-content/plugins/form-reach/process/whatsapp.php', '#success_message', '#spinnerWhatsapp', '#submitContentWhatsapp');
-    });
-});
+    $('input[type="email"]').on('input', function() {
+        var formreach_emailValue = this.value;
+        var formreach_isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formreach_emailValue);
+        var formreach_feedbackElement = this.nextElementSibling;
+        var formreach_submitButton = $(this).closest('form').find('button[type="submit"]');
 
-document.querySelectorAll('input[type="email"]').forEach(function(emailField) {
-    emailField.addEventListener('input', function() {
-		var emailValue = this.value;
-		var isValidEmail = emailValue.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-		var feedbackElement = this.nextElementSibling; // Assumer que la div de feedback est juste après l'input
-
-		// Étape 3: Afficher ou cacher la div d'erreur
-		if (isValidEmail) {
-			if (feedbackElement && feedbackElement.classList.contains('invalid-feedback')) {
-				feedbackElement.style.display = 'none';
-			}
-		} else {
-			if (feedbackElement && feedbackElement.classList.contains('invalid-feedback')) {
-				feedbackElement.style.display = 'block';
-			}
-		}
+        if (formreach_isValidEmail) {
+            formreach_feedbackElement.style.display = 'none';
+            formreach_submitButton.prop('disabled', false);
+        } else {
+            formreach_feedbackElement.style.display = 'block';
+            formreach_submitButton.prop('disabled', true);
+        }
     });
 });

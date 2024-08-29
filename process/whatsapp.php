@@ -1,127 +1,111 @@
 <?php
-     // Calling wp-load
-	$path = preg_replace('/wp-content.*$/','',__DIR__);
-	require_once($path."wp-load.php");
 
-     // Nonce verification
-     if(isset($_POST['_wpnonce'])){
+if (!defined('ABSPATH')) exit;
 
-          if (!wp_verify_nonce( $_POST['_wpnonce'], 'nonce_verification' )){
+function formreach_handle_whatsapp_form() {
+    check_ajax_referer('formreach_send_contact_action', 'formreach_send_contact_nonce');
 
-               // The token verification failed
-               exit;
+    // reCAPTCHA validation if enabled
+    if (get_option('formreach_recaptcha_switch') === '1') {
+        $formreach_recaptcha_response = sanitize_text_field($_POST['recaptcha_response']);
+        $formreach_response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
+            'body' => [
+                'secret' => get_option('formreach_key_secret'),
+                'response' => $formreach_recaptcha_response
+            ]
+        ]);
 
-          }else{
-               // The token verification succeeded
+        $formreach_result = json_decode(wp_remote_retrieve_body($formreach_response), true);
 
-               if(esc_attr(get_option('fr_recaptcha_switch')) === '1') {                     
-               // reCAPTCHA V3 protection activated, verifying server response
+        if (empty($formreach_result['success']) || $formreach_result['score'] < get_option('formreach_recaptcha_score')) {
+            wp_send_json_error(['message' => 'reCAPTCHA validation failed.']);
+            wp_die();
+        }
+    }
 
-                    $captchaSecretKey = esc_attr( get_option('fr_key_secret') );
+    // Process form data
+    $formreach_postID = (int) $_POST['formreach_container_post'];
+    $formreach_wp_stored_meta_whatsapp = get_post_meta($formreach_postID);
+    $formreach_whatsapp_form_content = get_post_meta($formreach_postID, 'formreach_whatsapp_form_content', true);
+    
+    // Detection of the name and the type
+    preg_match_all('/\[input[^\]]*type="([^"]+)"[^\]]*name="([^"]+)"[^\]]*\]/', $formreach_whatsapp_form_content, $formreach_matches);
+    
+    $formreach_field_types = $formreach_matches[1];
+    $formreach_field_names = $formreach_matches[2];
 
-                    if (isset($_POST['g-recaptcha-response'])) {
+    $formreach_content = '';
+    $formreach_keyShortcode = [];
+    $formreach_valShortcode = [];
 
-                         $postData = array(
-                              'secret' => $captchaSecretKey,
-                              'response' => $_POST['g-recaptcha-response']
-                              
-                         );
+    foreach ($formreach_field_names as $formreach_index => $formreach_field_name) {        
+        if (isset($_POST[$formreach_field_name])) {
+            $formreach_field_value = $_POST[$formreach_field_name];
+            $formreach_field_value_filtered = '';
 
-                         $url = "https://www.google.com/recaptcha/api/siteverify";
-
-                         $curl = curl_init();
-                         curl_setopt($curl, CURLOPT_URL, $url);
-                         curl_setopt($curl, CURLOPT_POST, true);
-                         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($postData));
-                         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-                         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                         $serverResponse = curl_exec($curl);
-                         
-                         if(json_decode($serverResponse,true)['score'] <= 0.5)
-                         {
-                         // The reCAPTCHA V3 verification has failed
-                              echo ("recaptchaValidation=false") ; exit;
-                         }else{
-                         // The reCAPTCHA V3 verification has succeeded, processing the form data
-
-                              // Retrieval and initialization of the concerned ID
-                              $postID = sanitize_text_field($_POST['fr_container_post']);
-                              $wp_stored_meta_whatsapp = get_post_meta($postID);
-
-                              // Retrieval and filtering of user data
-                              $content ="";
-                              foreach ($_POST as $key=>$val) {
-                                   if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "fr_mail_submit" ||$key == "fr_whatsapp_submit" || $key == "fr_container_post")){
-                                        $valFiltered = str_replace("\\","",$val);
-                                        $keyFiltered = str_replace("\\","",$key);
-                                        $content .= "$keyFiltered : $valFiltered <br/>";
-                                   }
-                              }
-
-                              // Sending to the database
-                              global $wpdp;
-                              $table_name =  $wpdb->prefix . 'form_history';
-
-                              $data= array(
-                                        'type' => "Whatsapp",
-                                        'content' => $content
-                                        );
-
-                              $result = $wpdb->insert($table_name, $data);
-
-                              // Filtering for the link
-                              $whatsappContent = str_replace("<br/>","",$content);
-                              $filteredContent = urlencode(str_replace("<br/>", "\n", $content));
-
-                              // WhatsApp Administrator account
-                              $tel = esc_attr ( $wp_stored_meta_whatsapp['fr_whatsapp_tel_international'][0] );
-
-                              // Message that will be sent
-                              $link = "https://api.whatsapp.com/send/?phone=" . $tel . "&text=" . $filteredContent;
-                              echo $link;
-                         }
-
+            // Sanitize based on input type
+            switch ($formreach_field_types[$formreach_index]) {
+                case 'email':
+                    if (!filter_var($formreach_field_value, FILTER_VALIDATE_EMAIL)) {
+                        wp_send_json_error(['emailValid' => false, 'success' => false]);
+                        wp_die();
                     }
-
-               } else {
-               // reCAPTCHA V3 protection disabled, processing the form data without verification
-
-                    // Retrieval and initialization of the concerned ID
-                    $postID = sanitize_text_field($_POST['fr_container_post']);
-                    $wp_stored_meta_whatsapp = get_post_meta($postID);
-
-                    // Retrieval and filtering of user data
-                    $content ="";
-                    foreach ($_POST as $key=>$val) {
-                         if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "fr_mail_submit" ||$key == "fr_whatsapp_submit" || $key == "fr_container_post")){
-                              $valFiltered = str_replace("\\","",$val);
-                              $keyFiltered = str_replace("\\","",$key);
-                              $content .= "$keyFiltered : $valFiltered <br/>";
-                         }
+                    $formreach_field_value_filtered = sanitize_email($formreach_field_value);
+                    break;
+                case 'textarea':
+                    $formreach_field_value_filtered = nl2br(sanitize_textarea_field($formreach_field_value));
+                    break;
+                case 'url':
+                    $formreach_field_value_filtered = esc_url_raw($formreach_field_value);
+                    break;
+                case 'number':
+                    $formreach_field_value_filtered = floatval($formreach_field_value); 
+                    break;
+                case 'file':
+                    if (!empty($_FILES[$formreach_field_name]['name'])) {
+                        $formreach_upload = wp_handle_upload($_FILES[$formreach_field_name], ['test_form' => false]);
+                        if (isset($formreach_upload['url'])) {
+                            $formreach_field_value_filtered = esc_url_raw($formreach_upload['url']);
+                        } else {
+                            wp_send_json_error(['upload' => false, 'success' => false]);
+                            wp_die();
+                        }
                     }
+                    break;
+                default:
+                    $formreach_field_value_filtered = sanitize_text_field($formreach_field_value);
+                    break;
+            }
+            $formreach_content .= esc_attr($formreach_field_name) . ' : ' . $formreach_field_value_filtered . '<br/>';
+        }
+    }
 
-                    // Sending to the database
-                    global $wpdp;
-                    $table_name =  $wpdb->prefix . 'form_history';
+    // Generate WhatsApp link
+    $formreach_filteredContent = str_replace(
+        ["\\", "<br />", "<br/>"],
+        ["", "", "\n"],
+        $formreach_content
+    );
+    $formreach_tel = urlencode($formreach_wp_stored_meta_whatsapp['formreach_whatsapp_tel_international'][0]);
+    $formreach_link = "https://api.whatsapp.com/send/?phone=$formreach_tel&text=" . urlencode($formreach_filteredContent);
 
-                    $data= array(
-                              'type' => "Whatsapp",
-                              'content' => $content
-                              );
+	$formreach_local_time = gmdate('Y-m-d H:i:s');
+	global $wpdb;
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+	$wpdb->insert(
+		$wpdb->prefix . 'formreach_form_history',
+		[
+			'type' => 'Whatsapp',
+			'content' => str_replace("\\", "", $formreach_content),
+			'created_at' => $formreach_local_time
+		],
+		['%s','%s','%s']
+	);
 
-                    $result = $wpdb->insert($table_name, $data);
+    wp_send_json(['success' => true, 'whatsapp_link' => $formreach_link]);
+    wp_die();
+}
 
-                    // Filtering for the link
-                    $whatsappContent = str_replace("<br/>","",$content);
-                    $filteredContent = encodeURIComponent(str_replace("<br/>", "\n", $content));
-
-                    // WhatsApp Administrator account
-                    $tel = encodeURIComponent(esc_attr ( $wp_stored_meta_whatsapp['fr_whatsapp_tel_international'][0] ));
-
-                    // Message that will be sent
-                    $link = "https://api.whatsapp.com/send/?phone=" . $tel . "&text=" . $filteredContent;
-                    echo $link;
-               }
-          }
-     }                         
+add_action('wp_ajax_submit_whatsapp_form', 'formreach_handle_whatsapp_form');
+add_action('wp_ajax_nopriv_submit_whatsapp_form', 'formreach_handle_whatsapp_form');
 ?>

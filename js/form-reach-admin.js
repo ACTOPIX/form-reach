@@ -1,245 +1,369 @@
 (function($) {
-    // Refactorisé pour utiliser jQuery dans le scope local
-    window.modalTextGenerator = function() {
-        var fr_type = ' type="text"',
-            fr_required = $('#fr_generator-text-required').is(':checked') ? ' required="required"' : '',
-            fr_label = $('#fr_generator-text-label').val() ? ' label="' + $('#fr_generator-text-label').val() + '"' : '',
-            fr_name = $('#fr_generator-text-name').val() ? ' name="' + $('#fr_generator-text-name').val() + '"' : '',
-            fr_class = $('#fr_generator-text-class').val() ? ' class="' + $('#fr_generator-text-class').val() + '"' : '',
-            fr_id = $('#fr_generator-text-id').val() ? ' id="' + $('#fr_generator-text-id').val() + '"' : '',
-            fr_value = $('#fr_generator-text-value').val() ? ' value="' + $('#fr_generator-text-value').val() + '"' : '',
-            fr_placeholder = '';
+  // Refactorisé pour utiliser jQuery dans le scope local
+  window.formreach_modalTextGenerator = function() {
+      var formreach_type = ' type="text"',
+          formreach_required = $('#formreach_generator-text-required').is(':checked') ? ' required="required"' : '',
+          formreach_label = $('#formreach_generator-text-label').val() ? ' label="' + $('#formreach_generator-text-label').val() + '"' : '',
+          formreach_name = $('#formreach_generator-text-name').val() ? ' name="' + $('#formreach_generator-text-name').val() + '"' : '',
+          formreach_class = $('#formreach_generator-text-class').val() ? ' class="' + $('#formreach_generator-text-class').val() + '"' : '',
+          formreach_id = $('#formreach_generator-text-id').val() ? ' id="' + $('#formreach_generator-text-id').val() + '"' : '',
+          formreach_value = $('#formreach_generator-text-value').val() ? ' value="' + $('#formreach_generator-text-value').val() + '"' : '',
+          formreach_placeholder = '';
 
-        if ($('#fr_generator-text-placeholder').is(':checked')) {
-            fr_placeholder = ' placeholder="' + $('#fr_generator-text-value').val() + '"';
-            fr_value = ''; // Effacer la valeur si placeholder est coché
+      if ($('#formreach_generator-text-placeholder').is(':checked')) {
+          formreach_placeholder = ' placeholder="' + $('#formreach_generator-text-value').val() + '"';
+          formreach_value = ''; // Effacer la valeur si placeholder est coché
+      }
+
+      $('#formreach_generatedTextShortcode').val('[input' + formreach_type + formreach_label + formreach_name + formreach_value + formreach_id + formreach_class + formreach_required + formreach_placeholder + ']');
+  };
+})(jQuery);
+
+(function($) {
+  window.formreach_modalEmailGenerator = function() {
+      var formreach_type = ' type="email"',
+          formreach_required = $('#formreach_generator-email-required').is(':checked') ? ' required="required"' : '',
+          formreach_label = $('#formreach_generator-email-label').val() ? ' label="' + $('#formreach_generator-email-label').val() + '"' : '',
+          formreach_name = $('#formreach_generator-email-name').val() ? ' name="' + $('#formreach_generator-email-name').val() + '"' : '',
+          formreach_class = $('#formreach_generator-email-class').val() ? ' class="' + $('#formreach_generator-email-class').val() + '"' : '',
+          formreach_id = $('#formreach_generator-email-id').val() ? ' id="' + $('#formreach_generator-email-id').val() + '"' : '',
+          formreach_value = $('#formreach_generator-email-value').val() ? ' value="' + $('#formreach_generator-email-value').val() + '"' : '',
+          formreach_placeholder = '';
+
+      if ($('#formreach_generator-email-placeholder').is(':checked')) {
+          formreach_placeholder = ' placeholder="' + $('#formreach_generator-email-value').val() + '"';
+          formreach_value = ''; // Reset value if placeholder is used
+      }
+
+      $('#formreach_generatedEmailShortcode').val('[input' + formreach_type + formreach_label + formreach_name + formreach_value + formreach_id + formreach_class + formreach_required + formreach_placeholder + ']');
+  };
+})(jQuery);
+
+(function($) {
+  window.formreach_modalTelGenerator = function() {
+      const formreach_type = ' type="tel"',
+          formreach_required = $('#formreach_generator-tel-required').is(':checked') ? ' required="required"' : '',
+          formreach_label = $('#formreach_generator-tel-label').val() ? ` label="${$('#formreach_generator-tel-label').val()}"` : '',
+          formreach_name = $('#formreach_generator-tel-name').val() ? ` name="${$('#formreach_generator-tel-name').val()}"` : '',
+          formreach_class = $('#formreach_generator-tel-class').val() ? ` class="${$('#formreach_generator-tel-class').val()}"` : '',
+          formreach_id = $('#formreach_generator-tel-id').val() ? ` id="${$('#formreach_generator-tel-id').val()}"` : '',
+          formreach_value = $('#formreach_generator-tel-value').val() ? ` value="${$('#formreach_generator-tel-value').val()}"` : '',
+          formreach_placeholder = $('#formreach_generator-tel-placeholder').is(':checked') ? ` placeholder="${$('#formreach_generator-tel-value').val()}"` : '';
+
+      // Reset value if placeholder is used
+      const formreach_final_value = formreach_placeholder ? '' : formreach_value;
+
+      $('#formreach_generatedTelShortcode').val(`[input${formreach_type}${formreach_label}${formreach_name}${formreach_final_value}${formreach_id}${formreach_class}${formreach_required}${formreach_placeholder}]`);
+  };
+})(jQuery);
+
+(function($) {
+  window.formreach_modalTextareaGenerator = function() {
+      var formreach_type = ' type="textarea"',
+          formreach_required = $('#formreach_generator-textarea-required').is(':checked') ? ' required="required"' : '',
+          formreach_label = $('#formreach_generator-textarea-label').val() ? ' label="' + $('#formreach_generator-textarea-label').val() + '"' : '',
+          formreach_cols = $('#formreach_generator-textarea-cols').val() ? ' cols="' + $('#formreach_generator-textarea-cols').val() + '"' : '',
+          formreach_rows = $('#formreach_generator-textarea-rows').val() ? ' rows="' + $('#formreach_generator-textarea-rows').val() + '"' : '',
+          formreach_name = $('#formreach_generator-textarea-name').val() ? ' name="' + $('#formreach_generator-textarea-name').val() + '"' : '',
+          formreach_class = $('#formreach_generator-textarea-class').val() ? ' class="' + $('#formreach_generator-textarea-class').val() + '"' : '',
+          formreach_id = $('#formreach_generator-textarea-id').val() ? ' id="' + $('#formreach_generator-textarea-id').val() + '"' : '',
+          formreach_value = $('#formreach_generator-textarea-value').val() ? ' value="' + $('#formreach_generator-textarea-value').val() + '"' : '',
+          formreach_placeholder = $('#formreach_generator-textarea-placeholder').is(':checked') ? ' placeholder="' + $('#formreach_generator-textarea-value').val() + '"' : '';
+
+      // Reset value if placeholder is checked
+      if ($('#formreach_generator-textarea-placeholder').is(':checked')) {
+          formreach_value = '';
+      }
+
+      $('#formreach_generatedTextareaShortcode').val('[input' + formreach_type + formreach_rows + formreach_cols + formreach_label + formreach_name + formreach_value + formreach_id + formreach_class + formreach_required + formreach_placeholder + ']');
+  };
+})(jQuery);
+
+(function($) {
+    document.addEventListener("DOMContentLoaded", function() {
+        // Fonction pour vérifier et ajouter des attributs
+        function formreach_checkAndAddAttributes(formreach_type) {
+            const formreach_inputName = document.getElementById(`formreach_generator-${formreach_type}-name`);
+            const formreach_requiredName = document.getElementById(`formreach_requiredName${formreach_capitalizeFirstLetter(formreach_type)}`);
+            const formreach_modalId = `formreach_modal_${formreach_type}`;
+
+            if (formreach_inputName && formreach_inputName.value !== "") {
+            formreach_inputName.style.border = "solid 1px #8c8f94";
+            if (formreach_requiredName) formreach_requiredName.setAttribute("hidden", true);
+            $(`#${formreach_modalId}`).modal('hide'); // Fermeture du modal Bootstrap
+            formreach_transfertField(formreach_type); // Appel de la fonction de transfert
+            } else if (formreach_inputName) {
+            formreach_inputName.style.border = "solid 2px red";
+            if (formreach_requiredName) formreach_requiredName.removeAttribute("hidden");
+            }
         }
+		
+		// Fonction pour vérifier l'utilisation des inputs du form builder dans l'email builder
+		if(!document.getElementById('formreach_whatsapp_switch').checked){
+			var formreach_verifierCorrespondances = function() {
 
-        $('#fr_generatedTextShortcode').val('[input' + fr_type + fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder + ']');
-    };
-})(jQuery);
+				var formreach_textarea1 = document.querySelector("#formreach_contenu_formulaire"),
+					formreach_textarea2 = document.querySelector("#formreach_email_admin_content"),
+					formreach_contenuTextarea1 = formreach_textarea1 ? formreach_textarea1.value : "",
+					formreach_contenuTextarea2 = formreach_textarea2 ? formreach_textarea2.value : "",
+					formreach_valeurs1 = (formreach_contenuTextarea1.match(/name="([^"]+)"/g) || []).map(match => match.slice(6, -1)),
+					formreach_valeursManquantes1 = formreach_valeurs1.filter(formreach_valeur => !formreach_contenuTextarea2.includes(`[${formreach_valeur}]`)).map(formreach_valeur => `[${formreach_valeur}] `),
+					formreach_containerForm = document.getElementById("formreach_warning_inputs_uncalled_container"),
+					formreach_containerEmail = document.getElementById("formreach_warning_inputs_inexistent_container"),
+					formreach_messageForm = document.getElementById("formreach_warning_inputs_uncalled"),
+					formreach_messageEmail = document.getElementById("formreach_warning_inputs_inexistent");
 
-(function($) {
-    window.modalEmailGenerator = function() {
-        var fr_type = ' type="email"',
-            fr_required = $('#fr_generator-email-required').is(':checked') ? ' required="required"' : '',
-            fr_label = $('#fr_generator-email-label').val() ? ' label="' + $('#fr_generator-email-label').val() + '"' : '',
-            fr_name = $('#fr_generator-email-name').val() ? ' name="' + $('#fr_generator-email-name').val() + '"' : '',
-            fr_class = $('#fr_generator-email-class').val() ? ' class="' + $('#fr_generator-email-class').val() + '"' : '',
-            fr_id = $('#fr_generator-email-id').val() ? ' id="' + $('#fr_generator-email-id').val() + '"' : '',
-            fr_value = $('#fr_generator-email-value').val() ? ' value="' + $('#fr_generator-email-value').val() + '"' : '',
-            fr_placeholder = '';
-
-        if ($('#fr_generator-email-placeholder').is(':checked')) {
-            fr_placeholder = ' placeholder="' + $('#fr_generator-email-value').val() + '"';
-            fr_value = ''; // Reset value if placeholder is used
-        }
-
-        $('#fr_generatedEmailShortcode').val('[input' + fr_type + fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder + ']');
-    };
-})(jQuery);
-
-(function($) {
-    window.modalTelGenerator = function() {
-        const fr_type = ' type="tel"',
-            fr_required = $('#fr_generator-tel-required').is(':checked') ? ' required="required"' : '',
-            fr_label = $('#fr_generator-tel-label').val() ? ` label="${$('#fr_generator-tel-label').val()}"` : '',
-            fr_name = $('#fr_generator-tel-name').val() ? ` name="${$('#fr_generator-tel-name').val()}"` : '',
-            fr_class = $('#fr_generator-tel-class').val() ? ` class="${$('#fr_generator-tel-class').val()}"` : '',
-            fr_id = $('#fr_generator-tel-id').val() ? ` id="${$('#fr_generator-tel-id').val()}"` : '',
-            fr_value = $('#fr_generator-tel-value').val() ? ` value="${$('#fr_generator-tel-value').val()}"` : '',
-            fr_placeholder = $('#fr_generator-tel-placeholder').is(':checked') ? ` placeholder="${$('#fr_generator-tel-value').val()}"` : '';
-
-        // Reset value if placeholder is used
-        const final_value = fr_placeholder ? '' : fr_value;
-
-        $('#fr_generatedTelShortcode').val(`[input${fr_type}${fr_label}${fr_name}${final_value}${fr_id}${fr_class}${fr_required}${fr_placeholder}]`);
-    };
-})(jQuery);
-
-(function($) {
-    window.modalTextareaGenerator = function() {
-        var fr_type = ' type="textarea"',
-            fr_required = $('#fr_generator-textarea-required').is(':checked') ? ' required="required"' : '',
-            fr_label = $('#fr_generator-textarea-label').val() ? ' label="' + $('#fr_generator-textarea-label').val() + '"' : '',
-            fr_cols = $('#fr_generator-textarea-cols').val() ? ' cols="' + $('#fr_generator-textarea-cols').val() + '"' : '',
-            fr_rows = $('#fr_generator-textarea-rows').val() ? ' rows="' + $('#fr_generator-textarea-rows').val() + '"' : '',
-            fr_name = $('#fr_generator-textarea-name').val() ? ' name="' + $('#fr_generator-textarea-name').val() + '"' : '',
-            fr_class = $('#fr_generator-textarea-class').val() ? ' class="' + $('#fr_generator-textarea-class').val() + '"' : '',
-            fr_id = $('#fr_generator-textarea-id').val() ? ' id="' + $('#fr_generator-textarea-id').val() + '"' : '',
-            fr_value = $('#fr_generator-textarea-value').val() ? ' value="' + $('#fr_generator-textarea-value').val() + '"' : '',
-            fr_placeholder = $('#fr_generator-textarea-placeholder').is(':checked') ? ' placeholder="' + $('#fr_generator-textarea-value').val() + '"' : '';
-
-        // Reset value if placeholder is checked
-        if ($('#fr_generator-textarea-placeholder').is(':checked')) {
-            fr_value = '';
-        }
-
-        $('#fr_generatedTextareaShortcode').val('[input' + fr_type + fr_rows + fr_cols + fr_label + fr_name + fr_value + fr_id + fr_class + fr_required + fr_placeholder + ']');
-    };
-})(jQuery);
-
-(function($) {
-	document.addEventListener("DOMContentLoaded", function() {
-		// Fonction pour vérifier et ajouter des attributs
-		function checkAndAddAttributes(type) {
-			const inputName = document.getElementById(`fr_generator-${type}-name`);
-			const requiredName = document.getElementById(`requiredName${capitalizeFirstLetter(type)}`);
-			const modalId = `fr_modal_${type}`;
-
-			if (inputName && inputName.value !== "") {
-				inputName.style.border = "solid 1px black";
-				if (requiredName) requiredName.setAttribute("hidden", true);
-				$(`#${modalId}`).modal('hide'); // Fermeture du modal Bootstrap
-				transfertField(type); // Appel de la fonction de transfert
-			} else if (inputName) {
-				inputName.style.border = "solid 2px red";
-				if (requiredName) requiredName.removeAttribute("hidden");
-			}
-		}
-
-		// Fonction pour transférer le contenu du champ
-		function transfertField(type) {
-			const formContent = document.getElementById("fr_contenu_formulaire");
-			const generatedShortcode = document.getElementById(`fr_generated${capitalizeFirstLetter(type)}Shortcode`);
-
-			if (formContent && generatedShortcode) {
-				formContent.value += "\n" + generatedShortcode.value + "\n";
-				clearFormFields(type); // Réinitialisation des champs
-			}
-		}
-
-		// Fonction pour réinitialiser les champs du formulaire
-		function clearFormFields(type) {
-			const fields = ["required", "placeholder", "label", "name", "class", "id", "value"];
-			fields.forEach(field => {
-				const element = document.getElementById(`fr_generator-${type}-${field}`);
-				if (element) {
-					if (element.type === "checkbox") {
-						element.checked = false;
-					} else {
-						element.value = "";
-					}
+				if (formreach_valeursManquantes1.length) {
+					formreach_containerForm.style.display = 'block';
+					setTimeout(() => { formreach_containerForm.style.opacity = '1'; }, 200);
+					setTimeout(() => { formreach_containerForm.style.height = 'auto'; }, 200);
+					formreach_messageForm.innerHTML = `The following inputs are missing in the <u>email builder</u>: <strong>${formreach_valeursManquantes1.join(", ")}</strong> `;
+					formreach_containerEmail.style.display = 'block';
+					setTimeout(() => { formreach_containerEmail.style.opacity = '1'; }, 200);
+					setTimeout(() => { formreach_containerEmail.style.height = 'auto'; }, 200);
+					formreach_valeursManquantes1 = formreach_valeurs1.filter(formreach_valeur => !formreach_contenuTextarea2.includes(`[${formreach_valeur}]`)).map(formreach_valeur => `<span class="formreach_draggable" style="color:#41464b;font-weight:bold;" draggable="true">[${formreach_valeur}]</span>`);
+					formreach_messageEmail.innerHTML = `The following draggable inputs  are not used: ${formreach_valeursManquantes1.join(", ").replace(/,/g, ' ')}`;
+				} else {
+					formreach_containerForm.style.opacity = '0';
+					setTimeout(() => { formreach_containerForm.style.height = '0'; }, 200);
+					setTimeout(() => { formreach_containerForm.style.display = 'none'; }, 300);
+					formreach_messageForm.innerHTML = "";
+					formreach_containerEmail.style.opacity = '0';
+					setTimeout(() => { formreach_containerEmail.style.height = '0'; }, 200);
+					setTimeout(() => { formreach_containerEmail.style.display = 'none'; }, 300);
+					formreach_messageEmail.innerHTML = "";
 				}
-			});
-			const generatedShortcode = document.getElementById(`fr_generated${capitalizeFirstLetter(type)}Shortcode`);
-			if (generatedShortcode) generatedShortcode.value = `[input type="${type}"]`;
-		}
-
-		// Fonction pour capitaliser la première lettre d'une chaîne
-		function capitalizeFirstLetter(string) {
-			return string.charAt(0).toUpperCase() + string.slice(1);
-		}
-
-		// Ajout d'écouteurs d'événements pour les boutons de soumission
-		const types = ["text", "email", "textarea", "tel"];
-		types.forEach(type => {
-			const submitButton = document.getElementById(`fr_submit_${type}`);
-			if (submitButton) {
-				submitButton.addEventListener("click", function() {
-					checkAndAddAttributes(type);
+				
+				document.querySelectorAll('.formreach_draggable').forEach(draggable => {
+					draggable.addEventListener('dragstart', event => {
+						event.dataTransfer.setData('text/plain', event.target.innerText);
+					});
 				});
+				
+				const formreach_draggableElements = document.querySelectorAll('.formreach_draggable');
+
+				// Fonction pour ajouter le focus aux inputs spécifiés
+				function formreach_focusInputs() {
+					document.getElementById('formreach_email_admin_to').style.outline = '1.5px solid #2271B1';
+					document.getElementById('formreach_email_admin_from').style.outline = '1.5px solid #2271B1';
+					document.getElementById('formreach_email_admin_subject').style.outline = '1.5px solid #2271B1';
+					document.getElementById('formreach_email_admin_content').style.outline = '1.5px solid #2271B1';
+                    document.getElementById('formreach_email_user_to').style.outline = '1.5px solid #2271B1';
+                    document.getElementById('formreach_email_user_from').style.outline = '1.5px solid #2271B1';
+                    document.getElementById('formreach_email_user_subject').style.outline = '1.5px solid #2271B1';
+                    document.getElementById('formreach_email_user_content').style.outline = '1.5px solid #2271B1';
+				}
+				
+				function formreach_removeFocus() {
+					document.getElementById('formreach_email_admin_to').style.outline = '';
+					document.getElementById('formreach_email_admin_from').style.outline = '';
+					document.getElementById('formreach_email_admin_subject').style.outline = '';
+					document.getElementById('formreach_email_admin_content').style.outline = '';
+                    document.getElementById('formreach_email_user_to').style.outline = '';
+                    document.getElementById('formreach_email_user_from').style.outline = '';
+                    document.getElementById('formreach_email_user_subject').style.outline = '';
+                    document.getElementById('formreach_email_user_content').style.outline = '';
+				}
+
+				function formreach_handleDragStart(event) {
+					formreach_focusInputs();
+				}
+				
+				function formreach_handleDragEnd(event) {
+					formreach_removeFocus();
+				}
+
+				formreach_draggableElements.forEach(element => {
+					element.setAttribute('draggable', 'true');
+					element.addEventListener('dragstart', formreach_handleDragStart);
+					element.addEventListener('dragend', formreach_handleDragEnd);
+				});
+			};
+			
+				formreach_verifierCorrespondances();
+
+				document.addEventListener("input", function(event) {
+					if (event.target.matches("textarea")) {
+						formreach_verifierCorrespondances();
+					}
+				});
+        }
+
+        // Fonction pour transférer le contenu du champ
+        function formreach_transfertField(formreach_type) {
+			const formreach_formContent = document.getElementById("formreach_contenu_formulaire");
+			const formreach_generatedShortcode = document.getElementById(`formreach_generated${formreach_capitalizeFirstLetter(formreach_type)}Shortcode`);
+
+			if (formreach_formContent && formreach_generatedShortcode) {
+				// Vérifie s'il y a déjà du contenu dans la ligne précédente
+				const formreach_previousLineContent = formreach_getPreviousLineContent(formreach_formContent);
+
+				// Vérifie s'il y a du contenu après le curseur dans la dernière ligne
+				const formreach_cursorPosition = formreach_formContent.selectionEnd;
+				const formreach_textAfterCursor = formreach_formContent.value.substring(formreach_cursorPosition);
+				const formreach_nextLineIndex = formreach_textAfterCursor.indexOf("\n");
+
+				// Nombre de retours à la ligne à ajouter
+				let formreach_lineBreaksToAdd = 1; // Par défaut, ajoute un retour à la ligne
+
+				if (formreach_previousLineContent || formreach_nextLineIndex !== -1) {
+					// Si la ligne précédente contient du contenu OU si le curseur est à la fin d'une ligne avec du contenu
+					formreach_lineBreaksToAdd = 2; // Ajoute deux retours à la ligne
+				}
+
+				// Ajoute le nombre approprié de retours à la ligne avant generatedShortcode.value
+				formreach_formContent.value += "\n".repeat(formreach_lineBreaksToAdd) + formreach_generatedShortcode.value;
+
+				formreach_clearFormFields(formreach_type); // Réinitialisation des champs
+                if(!document.getElementById('formreach_whatsapp_switch').checked){
+				    formreach_verifierCorrespondances();
+                }
 			}
-		});
-	});
+		}
+
+		// Fonction pour obtenir le contenu de la ligne précédente dans un textarea
+		function formreach_getPreviousLineContent(formreach_textarea) {
+			const formreach_cursorPosition = formreach_textarea.selectionStart;
+			const formreach_textBeforeCursor = formreach_textarea.value.substring(0, formreach_cursorPosition);
+			const formreach_previousLineIndex = formreach_textBeforeCursor.lastIndexOf("\n");
+
+			if (formreach_previousLineIndex !== -1) {
+				const formreach_previousLineContent = formreach_textBeforeCursor.substring(formreach_previousLineIndex + 1);
+				return formreach_previousLineContent.trim(); // Retourne le contenu de la ligne précédente sans les espaces de début et de fin
+			}
+
+			return null; // Retourne null s'il n'y a pas de ligne précédente
+		}
+
+        // Fonction pour réinitialiser les champs du formulaire
+        function formreach_clearFormFields(formreach_type) {
+            const formreach_fields = ["required", "placeholder", "label", "name", "class", "id", "value"];
+            formreach_fields.forEach(formreach_field => {
+            const formreach_element = document.getElementById(`formreach_generator-${formreach_type}-${formreach_field}`);
+            if (formreach_element) {
+                if (formreach_element.type === "checkbox") {
+                    formreach_element.checked = false;
+                } else {
+                    formreach_element.value = "";
+                }
+            }
+            });
+            const formreach_generatedShortcode = document.getElementById(`formreach_generated${formreach_capitalizeFirstLetter(formreach_type)}Shortcode`);
+            if (formreach_generatedShortcode) formreach_generatedShortcode.value = `[input type="${formreach_type}"]`;
+        }
+
+        // Fonction pour capitaliser la première lettre d'une chaîne
+        function formreach_capitalizeFirstLetter(formreach_string) {
+            return formreach_string.charAt(0).toUpperCase() + formreach_string.slice(1);
+        }
+
+        // Ajout d'écouteurs d'événements pour les boutons de soumission
+        const formreach_types = ["text", "email", "textarea", "tel"];
+        formreach_types.forEach(formreach_type => {
+            const formreach_submitButton = document.getElementById(`formreach_submit_${formreach_type}`);
+            if (formreach_submitButton) {
+            formreach_submitButton.addEventListener("click", function() {
+                formreach_checkAndAddAttributes(formreach_type);
+            });
+            }
+        });
+    });
 })(jQuery);
 
 // Sets default values for the Mail form based on predefined values
-function buttonDefaultMail() {
-    // Retrieve default values defined in hidden inputs or other elements
-    var defaultValues = {
-        defaultMail: document.getElementsByName("contenuFormulaireMail")[0].value,
-        defaultEmailSubmitText: document.getElementsByName("defaultEmailSubmitText")[0].value,
-        defaultEmailSubmitTextColor: document.getElementsByName("defaultEmailSubmitTextColor")[0].value,
-        defaultEmailSubmitColor: document.getElementsByName("defaultEmailSubmitColor")[0].value
-    };
-
-    // Apply these default values to the relevant form fields
-    document.getElementById('fr_contenu_formulaire').value = defaultValues.defaultMail;
-    document.getElementById('fr_email_submit').value = defaultValues.defaultEmailSubmitText;
-    document.getElementById('fr_email_text_color').value = defaultValues.defaultEmailSubmitTextColor;
-    document.getElementById('fr_email_submit_color').value = defaultValues.defaultEmailSubmitColor;
-    document.getElementById('fr_color_text_code_email').value = defaultValues.defaultEmailSubmitTextColor;
-    document.getElementById('fr_color_code_email').value = defaultValues.defaultEmailSubmitColor;
+function formreach_buttonDefaultMail() {
+  // Retrieve default values defined in hidden inputs or other elements
+  var formreach_defaultValues = {
+    formreach_defaultEmailForm : formReach.formreach_email_form_default,
+    formreach_defaultEmailSubmitText : formReach.formreach_email_submit_text_default,
+    formreach_defaultEmailSubmitTextColor : formReach.formreach_email_submit_text_color_default,
+    formreach_defaultEmailSubmitColor : formReach.formreach_email_submit_color_default
+  };
+  // Apply these default values to the relevant form fields
+  document.getElementById('formreach_contenu_formulaire').value = formreach_defaultValues.formreach_defaultEmailForm;
+  document.getElementById('formreach_email_submit').value = formreach_defaultValues.formreach_defaultEmailSubmitText;
+  document.getElementById('formreach_email_text_color').value = formreach_defaultValues.formreach_defaultEmailSubmitTextColor;
+  document.getElementById('formreach_email_submit_color').value = formreach_defaultValues.formreach_defaultEmailSubmitColor;
+  document.getElementById('formreach_color_text_code_email').value = formreach_defaultValues.formreach_defaultEmailSubmitTextColor;
+  document.getElementById('formreach_color_code_email').value = formreach_defaultValues.formreach_defaultEmailSubmitColor;
 }
 
-function buttonDefaultWhatsapp() {
-	var defaultWhatsapp = document.getElementsByName("contenuFormulaireWhatsapp")[0].value;
-
-	var defaultWhatsappSubmitText = document.getElementsByName("defaultWhatsappSubmitText")[0].value;
-	var defaultWhatsappSubmitTextColor = document.getElementsByName("defaultWhatsappSubmitTextColor")[0].value;
-	var defaultWhatsappSubmitColor = document.getElementsByName("defaultWhatsappSubmitColor")[0].value;
-
-	document.getElementById('fr_contenu_formulaire').value = defaultWhatsapp;
-
-	document.getElementById('fr_whatsapp_submit').value = defaultWhatsappSubmitText;
-	document.getElementById('fr_whatsapp_text_color').value = defaultWhatsappSubmitTextColor;
-	document.getElementById('fr_whatsapp_submit_color').value = defaultWhatsappSubmitColor;
-	document.getElementById('fr_color_text_code_whatsapp').value = defaultWhatsappSubmitTextColor;
-	document.getElementById('fr_color_code_whatsapp').value = defaultWhatsappSubmitColor;
-
+function formreach_buttonDefaultWhatsapp() {
+    var formreach_defaultValues = {
+        formreach_defaultWhatsappForm : formReach.formreach_whatsapp_form_default,
+        formreach_defaultWhatsappSubmitText : formReach.formreach_whatsapp_submit_text_default,
+        formreach_defaultWhatsappSubmitTextColor : formReach.formreach_whatsapp_submit_text_color_default,
+        formreach_defaultWhatsappSubmitColor : formReach.formreach_whatsapp_submit_color_default
+    };
+document.getElementById('formreach_contenu_formulaire').value = formreach_defaultValues.formreach_defaultWhatsappForm;
+document.getElementById('formreach_whatsapp_submit').value = formreach_defaultValues.formreach_defaultWhatsappSubmitText;
+document.getElementById('formreach_whatsapp_text_color').value = formreach_defaultValues.formreach_defaultWhatsappSubmitTextColor;
+document.getElementById('formreach_whatsapp_submit_color').value = formreach_defaultValues.formreach_defaultWhatsappSubmitColor;
+document.getElementById('formreach_color_text_code_whatsapp').value = formreach_defaultValues.formreach_defaultWhatsappSubmitTextColor;
+document.getElementById('formreach_color_code_whatsapp').value = formreach_defaultValues.formreach_defaultWhatsappSubmitColor;
 }
 
 // Default values for the email messages
-function buttonDefaultEmailMessages() {
-	var defaultEmailSuccess = document.getElementsByName("buttonDefaultEmailSuccess")[0].value;
-	var defaultEmailError = document.getElementsByName("buttonDefaultEmailError")[0].value;
-	
-	document.getElementById('fr_email_success').value = defaultEmailSuccess;
-	document.getElementById('fr_email_error').value = defaultEmailError;
+function formreach_buttonDefaultEmailMessages() {
+  var formreach_defaultValues = {
+        formreach_defaultEmailSuccess : formReach.formreach_email_success_default,
+        formreach_defaultEmailError : formReach.formreach_email_error_default
+    }
+document.getElementById('formreach_email_success').value = formreach_defaultValues.formreach_defaultEmailSuccess;
+document.getElementById('formreach_email_error').value = formreach_defaultValues.formreach_defaultEmailError;
 }
 
 // Default values for the whatsapp messages
-function buttonDefaultWhatsappMessages() {
-	var defaultWhatsappSuccess = document.getElementsByName("buttonDefaultWhatsappSuccess")[0].value;
-	var defaultWhatsappError = document.getElementsByName("buttonDefaultWhatsappError")[0].value;
-
-	document.getElementById('fr_whatsapp_success').value = defaultWhatsappSuccess;
-	document.getElementById('fr_whatsapp_error').value = defaultWhatsappError;
+function formreach_buttonDefaultWhatsappMessages() {
+    var formreach_defaultValues = {
+        formreach_defaultWhatsappSuccess : formReach.formreach_whatsapp_success_default,
+        formreach_defaultWhatsappError : formReach.formreach_whatsapp_error_default
+    };
+document.getElementById('formreach_whatsapp_success').value = formreach_defaultValues.defaultWhatsappSuccess;
+document.getElementById('formreach_whatsapp_error').value = formreach_defaultValues.defaultWhatsappError;
 }
 
 // Default values for the email sending
-function buttonDefaultEmailSending() {
-	var defaultEmailAdminTo = document.getElementsByName("defaultEmailAdminTo")[0].value;
-	var defaultEmailAdminFrom = document.getElementsByName("defaultEmailAdminFrom")[0].value;
-	var defaultEmailAdminSubject = document.getElementsByName("defaultEmailAdminSubject")[0].value;
-	var defaultEmailAdminContent = document.getElementsByName("defaultEmailAdminContent")[0].value;
+function formreach_buttonDefaultEmailSending() {
+    var formreach_defaultValues = {
+        formreach_defaultEmailAdminTo : formReach.formreach_email_admin_to_default,
+        formreach_defaultEmailAdminFrom : formReach.formreach_email_admin_from_default,
+        formreach_defaultEmailAdminSubject : formReach.formreach_email_admin_subject_default,
+        formreach_defaultEmailAdminContent : formReach.formreach_email_admin_content_default,
 
-	var defaultEmailUserTo = document.getElementsByName("defaultEmailUserTo")[0].value;
-	var defaultEmailUserFrom = document.getElementsByName("defaultEmailUserFrom")[0].value;
-	var defaultEmailUserSubject = document.getElementsByName("defaultEmailUserSubject")[0].value;
-	var defaultEmailUserContent = document.getElementsByName("defaultEmailUserContent")[0].value;
+        formreach_defaultEmailUserTo : formReach.formreach_email_user_to_default,
+        formreach_defaultEmailUserFrom : formReach.formreach_email_user_from_default,
+        formreach_defaultEmailUserSubject : formReach.formreach_email_user_subject_default,
+        formreach_defaultEmailUserContent : formReach.formreach_email_user_content_default
+    };
+document.getElementById('formreach_email_admin_to').value = formreach_defaultValues.formreach_defaultEmailAdminTo;
+document.getElementById('formreach_email_admin_from').value = formreach_defaultValues.formreach_defaultEmailAdminFrom;
+document.getElementById('formreach_email_admin_subject').value = formreach_defaultValues.formreach_defaultEmailAdminSubject;
+document.getElementById('formreach_email_admin_content').value = formreach_defaultValues.formreach_defaultEmailAdminContent;
 
-	
-	document.getElementById('fr_email_admin_to').value = defaultEmailAdminTo;
-	document.getElementById('fr_email_admin_from').value = defaultEmailAdminFrom;
-	document.getElementById('fr_email_admin_subject').value = defaultEmailAdminSubject;
-	document.getElementById('fr_email_admin_content').value = defaultEmailAdminContent;
-
-	document.getElementById('fr_email_user_to').value = defaultEmailUserTo;
-	document.getElementById('fr_email_user_from').value = defaultEmailUserFrom;
-	document.getElementById('fr_email_user_subject').value = defaultEmailUserSubject;
-	document.getElementById('fr_email_user_content').value = defaultEmailUserContent;
+document.getElementById('formreach_email_user_to').value = formreach_defaultValues.formreach_defaultEmailUserTo;
+document.getElementById('formreach_email_user_from').value = formreach_defaultValues.formreach_defaultEmailUserFrom;
+document.getElementById('formreach_email_user_subject').value = formreach_defaultValues.formreach_efaultEmailUserSubject;
+document.getElementById('formreach_email_user_content').value = formreach_defaultValues.formreach_defaultEmailUserContent;
 }
 
 // Sélectionnez le formulaire à surveiller
-const formulaire = document.getElementById("post");
+const formreach_formulaire = document.getElementById("post");
 
-if (formulaire) {
-    let modificationsEnregistrees = true; // Inverser la logique pour simplifier
+if (formreach_formulaire) {
+    let formreach_modificationsEnregistrees = true; // Inverser la logique pour simplifier
 
     // Détecte les modifications dans le formulaire
-	formulaire.addEventListener('input', (e) => {
-		// Vérifie si l'élément déclencheur est différent de l'input à exclure
-		if (e.target.id !== "fr_whatsapp_switch") {
-			modificationsEnregistrees = false;
-		}
-	});
-
+    formreach_formulaire.addEventListener('input', (e) => {
+    // Vérifie si l'élément déclencheur est différent de l'input à exclure
+    if (e.target.id !== "formreach_whatsapp_switch") {
+        formreach_modificationsEnregistrees = false;
+    }
+    });
 
     // Gestionnaire d'événement 'beforeunload' pour avertir des modifications non enregistrées
     window.addEventListener('beforeunload', (e) => {
-        if (!modificationsEnregistrees) {
+        if (!formreach_modificationsEnregistrees) {
             e.preventDefault();
             e.returnValue = ''; // Chrome requiert cette propriété pour afficher l'alerte
         }
@@ -247,11 +371,11 @@ if (formulaire) {
 
     // Gestionnaire de clics pour les boutons de soumission pour éviter les répétitions
     document.addEventListener('DOMContentLoaded', () => {
-        const boutonsDeSoumission = document.querySelectorAll('#fr_whatsapp_switch, #fr_save_messages, #fr_saveFormWhatsapp, #fr_save_email, #fr_save_final, #fr_publish_final');
+        const formreach_boutonsDeSoumission = document.querySelectorAll('#formreach_whatsapp_switch, #formreach_save_messages, #formreach_saveFormWhatsapp, #formreach_save_email, #formreach_save_final, #formreach_publish_final');
 
-        boutonsDeSoumission.forEach(bouton => {
-            bouton.addEventListener('click', () => {
-                modificationsEnregistrees = true;
+        formreach_boutonsDeSoumission.forEach(formreach_bouton => {
+            formreach_bouton.addEventListener('click', () => {
+                formreach_modificationsEnregistrees = true;
                 document.getElementById("publish").click();
             });
         });
@@ -260,81 +384,410 @@ if (formulaire) {
 
 (function($) {
 // Mise en cache des sélecteurs pour une meilleure performance
-var $h2 = $('h2');
-var $metaboxwpadmin = $('#metaboxwpadmin');
+var formreach_h2 = $('h2');
+var formreach_metaboxwpadmin = $('#formreach_metabox');
 
 // Gestion des événements de survol
-$h2.hover(
-	function() {
-		$(this).removeClass();
-	}
+formreach_h2.hover(
+function() {
+  $(this).removeClass();
+}
 );
 
 // Gestion des clics
-$metaboxwpadmin.on('click', function() {
-	$(this).attr('class', 'postbox'); // Cette ligne remplace toutes les classes par 'postbox'
+formreach_metaboxwpadmin.on('click', function() {
+$(this).attr('class', 'postbox'); // Cette ligne remplace toutes les classes par 'postbox'
 });
 
 // Fonction de configuration de la metabox, appelée initialement et sur le rechargement de la page
-function setupMetabox() {
-	$metaboxwpadmin.attr('class', 'postbox');
-	// Supprimer une classe spécifique sur $h2 si nécessaire, sinon commenter
-	$h2.removeClass('hndle');
+function formreach_setupMetabox() {
+formreach_metaboxwpadmin.attr('class', 'postbox');
+// Supprimer une classe spécifique sur formreach_h2 si nécessaire, sinon commenter
+formreach_h2.removeClass('hndle');
 }
-setupMetabox();
+formreach_setupMetabox();
 
 // Vérification du rechargement de la page avec la Performance API
 if (performance.getEntriesByType("navigation")[0].type === "reload") {
-	setupMetabox();
+formreach_setupMetabox();
 }
 })(jQuery);
 
 // Adds animation to whatsapp tab when the tel is missing
 document.addEventListener('DOMContentLoaded', function() {
-    var inputWhatsapp = document.getElementById('fr_whatsapp_tel');
-    var element = document.getElementById('fr_profile-tab');
+  var formreach_inputWhatsapp = document.getElementById('formreach_whatsapp_tel');
+  var formreach_element = document.getElementById('formreach_profile-tab');
 
-    function updateElementClass() {
-        if (inputWhatsapp && inputWhatsapp.value) {
-            element.classList.remove('missing-information');
-        } else {
-            element.classList.add('missing-information');
-        }
-    }
+  function formreach_updateElementClass() {
+      if (formreach_inputWhatsapp && formreach_inputWhatsapp.value) {
+          formreach_element.classList.remove('formreach_missing-information');
+      } else {
+          formreach_element.classList.add('formreach_missing-information');
+      }
+  }
 
-    if (inputWhatsapp) {
-        // Initialise on load
-        updateElementClass();
+  if (formreach_inputWhatsapp) {
+      // Initialise on load
+      formreach_updateElementClass();
 
-        // Update on input change
-        inputWhatsapp.addEventListener('input', updateElementClass);
-    }
+      // Update on input change
+      formreach_inputWhatsapp.addEventListener('input', formreach_updateElementClass);
+  }
 });
 
 //Adds animation to email tab when the email is missing
-function validateEmails(emails) {
-    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emails.split(",").every(email => emailPattern.test(email.trim()));
+function formreach_validateEmails(formreach_emails) {
+  var formreach_emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return formreach_emails.split(",").every(formreach_email => formreach_emailPattern.test(formreach_email.trim()));
 }
 
-function updateUIBasedOnEmailValidation(inputEmail, element) {
-    var isValidEmails = validateEmails(inputEmail.value);
-    if (inputEmail.value === '' || !isValidEmails) {
-        element.classList.add('missing-information');
-        inputEmail.style.border = '2px solid red';
-    } else {
-        element.classList.remove('missing-information');
-        inputEmail.style.border = '1px solid grey';
-    }
+function formreach_updateUIBasedOnEmailValidation(formreach_inputEmail, formreach_element) {
+  var formreach_isValidEmails = formreach_validateEmails(formreach_inputEmail.value);
+  if (formreach_inputEmail.value === '' || !formreach_isValidEmails) {
+      formreach_element.classList.add('formreach_missing-information');
+      formreach_inputEmail.style.border = '2px solid red';
+  } else {
+      formreach_element.classList.remove('formreach_missing-information');
+      formreach_inputEmail.style.border = '';
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var inputEmail = document.getElementById('fr_email_admin_to');
-    var element = document.getElementById('fr_profile-tab');
+  var formreach_inputEmail = document.getElementById('formreach_email_admin_to');
+  var formreach_element = document.getElementById('formreach_profile-tab');
 
-    if (inputEmail && element) {
-        updateUIBasedOnEmailValidation(inputEmail, element); // Initial validation on load
+  if (formreach_inputEmail && formreach_element) {
+      formreach_updateUIBasedOnEmailValidation(formreach_inputEmail, formreach_element); // Initial validation on load
 
-        inputEmail.addEventListener('input', () => updateUIBasedOnEmailValidation(inputEmail, element));
+      formreach_inputEmail.addEventListener('input', () => formreach_updateUIBasedOnEmailValidation(formreach_inputEmail, formreach_element));
+  }
+});
+
+// EMAIL Submit Button Update
+document.addEventListener('DOMContentLoaded', function () {
+    // Function to update color input based on text input
+    function formreach_updateColorInput(formreach_textInput, formreach_colorInput) {
+        if (formreach_textInput && formreach_colorInput) {
+            var formreach_colorValue = formreach_textInput.value.trim();
+            if (formreach_colorValue.length <= 7 && /^#([0-9A-F]{3}){1,2}$/i.test(formreach_colorValue)) {
+                formreach_colorInput.value = formreach_colorValue;
+            }
+        }
+    }
+
+    // Function to update text input based on color input
+    function formreach_updateTextInput(formreach_colorInput, formreach_textInput) {
+        if (formreach_textInput && formreach_colorInput) {
+            formreach_textInput.value = formreach_colorInput.value;
+        }
+    }
+
+    // Update email text color inputs
+    var formreach_colorPickerInputEmailText = document.getElementById('formreach_email_text_color');
+    var formreach_colorTextInputEmailText = document.getElementById('formreach_color_text_code_email');
+    formreach_updateColorInput(formreach_colorTextInputEmailText, formreach_colorPickerInputEmailText);
+    formreach_updateTextInput(formreach_colorPickerInputEmailText, formreach_colorTextInputEmailText);
+
+    // Listen for change events on email text color inputs
+    if (formreach_colorPickerInputEmailText) {
+        formreach_colorPickerInputEmailText.addEventListener('input', function () {
+            formreach_updateTextInput(formreach_colorPickerInputEmailText, formreach_colorTextInputEmailText);
+        });
+    }
+
+    if (formreach_colorTextInputEmailText) {
+        formreach_colorTextInputEmailText.addEventListener('input', function () {
+            formreach_updateColorInput(formreach_colorTextInputEmailText, formreach_colorPickerInputEmailText);
+        });
+    }
+
+    // Update email button color inputs
+    var formreach_colorPickerInputEmail = document.getElementById('formreach_email_submit_color');
+    var formreach_colorTextInputEmail = document.getElementById('formreach_color_code_email');
+    formreach_updateColorInput(formreach_colorTextInputEmail, formreach_colorPickerInputEmail);
+    formreach_updateTextInput(formreach_colorPickerInputEmail, formreach_colorTextInputEmail);
+
+    // Listen for change events on email button color inputs
+    if (formreach_colorPickerInputEmail) {
+        formreach_colorPickerInputEmail.addEventListener('input', function () {
+            formreach_updateTextInput(formreach_colorPickerInputEmail, formreach_colorTextInputEmail);
+        });
+    }
+
+    if (formreach_colorTextInputEmail) {
+        formreach_colorTextInputEmail.addEventListener('input', function () {
+            formreach_updateColorInput(formreach_colorTextInputEmail, formreach_colorPickerInputEmail);
+        });
+    }
+});
+
+// WhatsApp Submit Button Update
+document.addEventListener('DOMContentLoaded', function () {
+    // Function to update color input based on text input
+    function formreach_updateColorInput(formreach_textInput, formreach_colorInput) {
+        if (formreach_textInput && formreach_colorInput) {
+            var formreach_colorValue = formreach_textInput.value.trim();
+            if (formreach_colorValue.length <= 7 && /^#([0-9A-F]{3}){1,2}$/i.test(formreach_colorValue)) {
+                formreach_colorInput.value = formreach_colorValue;
+            }
+        }
+    }
+
+    // Function to update text input based on color input
+    function formreach_updateTextInput(formreach_colorInput, formreach_textInput) {
+        if (formreach_textInput && formreach_colorInput) {
+            formreach_textInput.value = formreach_colorInput.value;
+        }
+    }
+
+    // Update WhatsApp text color inputs
+    var formreach_colorPickerInputWhatsappText = document.getElementById('formreach_whatsapp_text_color');
+    var formreach_colorTextInputWhatsappText = document.getElementById('formreach_color_text_code_whatsapp');
+    formreach_updateColorInput(formreach_colorTextInputWhatsappText, formreach_colorPickerInputWhatsappText);
+    formreach_updateTextInput(formreach_colorPickerInputWhatsappText, formreach_colorTextInputWhatsappText);
+
+    // Listen for change events on WhatsApp text color inputs
+    if (formreach_colorPickerInputWhatsappText) {
+        formreach_colorPickerInputWhatsappText.addEventListener('input', function () {
+            formreach_updateTextInput(formreach_colorPickerInputWhatsappText, formreach_colorTextInputWhatsappText);
+        });
+    }
+
+    if (formreach_colorTextInputWhatsappText) {
+        formreach_colorTextInputWhatsappText.addEventListener('input', function () {
+            formreach_updateColorInput(formreach_colorTextInputWhatsappText, formreach_colorPickerInputWhatsappText);
+        });
+    }
+
+    // Update WhatsApp button color inputs
+    var formreach_colorPickerInputWhatsapp = document.getElementById('formreach_whatsapp_submit_color');
+    var formreach_colorTextInputWhatsapp = document.getElementById('formreach_color_code_whatsapp');
+    formreach_updateColorInput(formreach_colorTextInputWhatsapp, formreach_colorPickerInputWhatsapp);
+    formreach_updateTextInput(formreach_colorPickerInputWhatsapp, formreach_colorTextInputWhatsapp);
+
+    // Listen for change events on WhatsApp button color inputs
+    if (formreach_colorPickerInputWhatsapp) {
+        formreach_colorPickerInputWhatsapp.addEventListener('input', function () {
+            formreach_updateTextInput(formreach_colorPickerInputWhatsapp, formreach_colorTextInputWhatsapp);
+        });
+    }
+
+    if (formreach_colorTextInputWhatsapp) {
+        formreach_colorTextInputWhatsapp.addEventListener('input', function () {
+            updateColorInput(formreach_colorTextInputWhatsapp, formreach_colorPickerInputWhatsapp);
+        });
+    }
+});
+
+// Preview EMAIL Submit Button Update
+document.addEventListener('DOMContentLoaded', () => {
+    const formreach_updateButton = () => {
+        const formreach_button = document.getElementById('formreach_email_submit_result');
+        const formreach_buttonText = document.getElementById('formreach_email_submit_text_result');
+        const formreach_buttonTextColorInput = document.getElementById('formreach_email_text_color');
+        const formreach_buttonColorInput = document.getElementById('formreach_email_submit_color');
+        const formreach_buttonTextInput = document.getElementById('formreach_email_submit');
+        const formreach_buttonIconColor = document.getElementById('formreach_icon_email');
+        const formreach_colorTextInputEmail = document.getElementById('formreach_color_code_email');
+        const formreach_colorTextInputEmailText = document.getElementById('formreach_color_text_code_email');
+
+        if (formreach_button && formreach_buttonColorInput && formreach_buttonTextInput && formreach_buttonText && formreach_buttonTextColorInput && formreach_buttonIconColor && formreach_colorTextInputEmail && formreach_colorTextInputEmailText) {
+        formreach_button.style.backgroundColor = formreach_buttonColorInput.value || formreach_colorTextInputEmail.value || formreach_colorTextInputEmailText.value;
+        formreach_buttonText.textContent = formreach_buttonTextInput.value;
+        formreach_buttonText.style.color = formreach_buttonTextColorInput.value || formreach_colorTextInputEmailText.value;
+        formreach_buttonIconColor.style.color = formreach_buttonTextColorInput.value || formreach_colorTextInputEmailText.value;
+    }
+    };
+
+    const formreach_inputs = ['#formreach_email_submit_color', '#formreach_email_submit', '#formreach_email_text_color', '#formreach_color_text_code_email', '#formreach_color_code_email'];
+    formreach_inputs.forEach(formreach_input => {
+        const formreach_element = document.querySelector(formreach_input);
+        if (formreach_element) {
+            formreach_element.addEventListener('input', formreach_updateButton);
+        }
+    });
+
+    formreach_updateButton();
+
+// Preview WHATSAPP Submit Button Update
+    const formreach_updateButtonWhatsapp = () => {
+        const formreach_button = document.getElementById('formreach_whatsapp_submit_result');
+        const formreach_buttonText = document.getElementById('formreach_whatsapp_submit_text_result');
+        const formreach_buttonTextColorInput = document.getElementById('formreach_whatsapp_text_color');
+        const formreach_buttonColorInput = document.getElementById('formreach_whatsapp_submit_color');
+        const formreach_buttonTextInput = document.getElementById('formreach_whatsapp_submit');
+        const formreach_buttonIconColor = document.getElementById('formreach_icon_whatsapp');
+        const formreach_colorTextInputWhatsApp = document.getElementById('formreach_color_code_whatsapp');
+        const formreach_colorTextInputWhatsAppText = document.getElementById('formreach_color_text_code_whatsapp');
+
+        if (formreach_button && formreach_buttonColorInput && formreach_buttonTextInput && formreach_buttonText && formreach_buttonTextColorInput && formreach_buttonIconColor && formreach_colorTextInputWhatsApp && formreach_colorTextInputWhatsAppText) {
+            formreach_button.style.backgroundColor = formreach_buttonColorInput.value || formreach_colorTextInputWhatsApp.value || formreach_colorTextInputWhatsAppText.value;
+            formreach_buttonText.textContent = formreach_buttonTextInput.value;
+            formreach_buttonText.style.color = formreach_buttonTextColorInput.value || formreach_colorTextInputWhatsAppText.value;
+            formreach_buttonIconColor.style.color = formreach_buttonTextColorInput.value || formreach_colorTextInputWhatsAppText.value;
+        }
+    };
+
+    const formreach_inputsWhatsapp = ['#formreach_whatsapp_submit_color', '#formreach_whatsapp_submit', '#formreach_whatsapp_text_color', '#formreach_color_text_code_whatsapp', '#formreach_color_code_whatsapp'];
+    formreach_inputsWhatsapp.forEach(formreach_input => {
+        const formreach_element = document.querySelector(formreach_input);
+        if (formreach_element) {
+            formreach_element.addEventListener('input', formreach_updateButtonWhatsapp);
+        }
+    });
+
+    formreach_updateButtonWhatsapp();
+});
+
+// Autoresponder
+document.addEventListener('DOMContentLoaded', function() {
+    const formreach_checkbox = document.getElementById("formreach_user_email_switch");
+    const formreach_maDiv = document.getElementById("formreach_user_email");
+
+    function formreach_toggleDivDisplay() {
+        if(formreach_maDiv){
+            formreach_maDiv.style.display = formreach_checkbox.checked ? "block" : "none";
+        }
+    }
+
+    // Appeler la fonction pour initialiser l'état de la div en fonction de la case cochée
+    formreach_toggleDivDisplay();
+
+    // Ajouter un écouteur d'événement pour mettre à jour l'état de la div lorsque la case est cochée/décochée
+    if(formreach_checkbox){
+        formreach_checkbox.addEventListener('input', formreach_toggleDivDisplay);
+    }
+});
+
+function formreach_initializeWhatsappFunction(formreach_phpFlag) {
+    var formreach_input = document.getElementById('formreach_whatsapp_tel');
+    if(formreach_input){
+        var formreach_iti;
+
+        // Fonction pour initialiser l'input WhatsApp
+        function formreach_initWhatsapp() {
+            formreach_iti = window.intlTelInput(formreach_input, {
+                initialCountry: formreach_phpFlag,
+                separateDialCode: true,
+                utilsScript: formReach.utilsScriptUrl,
+                formatOnDisplay: false,
+                nationalMode: true,
+                preferredCountries: ['us', 'in', 'de', 'gb', 'fr'],
+                hiddenInput: "formreach_whatsapp_tel_international",
+            });
+
+            // Écouteur d'événements pour mettre à jour la valeur du drapeau sélectionné
+            formreach_input.addEventListener('countrychange', function() {
+                document.getElementById('formreach_whatsapp_flag').value = formreach_iti.getSelectedCountryData().iso2;
+            });
+
+            // Écouteur d'événements pour enregistrer le numéro de téléphone au format international
+            formreach_input.addEventListener('blur', function() {
+                document.getElementById('formreach_whatsapp_tel_international').value = formreach_iti.getNumber();
+            });
+        }
+
+        // Fonction pour réinitialiser les messages d'erreur et les styles
+        function formreach_reset() {
+            formreach_input.classList.remove("error");
+            var formreach_msg = document.getElementById('formreach_whatsapp_message');
+            formreach_msg.innerHTML = "";
+            formreach_msg.classList.remove("text-danger", "text-success");
+            formreach_msg.classList.add("hide");
+        }
+
+        // Écouteur d'événements pour le numéro de téléphone
+        formreach_input.addEventListener('input', function(formreach_event) {
+            var formreach_inputValue = formreach_event.target.value;
+            var formreach_sanitizedValue = formreach_inputValue.replace(/[^\d()-]/g, '');
+            formreach_event.target.value = formreach_sanitizedValue;
+        });
+
+        // Écouteur d'événements pour les événements de saisie et de clic
+        formreach_input.addEventListener('input', function() {
+            formreach_reset();
+            var formreach_value = formreach_input.value.trim();
+            if (formreach_value) {
+                var formreach_buttons = document.querySelectorAll('#formreach_saveFormWhatsapp, #formreach_whatsapp_switch, #formreach_contact-tab, #formreach_home-tab');
+                if (formreach_iti.isValidNumber()) {
+                    formreach_buttons.forEach(function(formreach_button) {
+                        formreach_button.removeAttribute('disabled');
+                        formreach_button.style.opacity = '1';
+                    });
+                    var formreach_msg = document.getElementById('formreach_whatsapp_message');
+                    formreach_msg.innerHTML = "✓ Valid";
+                    formreach_input.style.borderColor = "";
+                    formreach_input.style.outlineColor = "";
+                    formreach_msg.classList.remove("hide");
+                    formreach_msg.classList.add("text-success");
+                } else {
+                    formreach_buttons.forEach(function(formreach_button) {
+                        formreach_button.setAttribute('disabled', 'disabled');
+                        formreach_button.style.opacity = '0.4';
+                    });
+                    formreach_input.classList.add("error");
+                    formreach_input.style.borderColor = "red";
+                    formreach_input.style.outlineColor = "red";
+                    var formreach_errorCode = formreach_iti.getValidationError();
+                    var formreach_msg = document.getElementById('formreach_whatsapp_message');
+                    formreach_msg.innerHTML = ["☓ Invalid number", "☓ Invalid country code", "☓ Too short", "☓ Too long", "☓ Invalid number"][formreach_errorCode];
+                    formreach_msg.classList.remove("hide");
+                    formreach_msg.classList.add("text-danger");
+                }
+            }
+        });
+
+        // Écouteur d'événements pour l'onglet de profil
+        document.getElementById('formreach_profile-tab').addEventListener('click', function() {
+            formreach_reset();
+            formreach_input.dispatchEvent(new Event('input'));
+        });
+
+        // Empêcher la soumission du formulaire si le bouton est désactivé
+        var formreach_saveFormButton = document.getElementById('formreach_saveFormWhatsapp');
+        if (formreach_saveFormButton) {
+            formreach_saveFormButton.addEventListener('click', function(e) {
+                if (this.disabled) {
+                    e.preventDefault();
+                }
+            });
+        }
+
+        formreach_initWhatsapp();
+    }
+}
+
+//whatsapp flag
+document.addEventListener("DOMContentLoaded", function() {
+    var formreach_phpFlag = formReach.phpFlag;
+
+    formreach_initializeWhatsappFunction(formreach_phpFlag);
+});
+
+//missing email
+function formreach_validateEmails(emails) {
+    const formreach_emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emails.split(",").every(email => formreach_emailPattern.test(email.trim()));
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const formreach_input = document.getElementById('formreach_email_admin_to');
+    const formreach_noticeId = 'notification';
+    let formreach_notice = document.getElementById(formreach_noticeId);
+
+    if (formreach_input && !formreach_validateEmails(formreach_input.value)) {
+        if (!formreach_notice) {
+            formreach_notice = document.createElement('div');
+            formreach_notice.id = formreach_noticeId;
+            formreach_notice.className = 'notice notice-error';
+            formreach_notice.innerHTML = "<p>Please enter a valid email address in the 'Email' tab.</p>";
+            document.body.insertBefore(formreach_notice, document.body.firstChild);
+            formreach_input.placeholder = 'You must enter a valid email address';
+            formreach_input.classList.add('formreach_placeholder-error');
+        }
+    } else if (formreach_notice) {
+        formreach_notice.remove();
+        formreach_input.placeholder = '';
+        formreach_input.classList.remove('formreach_placeholder-error');
     }
 });

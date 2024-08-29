@@ -1,13 +1,16 @@
 <?php
+
+if ( !defined('ABSPATH') ) exit;
+
 // Register Custom Post Type
-function cw_post_type_news() {
-    $labels = array(
+function formreach_post_type() {
+    $formreach_labels = array(
         'name'                  => _x('Form Reach', 'Post Type General Name', 'form-reach-domain'),
         'singular_name'         => _x('Form', 'Post Type Singular Name', 'form-reach-domain'),
         'menu_name'             => __('Form Reach', 'form-reach-domain'),
         'name_admin_bar'        => __('Form Reach', 'form-reach-domain'),
-        'add_new'               => __('Create New', 'form-reach-domain'),
-        'add_new_item'          => __('Create New Form', 'form-reach-domain'),
+        'add_new'               => __('Create New Form', 'form-reach-domain'),
+        'add_new_item'          => __('Form Creation', 'form-reach-domain'),
         'new_item'              => __('New Form', 'form-reach-domain'),
         'edit_item'             => __('Edit Form', 'form-reach-domain'),
         'all_items'             => __('All Forms', 'form-reach-domain'),
@@ -25,8 +28,8 @@ function cw_post_type_news() {
         'filter_items_list'     => __('Filter forms list', 'form-reach-domain'),
     );
 
-    $args = array(
-        'labels'             => $labels,
+    $formreach_args = array(
+        'labels'             => $formreach_labels,
         'public'             => false,
         'publicly_queryable' => true,
         'show_ui'            => true,
@@ -41,510 +44,407 @@ function cw_post_type_news() {
         'supports'           => array('title'), // Added support for common features
     );
 
-    register_post_type('form_reach', $args);
+    register_post_type('form_reach', $formreach_args);
 }
 
-add_action('init', 'cw_post_type_news');
+add_action('init', 'formreach_post_type');
 
 // Customization of the admin table
-function smashing_form_reach_columns($columns) {
-    $newColumns = array(
-        'cb' => $columns['cb'], // Keep the checkbox column
+function formreach_smashing_columns($formreach_columns) {
+    $formreach_newColumns = array(
+        'cb' => $formreach_columns['cb'],
         'type' => __('Type', 'form-reach-domain'),
         'title' => __('Title', 'form-reach-domain'),
         'shortcode' => __('Shortcode', 'form-reach-domain'),
         'author' => __('Author', 'form-reach-domain'),
         'date' => __('Date', 'form-reach-domain'),
     );
-    return $newColumns;
+    return $formreach_newColumns;
 }
-add_filter('manage_form_reach_posts_columns', 'smashing_form_reach_columns');
+add_filter('manage_form_reach_posts_columns', 'formreach_smashing_columns');
 
 // Adding the shortcode to the Administrator custom table
-function fr_shortcode_column($column, $post_id) {
-    if ('shortcode' === $column) {
-        echo '<input type="text" class="form-control" style="background-color: transparent; border: none;" readonly="readonly" onfocus="this.select()" value=\'[form-reach id="' . esc_attr($post_id) . '"]\'>';
+function formreach_shortcode_column($formreach_column, $formreach_post_id) {
+    if ('shortcode' === $formreach_column) {
+        echo '<input type="text" class="form-control" style="background-color: transparent; border: none;" readonly="readonly" onfocus="this.select()" value=\'[form-reach id="' . esc_attr($formreach_post_id) . '"]\'>';
     }
 }
 
 // Handling display of custom column content
-function fr_custom_column_content($column, $post_id) {
-    if ($column === 'type') {
-        $formType = get_post_meta($post_id, 'fr_whatsapp_switch', true); // Assuming 'fr_whatsapp_switch' is stored as post meta
+function formreach_custom_column_content($formreach_column, $formreach_post_id) {
+    if ($formreach_column === 'type') {
+        $formreach_formType = get_post_meta($formreach_post_id, 'formreach_whatsapp_switch', true); 
 
-        switch ($formType) {
+        switch ($formreach_formType) {
             case "0":
-                echo '<span class="dashicons dashicons-email"></span>';
+                echo '<i class="fa fa-envelope mx-2" style="color: #2271b1 ; font-size: 27px;"></i>';
                 break;
             case "1":
-                echo '<span class="dashicons dashicons-whatsapp" style="color: #25D366;"></span>';
+                echo '<i class="fa fa-whatsapp mx-2" style="color: #25d366; font-size: 27px;"></i>';
                 break;
             default:
-                echo __('Type undefined', 'form-reach-domain');
+                echo esc_html__('Not yet defined', 'form-reach-domain');
                 break;
         }
     }
 }
 
-// Add actions for managing custom columns
-add_action('manage_form_reach_posts_custom_column', 'fr_custom_column_content', 10, 2);
-add_action('manage_form_reach_posts_custom_column', 'fr_shortcode_column', 10, 2);
+add_action('manage_form_reach_posts_custom_column', 'formreach_custom_column_content', 10, 2);
+add_action('manage_form_reach_posts_custom_column', 'formreach_shortcode_column', 10, 2);
 
-add_action('admin_head', 'add_custom_menu_style');
-
-function add_custom_menu_style() {
-    ?>
-    <style>
-		#adminmenu #menu-posts-form_reach {
-			background-color: #1D1D1D;
-			margin-top: 0.3em;
-			margin-bottom: 0.3em;
-        }
-
-        #adminmenu #menu-posts-form_reach .wp-menu-image:before {
-            content: '';
-			width: 20px;
-    		height: 7px;
-			display: inline-block;
-            margin-top: 10%;
-            background-image: url(<?php echo plugin_dir_url(__FILE__) . 'image/form-reach-logo.png'; ?>);
-			border-radius: 50%;
-			background-size: cover;
-			background-position: center;
-			background-size: 85%;
-			border: 3px solid #c5b863;
-        }
-
-		.wp-has-submenu ::before {
-			box-sizing: unset;
-		}
-    </style>
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-            var menuItems = document.querySelectorAll('.wp-menu-name');
-
-            for (var i = 0; i < menuItems.length; i++) {
-                if (menuItems[i].textContent === 'Form Reach') {
-                    menuItems[i].style.fontWeight = '600';
-                    break;
-                }
-            }
-        });
-	</script>
-    <?php
+// Ajouter les styles personnalisés pour l'administration
+function formreach_enqueue_admin_styles() {
+    wp_enqueue_style(
+        'formreach-admin-css',
+        plugin_dir_url(__FILE__) . 'style/form-reach-admin.css', 
+        array(), 
+        '1.0'
+    );
 }
 
-add_action('admin_notices', 'fr_missing_email');
-
-function fr_missing_email() {
-    ?>
-    <script>
-        function validateEmails(emails) {
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emails.split(",").every(email => emailPattern.test(email.trim()));
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const input = document.getElementById('fr_email_admin_to');
-            const noticeId = 'notification';
-            let notice = document.getElementById(noticeId);
-
-            if (input && !validateEmails(input.value)) {
-                if (!notice) {
-                    notice = document.createElement('div');
-                    notice.id = noticeId;
-                    notice.className = 'notice notice-error';
-                    notice.innerHTML = "<p>Please enter a valid email address in the 'Email' tab.</p>";
-                    document.body.insertBefore(notice, document.body.firstChild);
-                    input.placeholder = 'You must enter a valid email address';
-                    input.classList.add('placeholder-error');
-                }
-            } else if (notice) {
-                notice.remove();
-                input.placeholder = '';
-                input.classList.remove('placeholder-error');
-            }
-        });
-    </script>
-    <?php
-}
+add_action('admin_enqueue_scripts', 'formreach_enqueue_admin_styles');
 
 /**
  * Optimizes admin column widths and hides certain elements via CSS.
  */
-function wp_optimize_admin_columns() {
-	// Vérifiez si nous sommes sur la page spécifique
-    $screen = get_current_screen();
-    if ( $screen->id == 'edit-form_reach' ) {
-		// Minified and slightly optimized CSS for admin footer.
-		?><style>@media(min-width:783px){#cb{width:3%;}.column-type{width:4%;}.column-title{width:30%;}.column-author,.column-shortcode,.column-date{width:21%;}}@media(max-width:782px){.column-type{display:none;}td.type.column-type svg{padding-left:2.75em;}}</style>
-			<?php
-		// Enqueue les styles personnalisés pour la page
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css');
+function formreach_optimize_admin_columns() {
+    $formreach_screen = get_current_screen();
+    if ( $formreach_screen->id == 'edit-form_reach' ) {
+        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
 		
-		add_flyout_menu();
+		formreach_add_flyout_menu();
 	}
 }
-add_action('admin_footer', 'wp_optimize_admin_columns');
+add_action('admin_footer', 'formreach_optimize_admin_columns');
 
 /**
  * Modifies the list row actions for posts.
  *
  * @param array $actions An array of row action links.
  * @param WP_Post $post The post object.
- * @return array The modified actions.
+ * @return array The modified actions.post_type
  */
-function wp_modify_list_row_actions($actions, $post) {
+function formreach_modify_list_row_actions($actions, $formreach_post) {
     unset($actions['view']);
     return $actions;
 }
-add_filter('post_row_actions', 'wp_modify_list_row_actions', 10, 2);
+add_filter('post_row_actions', 'formreach_modify_list_row_actions', 10, 2);
 
-// Removing the Slug metabox
-function wp_custom_remove_slug_metabox() {
-    remove_meta_box('slugdiv', 'form_reach', 'normal');
+function formreach_remove_metaboxe() {
+    remove_meta_box('slugdiv', 'form_reach', 'normal'); // Removing the Slug metabox
 }
-add_action('add_meta_boxes', 'wp_custom_remove_slug_metabox');
+add_action('admin_menu','formreach_remove_metaboxe');
 
 // Customization of the edit page
-function register_metabox_post_type( $post ) {
-	$post_id = isset( $_GET['post'] ) ? $_GET['post'] : 0;
+function formreach_register_metabox_post_type( $formreach_post ) {
+	$formreach_post_id = isset( $_GET['post'] ) ? $_GET['post'] : 0;
 
-	// Assurez-vous que $post_id est une variable sécurisée (par exemple, un entier)
-	$post_id = absint( $post_id ); // Conversion en entier positif pour la sécurité
+	$formreach_post_id = absint( $formreach_post_id );
 
-	$shortcode = esc_attr( '[form-reach id="' . $post_id . '"]' );
+	$formreach_shortcode = esc_attr( '[form-reach id="' . $formreach_post_id . '"]' );
 
-	// Préparation de la chaîne traduisible
-	$copyInstruction = __('Copy this shortcode and paste it into your post, page, or text widget content:', 'form-reach-domain');
+	$formreach_copyInstruction = __('Copy this shortcode and paste it into your post, page, or text widget content: ', 'form-reach-domain');
 
-	// HTML sécurisé pour affichage
-	$finalShortcode = <<<HTML
-	<div class="alert alert-secondary align-items-center">
-		<label>
-			$copyInstruction
-			<input type="text" readonly="readonly" onfocus="this.select()" value="{$shortcode}">
-		</label>
-	</div>
-	HTML;
+	$formreach_finalShortcode = '<div class="alert alert-secondary align-items-center">';
+	$formreach_finalShortcode .= '<label>';
+	$formreach_finalShortcode .= htmlspecialchars($formreach_copyInstruction, ENT_QUOTES, 'UTF-8');
+	$formreach_finalShortcode .= '<input type="text" readonly="readonly" onfocus="this.select()" value="' . $formreach_shortcode . '">';
+	$formreach_finalShortcode .= '</label>';
+	$formreach_finalShortcode .= '</div>';
 
 	add_meta_box(
-		'metaboxwpadmin',
-		$finalShortcode,
-		'register_metabox_callback',
-		'form_reach'
-	);
+        'formreach_metabox',
+        $formreach_finalShortcode, 
+        'formreach_register_metabox_callback', 
+        'form_reach',
+    );
 }
-add_action('add_meta_boxes','register_metabox_post_type');
 
-function register_metabox_callback($post) {
+add_action('add_meta_boxes','formreach_register_metabox_post_type');
+
+function formreach_register_metabox_callback($formreach_post) {
 	
-	if ('form_reach' !== $post->post_type || !current_user_can('edit_post', $post->ID)) {
+	if ('form_reach' !== $formreach_post->post_type || !current_user_can('edit_post', $formreach_post->ID)) {
         return;
     }
 
-    $default_meta_values = [
-        'fr_email_admin_to' => get_option('admin_email'),
-        'fr_email_admin_from' => "Form Reach",
-        'fr_email_admin_subject' => "User Message",
-        'fr_email_user_to' => "[email]",
-        'fr_email_user_from' => "Form Reach",
-        'fr_email_user_subject' => "Form Reach",
-        'fr_email_submit' => "Send",
-        'fr_whatsapp_submit' => "WhatsApp",
-        'fr_email_submit_color' => "#0d6efd",
-        'fr_whatsapp_submit_color' => "#198754",
-        'fr_email_text_color' => "#ffffff",
-        'fr_whatsapp_text_color' => "#ffffff",
-        'fr_email_admin_content' => "Surname: [surname]\nName: [name]\nEmail: [email]\nMessage: [message]",
-        'fr_email_user_content' => "Thank you for reaching out to us.\n\nWe acknowledge receipt of your message and assure you that we will respond as soon as possible.",
-        'fr_email_success' => "The form has been successfully submitted.",
-        'fr_email_error' => "The form could not be submitted due to an error. Please try again.",
-        'fr_whatsapp_success' => "The message has been successfully submitted. Click on the 'Continue to Conversation' button.",
-        'fr_whatsapp_error' => "The message could not be submitted due to an error. Please try again.",
-        'fr_email_form_content' => "[input type='text' label='Surname' name='surname' required='required' placeholder='Enter your surname']\n\n[input type='text' label='Name' name='name' required='required' placeholder='Enter your name']\n\n[input type='email' label='Email adress' name='email' required='required' placeholder='Enter your email']\n\n[input type='textarea' rows='10' label='Message' name='message' required='required' placeholder='Enter your message']",
-        'fr_whatsapp_form_default' => "[input type='text' label='Surname' name='surname' required='required' placeholder='Enter your surname']\n\n[input type='text' label='Name' name='name' required='required' placeholder='Enter your name']\n\n[input type='textarea' rows='10' label='Message' name='message' required='required' placeholder='Enter your message']",
-        'fr_email_success_default' => "The form has been successfully submitted.",
-        'fr_email_error_default' => "The form could not be submitted due to an error. Please try again.",
-        'fr_whatsapp_success_default' => "The message has been successfully submitted. Click on the 'Continue to Conversation' button.",
-        'fr_whatsapp_error_default' => "The message could not be submitted due to an error. Please try again.",
-        'fr_email_admin_to_default' => get_option('admin_email'),
-        'fr_email_admin_from_default' => "Form Reach",
-        'fr_email_admin_subject_default' => "User Message",
-        'fr_email_admin_content_default' => "Surname: [surname]\nName: [name]\nEmail: [email]\nMessage: [message]",
-        'fr_email_user_to_default' => "[email]",
-        'fr_email_user_from_default' => "Form Reach",
-        'fr_email_user_subject_default' => "Form Reach",
-        'fr_email_user_content_default' => "Thank you for reaching out to us.\n\nWe acknowledge receipt of your message and assure you that we will respond as soon as possible.",
-        'fr_email_submit_text_default' => "Send",
-        'fr_email_submit_text_color_default' => "#ffffff",
-        'fr_email_submit_color_default' => "#0d6efd",
-        'fr_whatsapp_submit_text_default' => "WhatsApp",
-        'fr_whatsapp_submit_text_color_default' => "#ffffff",
-        'fr_whatsapp_submit_color_default', "#198754",
-    ];
+	$formreach_default_meta_values = [
+		'formreach_email_admin_to' => get_option('admin_email'),
+		'formreach_email_admin_from' => __("Form Reach", "form-reach-domain"),
+		'formreach_email_admin_subject' => __("User Message", "form-reach-domain"),
+		'formreach_email_user_to' => __("[email]", "form-reach-domain"),
+		'formreach_email_user_from' => __("Form Reach", "form-reach-domain"),
+		'formreach_email_user_subject' => __("Form Reach", "form-reach-domain"),
+		'formreach_email_submit' => __("Send", "form-reach-domain"),
+		'formreach_whatsapp_submit' => __("WhatsApp", "form-reach-domain"),
+		'formreach_email_submit_color' => "#0d6efd",
+		'formreach_whatsapp_submit_color' => "#198754",
+		'formreach_email_text_color' => "#ffffff",
+		'formreach_whatsapp_text_color' => "#ffffff",
+		'formreach_email_admin_content' => __("Name: [name]\nEmail: [email]\nMessage: [message]", "form-reach-domain"),
+		'formreach_email_user_content' => __("Thank you for reaching out to us.\n\nWe acknowledge receipt of your message and assure you that we will respond as soon as possible.", "form-reach-domain"),
+		'formreach_email_success' => __("The form has been successfully submitted.", "form-reach-domain"),
+		'formreach_email_error' => __("The form could not be submitted due to an error. Please try again.", "form-reach-domain"),
+		'formreach_whatsapp_success' => __("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", "form-reach-domain"),
+		'formreach_whatsapp_error' => __("The message could not be submitted due to an error. Please try again.", "form-reach-domain"),
+		'formreach_email_form_content' => '[input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[input type="email" label="' . __("Email address", "form-reach-domain") . '" name="email" required="required" placeholder="' . __("Enter your email", "form-reach-domain") . '"]' . "\n\n" . '[input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
+		'formreach_whatsapp_form_content' => '[input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
+		'formreach_whatsapp_switch' => 0,
+		'formreach_user_email_switch' => 0,
+	];
 
-    foreach ($default_meta_values as $meta_key => $meta_value) {
-        // Vérifiez si la métadonnée n'existe pas déjà avant de l'ajouter
-        if (!metadata_exists('post', $post->ID, $meta_key)) {
-            add_post_meta($post->ID, $meta_key, $meta_value, true);
+    foreach ($formreach_default_meta_values as $formreach_meta_key => $formreach_meta_value) {
+        if (!isset($formreach_stored_meta[$formreach_meta_key]) || empty($formreach_stored_meta[$formreach_meta_key])) {
+            add_post_meta($formreach_post->ID, $formreach_meta_key, $formreach_meta_value, true);
         }
     }
-	
-	$wp_stored_meta = get_post_meta( $post ->ID);
 
-    // Inclure un fichier externe si nécessaire
+    $formreach_stored_meta = get_post_meta( $formreach_post ->ID);
+
     include 'form-reach-modal.php';
 }
 
-// Définition du nombre de colonnes des metaboxes
-function wp_custom_set_metabox_columns($columns) {
-    $columns['form_reach'] = 1; // Définissez le nombre souhaité de colonnes
-    return $columns;
+// Organize metaboxes in the "normal" column for the custom post type 'form_reach'
+add_filter('get_user_option_meta-box-order_form_reach', 'formreach_one_column_for_all', 10);
+function formreach_one_column_for_all($option) {
+    // Define the order of metaboxes in the 'normal' column
+    return ['normal' => 'formreach_metabox,slugdiv,trackbacksdiv,tagsdiv-post_tag,categorydiv,postimagediv,postcustom,commentstatusdiv,authordiv'];
 }
-add_filter('screen_layout_columns', 'wp_custom_set_metabox_columns');
 
-// Enregistrement des préférences utilisateur
-function wp_custom_save_user_preferences() {
-    if (isset($_POST['preferences']) && is_user_logged_in()) {
-        $user_id = get_current_user_id();
-        // Valider et nettoyer $_POST['preferences'] ici
-        update_user_meta($user_id, 'screen_layout_form_reach', $_POST['preferences']['screen_layout_form_reach']);
-    }
-
-    wp_die();
+// Add 'submitdiv' at the bottom of the "normal" column
+add_filter('get_user_option_meta-box-order_form_reach', 'formreach_submitdiv_at_bottom', 999);
+function formreach_submitdiv_at_bottom($formreach_result) {
+    $formreach_result['normal'] .= ',submitdiv';
+    return $formreach_result;
 }
-add_action('wp_ajax_save_user_preferences', 'wp_custom_save_user_preferences');
 
-// Suppression du message de notification de mise à jour dans le tableau de bord WordPress lors du click sur whatsapp switch
-function wp_custom_remove_post_updated_message($messages) {
-    unset($messages['post'][1]); // Ajustez l'index si nécessaire
-    return $messages;
+// Restrict screen options to a single column layout for 'form_reach'
+add_filter('screen_layout_columns', 'formreach_one_column_on_screen_options');
+function formreach_one_column_on_screen_options($formreach_columns) {
+    $formreach_columns['form_reach'] = 1;
+    return $formreach_columns;
 }
-add_filter('post_updated_messages', 'wp_custom_remove_post_updated_message');
 
-add_action('admin_enqueue_scripts', 'monplugin_enqueue_bootstrap');
+// Force a single-column layout, overriding user preferences
+add_filter('get_user_option_screen_layout_form_reach', 'formreach_one_column_layout');
+function formreach_one_column_layout() {
+    return 1;
+}
 
-function monplugin_enqueue_bootstrap($hook) {
-  // Vérifier l'identifiant de la page
-  if ($hook == 'post_type=form_reach') {
-	
-    // Charger les fichiers CSS de Bootstrap
-    wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css');
+add_action('admin_enqueue_scripts', 'formreach_enqueue_bootstrap');
 
-    // Charger les fichiers JavaScript de Bootstrap
-    wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js', array('jquery'), '5.5.2', true);
+function formreach_enqueue_bootstrap($formreach_hook) {
+  if ($formreach_hook == 'post_type=form_reach') {
+    wp_enqueue_style('bootstrap',  plugin_dir_url(__FILE__) . '/assets/bootstrap/bootstrap.min.css', array(), '5.2.2');
+    wp_enqueue_script('bootstrap',  plugin_dir_url(__FILE__) . '/assets/bootstrap/bootstrap.min.js', array('jquery'), '5.2.2', true);
   }
 }
 
-// Générateur de tags pour les shortcodes - formulaire
-class fr_Id {
-    public static function counter() {
-        static $counter = 0;
-        ++$counter;
-        return $counter;
+// Tag generator for shortcodes - form
+class formreach_id {
+    public static function formreach_counter() {
+        static $formreach_counter = 0;
+        ++$formreach_counter;
+        return $formreach_counter;
     }
 }
 
-function form_reach_input_type($atts) {
-    $id_auto = fr_Id::counter();
+function formreach_input_type($formreach_atts) {
+    $formreach_id_auto = formreach_id::formreach_counter();
     
-    $atts = shortcode_atts(array(
+    $formreach_atts = shortcode_atts(array(
         'type' => 'text',
         'name' => 'default',
-        'id' => $id_auto,
+        'id' => $formreach_id_auto,
         'placeholder' => '',
-        'required' => false, // Modifié pour être un booléen
+        'required' => false,
         'label' => '',
         'class' => '',
         'value' => '',
-        'cols' => null, // Gardé comme null si non défini
-        'rows' => null, // Gardé comme null si non défini
-    ), $atts, 'input');
+        'cols' => null,
+        'rows' => null,
+    ), $formreach_atts, 'input');
 
-    $html = '<div class="mb-3 mt-3">';
-    if (!empty($atts['label'])) {
-        $html .= '<label class="form-label" for="' . esc_attr($atts['name']) . '_' . esc_attr($atts['id']) . '">' . esc_html($atts['label']) . '</label>';
+    $formreach_html = '<div class="mb-3 mt-3">';
+    if (!empty($formreach_atts['label'])) {
+        $formreach_html .= '<label class="form-label" for="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '">' . esc_html($formreach_atts['label']) . '</label>';
     }
     
-    if ($atts['type'] === "textarea") {
-        $html .= '<textarea class="form-control ' . esc_attr($atts['class']) . '" id="' . esc_attr($atts['name']) . '_' . esc_attr($atts['id']) . '" name="' . esc_attr($atts['name']) . '" placeholder="' . esc_attr($atts['placeholder']) . '"' . ($atts['required'] ? ' required' : '') . ' cols="' . esc_attr($atts['cols']) . '" rows="' . esc_attr($atts['rows']) . '">' . esc_html($atts['value']) . '</textarea>';
-    } elseif ($atts['type'] === "email") {
-        $html .= '<input type="' . esc_attr($atts['type']) . '" class="form-control ' . esc_attr($atts['class']) . '" id="' . esc_attr($atts['name']) . '_' . esc_attr($atts['id']) . '" name="' . esc_attr($atts['name']) . '" placeholder="' . esc_attr($atts['placeholder']) . '"' . ($atts['required'] ? ' required' : '') . ' value="' . esc_attr($atts['value']) . '"/>';
-		$html .= '<div class="invalid-feedback" id="emailFeedback" style="display: none;">' . esc_html__('Please enter a valid email address', 'form-reach-domain') . '</div>';
+    if ($formreach_atts['type'] === "textarea") {
+        $formreach_html .= '<textarea data-type="textarea" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' cols="' . esc_attr($formreach_atts['cols']) . '" rows="' . esc_attr($formreach_atts['rows']) . '">' . esc_html($formreach_atts['value']) . '</textarea>';
+    } elseif ($formreach_atts['type'] === "email") {
+        $formreach_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" data-type="email" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
+        $formreach_html .= '<div class="invalid-feedback" id="emailFeedback" style="display: none;">' . esc_html__('Please enter a valid email address', 'form-reach-domain') . '</div>';
     } else {
-        $html .= '<input type="' . esc_attr($atts['type']) . '" class="form-control ' . esc_attr($atts['class']) . '" id="' . esc_attr($atts['name']) . '_' . esc_attr($atts['id']) . '" name="' . esc_attr($atts['name']) . '" placeholder="' . esc_attr($atts['placeholder']) . '"' . ($atts['required'] ? ' required' : '') . ' value="' . esc_attr($atts['value']) . '"/>';
-    }
+        $formreach_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
+    }        
     
-    $html .= '</div>';
+    $formreach_html .= '</div>';
     
-    return $html;
+    return $formreach_html;
 }
-add_shortcode('input', 'form_reach_input_type');
+add_shortcode('input', 'formreach_input_type');
 
-function form_reach_add_nonce_to_post() {
+function formreach_add_nonce_to_post() {
     global $post;
 
     if ('form_reach' === $post->post_type) {
-        wp_nonce_field('form_reach_save_post_action', 'form_reach_save_post_nonce');
+        wp_nonce_field('formreach_save_post_action', 'formreach_save_post_nonce');
     }
 }
-add_action('post_submitbox_misc_actions', 'form_reach_add_nonce_to_post');
+add_action('post_submitbox_misc_actions', 'formreach_add_nonce_to_post');
 
 // Meta values db
-function wp_meta_save($post_id) {
+function formreach_meta_save($formreach_post_id) {
 
-    if (!isset($_POST['form_reach_save_post_nonce'])) {
+    if (!isset($_POST['formreach_save_post_nonce'])) {
         return;
     }
-    if (!wp_verify_nonce($_POST['form_reach_save_post_nonce'], 'form_reach_save_post_action')) {
+    if (!wp_verify_nonce($_POST['formreach_save_post_nonce'], 'formreach_save_post_action')) {
         return;
     }
-    if (!current_user_can('edit_post', $post_id)) {
+    if (!current_user_can('edit_post', $formreach_post_id)) {
         return;
     }
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
 
-	// Liste des champs à sauvegarder, avec indication si la valeur doit être nettoyée
-    $fields = [
-        'fr_email_admin_to' => true,
-        'fr_email_admin_from' => true,
-        'fr_email_admin_subject' => true,
-        'fr_email_admin_content' => false,
-        'fr_email_user_to' => true,
-        'fr_email_user_from' => true,
-        'fr_email_user_subject' => true,
-        'fr_email_user_content' => false,
-        'fr_email_submit' => false,
-        'fr_whatsapp_submit' => false,
-        'fr_email_submit_color' => false,
-        'fr_whatsapp_submit_color' => false,
-        'fr_email_text_color' => false,
-        'fr_whatsapp_text_color' => false,
-        'fr_email_success' => true,
-        'fr_email_error' => true,
-        'fr_whatsapp_success' => true,
-        'fr_whatsapp_error' => true,
-        'fr_email_form_content' => false,
-        'fr_whatsapp_form_content' => false,
-        'fr_whatsapp_tel' => true,
-        'fr_whatsapp_flag' => true,
-        'fr_whatsapp_tel_international' => true,
-        'fr_whatsapp_switch' => 'checkbox',
-        'fr_user_email_switch' => 'checkbox',
+    $formreach_fields = [
+        'formreach_email_admin_to' => true,
+        'formreach_email_admin_from' => true,
+        'formreach_email_admin_subject' => true,
+        'formreach_email_admin_content' => false,
+        'formreach_email_user_to' => true,
+        'formreach_email_user_from' => true,
+        'formreach_email_user_subject' => true,
+        'formreach_email_user_content' => false,
+        'formreach_email_submit' => false,
+        'formreach_whatsapp_submit' => false,
+        'formreach_email_submit_color' => false,
+        'formreach_whatsapp_submit_color' => false,
+        'formreach_email_text_color' => false,
+        'formreach_whatsapp_text_color' => false,
+        'formreach_email_success' => true,
+        'formreach_email_error' => true,
+        'formreach_whatsapp_success' => true,
+        'formreach_whatsapp_error' => true,
+        'formreach_email_form_content' => false,
+        'formreach_whatsapp_form_content' => false,
+        'formreach_whatsapp_tel' => true,
+        'formreach_whatsapp_flag' => true,
+        'formreach_whatsapp_tel_international' => true,
+        'formreach_whatsapp_switch' => 'checkbox',
+        'formreach_user_email_switch' => 'checkbox',
     ];
 
-    foreach ($fields as $field => $sanitize) {
-        if (isset($_POST[$field])) {
-            $value = $_POST[$field];
-            if ($sanitize === true) {
-                $value = sanitize_text_field($value);
-            } elseif ($sanitize === 'checkbox') {
-                $value = "1"; // Checkbox présente et cochée
+    foreach ($formreach_fields as $formreach_field => $formreach_sanitize) {
+        if (isset($_POST[$formreach_field])) {
+            $formreach_value = $_POST[$formreach_field];
+            if ($formreach_sanitize === true) {
+                $formreach_value = sanitize_text_field($formreach_value);
+            } elseif ($formreach_sanitize === 'checkbox') {
+                $formreach_value = "1";
             }
-            update_post_meta($post_id, $field, $value);
-        } elseif ($sanitize === 'checkbox') {
-            update_post_meta($post_id, $field, "0"); // Checkbox non présente ou non cochée
+            update_post_meta($formreach_post_id, $formreach_field, $formreach_value);
+        } elseif ($formreach_sanitize === 'checkbox') {
+            update_post_meta($formreach_post_id, $formreach_field, "0");
         }
     }
 }
 
-// Ajout de l'action à WordPress
-add_action('save_post_form_reach','wp_meta_save');
+add_action('save_post_form_reach','formreach_meta_save');
 
-function wp_add_custom_submenu() {
-    // Ajoute le sous-menu et garde l'identifiant de la page retourné
-    $page_hook_suffix = add_submenu_page(
-        "edit.php?post_type=form_reach",
-        "Form Log",
-        "Form Log",
-        "manage_options",
-        "form-log",
-        "form_log_callback"
-    );
+function formreach_add_custom_submenu() {
+	$formreach_page_hook_suffix = add_submenu_page(
+		"edit.php?post_type=form_reach",
+		__("Form Submissions", "form-reach-domain"), 
+		__("Form Submissions", "form-reach-domain"),
+		"manage_options",
+		"form-log",
+		"formreach_form_log_callback"
+	);
 
-    // Utilise l'identifiant de la page pour charger les scripts et styles seulement sur cette page
-    add_action('admin_enqueue_scripts', function($hook) use ($page_hook_suffix) {
-        if ($hook !== $page_hook_suffix) {
+    add_action('admin_enqueue_scripts', function($formreach_hook) use ($formreach_page_hook_suffix) {
+        if ($formreach_hook !== $formreach_page_hook_suffix) {
             return;
         }
 
 		// DataTables Basic
-		wp_enqueue_style('datatables-css', 'https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css');
-		wp_enqueue_script('datatables-js', 'https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js', array('jquery'), null, true);
-		wp_enqueue_script('datatables-bootstrap-js', 'https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js', array('jquery', 'datatables-js'), null, true);
+		wp_enqueue_style('datatables-css', plugin_dir_url(__FILE__) . 'assets/DataTables/dataTables.bootstrap5.min.css', array(), '1.13.4');
+		wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . 'assets/DataTables/jquery.dataTables.min.js', array('jquery'), '1.13.4', true);
+		wp_enqueue_script('datatables-bootstrap-js', plugin_dir_url(__FILE__) . 'assets/DataTables/dataTables.bootstrap5.min.js', array('jquery', 'datatables-js'), '1.13.4', true);
 
 		// DataTables Responsive
-		wp_enqueue_style('datatables-responsive-css', 'https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css');
-		wp_enqueue_script('datatables-responsive-js', 'https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js', array('jquery', 'datatables-js'), null, true);
-		wp_enqueue_script('datatables-responsive-bootstrap-js', 'https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js', array('jquery', 'datatables-js', 'datatables-responsive-js'), null, true);
+		wp_enqueue_style('datatables-responsive-css', plugin_dir_url(__FILE__) . 'assets/DataTables/responsive.bootstrap5.min.css', array(), '2.2.9');
+		wp_enqueue_script('datatables-responsive-js', plugin_dir_url(__FILE__) . 'assets/DataTables/dataTables.responsive.min.js', array('jquery', 'datatables-js'), '2.2.9', true);
+		wp_enqueue_script('datatables-responsive-bootstrap-js', plugin_dir_url(__FILE__) . 'assets/DataTables/responsive.bootstrap5.min.js', array('jquery', 'datatables-js', 'datatables-responsive-js', 'bootstrap'), '2.2.9', true);
 
-        // Enqueue les styles personnalisés pour la page
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css');
+        wp_enqueue_script('form-reach-submission-script', plugin_dir_url(__FILE__) . 'js/form-reach-submissions.js', array(), '1.0.0', true);
+        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
     });
 }
-add_action("admin_menu", "wp_add_custom_submenu");
+add_action("admin_menu", "formreach_add_custom_submenu");
 
 
-// Callback pour afficher le contenu de la page Form Log
-function form_log_callback() {
-    // Vérifie si l'utilisateur a la capacité de gérer les options
-    if (!current_user_can('manage_options')) {
-        wp_die(__('Vous n’avez pas les permissions suffisantes pour accéder à cette page.'));
-    }
+function formreach_form_log_callback() {
+	if (!current_user_can('manage_options')) {
+		wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'form-reach-domain'));
+	}
 
-    global $wpdb;
-    $table = $wpdb->prefix . "form_history";
+	 global $wpdb;
+    $formreach_table = $wpdb->prefix . "formreach_form_history";
 
-    // Traitement de la suppression
     if (isset($_POST['delete'], $_POST['_wpnonce']) && wp_verify_nonce($_POST['_wpnonce'], 'delete_entry')) {
-        $entry_id = intval($_POST['delete']);
-        $wpdb->delete($table, ['ID' => $entry_id]);
+        $formreach_entry_id = intval($_POST['delete']);
+        $wpdb->delete($formreach_table, ['ID' => $formreach_entry_id]);
         echo '<div class="notice notice-success is-dismissible"><p>Entry deleted successfully.</p></div>';
     }
-
-    $entries = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC");
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+    $formreach_entries = $wpdb->get_results("SELECT * FROM $formreach_table ORDER BY created_at DESC");
 
     ?>
 
     <div class="wrap">
-        <h1>Form Log</h1>
-        <?php if (empty($entries)): ?>
-            <h5 class="text-center">No message to display at the moment.</h5>
+        <h1>Form Submissions</h1>
+        <?php if (empty($formreach_entries)): ?>
+			<h5 class="text-center"><?php echo esc_html(__('No form has been sent yet !', 'form-reach-domain')); ?></h5>
         <?php else: ?>
             <form method="post">
                 <?php wp_nonce_field('delete_entry'); ?>
 				<div class="table-responsive">
-                <table class="table wp-list-table widefat fixed striped table-view-list posts" id="fr_form_history_table">
+                <table class="table wp-list-table widefat fixed striped table-view-list posts" id="formreach_form_history_table">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Content</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Delete</th>
+                            <th scope="col"><?php echo esc_html(__('Type', 'form-reach-domain')); ?></th>
+                            <th scope="col"><?php echo esc_html(__('Content', 'form-reach-domain')); ?></th>
+                            <th scope="col"><?php echo esc_html(__('Date', 'form-reach-domain')); ?></th>
+                            <th scope="col"><?php echo esc_html(__('Delete', 'form-reach-domain')); ?></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($entries as $entry): ?>
+                        <?php foreach ($formreach_entries as $formreach_entry): ?>
                             <tr>
-                                <td><?php echo esc_html($entry->ID); ?></td>
-                                <td><?php switch ($entry->Type) {
-												case "Mail":
-													echo '<span class="dashicons dashicons-email"></span>';
-													break;
-												case "Whatsapp":
-													echo '<span class="dashicons dashicons-whatsapp" style="color: #25D366;"></span>';
-													break;
-												default:
-													echo 'Type undefined';
-													break;} ?></td>
-                                <td><?php echo esc_html($entry->Content); ?></td>
-                                <td><?php echo esc_html($entry->created_at); ?></td>
+                                <td><?php echo esc_html($formreach_entry->ID); ?></td>
+                                <td><?php switch ($formreach_entry->Type) {
+                                    case "Mail":
+                                        echo '<i class="fa fa-envelope mx-2" style="color:#2271b1; font-size: 27px;"></i>';
+                                        break;
+                                    case "Whatsapp":
+                                        echo '<i class="fa fa-whatsapp mx-2" style="color:#25d366; font-size: 27px;"></i>';
+                                        break;
+                                    default:
+                                        echo 'Type undefined';
+                                        break;} ?></td>
+								<td><?php echo wp_kses_post($formreach_entry->Content); ?></td>
+								<td data-order="<?php echo esc_attr(strtotime($formreach_entry->created_at)); ?>">
+                                    <?php
+                                    $formreach_local_date = get_date_from_gmt($formreach_entry->created_at);
+									echo esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($formreach_local_date)));?>
+                                </td>
                                 <td>
-                                    <button type="submit" name="delete" value="<?php echo esc_attr($entry->ID); ?>" class="button button-link-delete">Delete</button>
+                                    <button type="submit" name="delete" value="<?php echo esc_attr($formreach_entry->ID); ?>" class="button button-link-delete">Delete</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -554,150 +454,89 @@ function form_log_callback() {
             </form>
         <?php endif; ?>
     </div>
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-    if (window.innerWidth >= 768) {
-        // Initialisation de DataTables avec des options spécifiques pour les écrans larges
-        $('#fr_form_history_table').DataTable({
-            responsive: true,
-            order: [[3, "desc"]],
-            columnDefs: [
-                { width: "14px", targets: 0 }, // Pour ID
-                { width: "30px", targets: 1 }, // Pour Type
-                { width: "105px", targets: 3 }, // Pour Date
-                { width: "40px", targets: 4 }, // Pour Delete
-            ]
-        });
-    } else {
-			$('#fr_form_history_table').DataTable({
-				responsive: true,
-				order: [[3, "desc"]],
-				columnDefs: [
-					{ responsivePriority: 1, targets: 3 }, // Donne la priorité à la colonne 'Date'
-					{ responsivePriority: 2, targets: 4 }, // Puis à la colonne 'Delete'
-					// Vous pouvez ajuster les priorités comme nécessaire
-				]
-			});
-	}
-		});
-    </script>
 	<?php
-	add_flyout_menu();
+	formreach_add_flyout_menu();
 }
 
-function add_flyout_menu() {
-	wp_enqueue_script('fontawesome', 'https://kit.fontawesome.com/85a869994b.js', array(), null, true);
+function formreach_add_flyout_menu() {
+	wp_enqueue_script('fontawesome', plugin_dir_url(__FILE__) . 'assets/fontawesome/85a869994b.js', array(), '1.0.0', true);
+    wp_enqueue_script('formreach-flyout', plugin_dir_url(__FILE__) . 'js/form-reach-flyout.js', array(), '1.0.0', true);
 		?>
 			<!-- Flyout menu -->
-			<button type="button" class="flyout-button"></button>
+			<button type="button" class="formreach_flyout-button"></button>
 
-			<div class="flyout-menu" style="display:none;">
-				<a style="transform: scale(0); opacity:0;" href="https://form-reach.com/suggestion" title="Suggestion" target="_blank"><i class="fa fa-lightbulb-o"  aria-hidden="true"></i></a>
-			<a style="transform: scale(0); opacity:0;" href="https://form-reach.com/support" title="Support" target="_blank"><i class="fa fa-life-ring" aria-hidden="true"></i></a>
-			<a style="transform: scale(0); opacity:0;" href="https://form-reach.com/documentation" title="Documentation" target="_blank"><i class="fa fa-book"  aria-hidden="true"></i></a>
+			<div class="formreach_flyout-menu" style="display:none;">
+                <a style="transform: scale(0); opacity:0;" href="https://form-reach.com/suggestion" title="Suggestion" target="_blank"><i class="fa fa-lightbulb-o"  aria-hidden="true"></i></a>
+                <a style="transform: scale(0); opacity:0;" href="https://form-reach.com/support" title="Support" target="_blank"><i class="fa fa-life-ring" aria-hidden="true"></i></a>
+                <a style="transform: scale(0); opacity:0;" href="https://form-reach.com/documentation" title="Documentation" target="_blank"><i class="fa fa-book"  aria-hidden="true"></i></a>
 			</div>
-
-			<script>
-			let flyoutButton = document.querySelector(".flyout-button");
-			let flyoutMenu = document.querySelector(".flyout-menu");
-			let menuOpen = false;
-
-			flyoutButton.addEventListener("click", () => {
-				if (!menuOpen) {
-					flyoutButton.style.pointerEvents = "none";
-					flyoutMenu.style.display = "block";
-					flyoutMenu.querySelectorAll("a").forEach((a, index) => {
-						setTimeout(() => {
-							a.style.transition = "transform .4s cubic-bezier(0.680, -0.550, 0.265, 1.550), opacity .4s cubic-bezier(0.680, -0.550, 0.265, 1.550)";
-							a.style.transform = "scale(1)";
-							a.style.opacity = "1";
-						}, (2 - index) * 30);
-					});
-					setTimeout(() => {
-						flyoutButton.style.pointerEvents = "auto";
-					}, (2 + 1) * 30);
-					menuOpen = true;
-				} else {
-					flyoutButton.style.pointerEvents = "none";
-					flyoutMenu.querySelectorAll("a").forEach((a, index) => {
-						setTimeout(() => {
-							a.style.transition = "transform .4s cubic-bezier(0.680, -0.550, 0.265, 1.550), opacity .4s cubic-bezier(0.680, -0.550, 0.265, 1.550)";
-							a.style.transform = "scale(0)";
-							a.style.opacity = "0";
-						}, index * 30);
-					});
-					setTimeout(() => {
-						flyoutMenu.style.display = "none";
-						flyoutButton.style.pointerEvents = "auto";
-					}, (2 + 1) * 100);
-					menuOpen = false;
-				}
-			});
-			</script>
 	<?php
 }
 
-// Ajout du sous-menu Spam Protection
-function wp_add_custom_submenu_reCAPTCHA() {
-    $page_hook_suffix = add_submenu_page(
+// Add Anti-Spam Settings submenu
+function formreach_add_custom_submenu_reCAPTCHA() {
+    $formreach_page_hook_suffix = add_submenu_page(
         "edit.php?post_type=form_reach",
-        "Spam Protection",
-        "Spam Protection",
+        "Anti-Spam Settings",
+        "Anti-Spam Settings",
         "manage_options",
-        "spam-protection",
-        "recaptcha_options_page"
+        "anti-spam-settings",
+        "formreach_recaptcha_options_page"
     );
 
-    // Utilise le hook de la page pour charger les scripts et styles seulement sur cette page
-    add_action('admin_enqueue_scripts', function($hook) use ($page_hook_suffix) {
-        if ($hook !== $page_hook_suffix) {
+    add_action('admin_enqueue_scripts', function($formreach_hook) use ($formreach_page_hook_suffix) {
+        if ($formreach_hook !== $formreach_page_hook_suffix) {
             return;
         }
-        // Enqueue les styles personnalisés pour la page
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css');
+        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
+        wp_enqueue_script('form-reach-custom-style', plugin_dir_url(__FILE__) . 'js/form-reach-spam-settings.js', array(), '1.0.0', true);
     });
 }
-add_action("admin_menu", "wp_add_custom_submenu_reCAPTCHA");
+add_action("admin_menu", "formreach_add_custom_submenu_reCAPTCHA");
 
-// Callback pour afficher le contenu de la page des options reCAPTCHA
-function recaptcha_options_page() {
+function formreach_recaptcha_options_page() {
     ?>
     <div class="wrap">
         <h1>Google reCAPTCHA v3</h1>
-        <form method="post" action="options.php">
+        <form id="recaptcha-form" method="post"  action="options.php">
             <?php
-            settings_fields('recaptcha_options_group');
-            do_settings_sections('spam-protection');
+            settings_fields('formreach_recaptcha_options_group');
+            do_settings_sections('anti-spam-settings');
             ?>
             <div class="mb-3">
-                <input type="checkbox" name="fr_recaptcha_switch" id="fr_recaptcha_switch" value="1" <?php checked(1, get_option('fr_recaptcha_switch')); ?> />
-                <label for="fr_recaptcha_switch" class="form-label">Enable reCAPTCHA</label>
-                <p class="text-secondary">Protection against spam and abuse.</p>
+                <input type="checkbox" name="formreach_recaptcha_switch" id="formreach_recaptcha_switch" value="1" <?php checked(1, get_option('formreach_recaptcha_switch')); ?> />
+                <label for="formreach_recaptcha_switch" class="form-label">Enable reCAPTCHA</label>
+                <p class="text-secondary"><?php echo esc_html(__('Protection against spam and abuse.', 'form-reach-domain')); ?></p>
             </div>
             <div>
-                <p>reCAPTCHA protects you against spam and other types of automated abuse. With the Form Reach reCAPTCHA integration module, you can block abusive form submissions from spam bots.</p>
-                <p><strong><a href="https://www.google.com/recaptcha/about/" target="_blank">Learn more about reCAPTCHA v3</a></strong></p>
+                <p><?php echo esc_html(__('reCAPTCHA protects you against spam and other types of automated abuse. With the Form Reach reCAPTCHA integration module, you can block abusive form submissions from spam bots.', 'form-reach-domain')); ?></p>
+                <p><strong><a href="https://www.google.com/recaptcha/about/" target="_blank"><?php echo esc_html(__('Learn more about reCAPTCHA v3', 'form-reach-domain')); ?></a></strong></p>
                 <table class="form-table">
                     <tr valign="top">
-                        <th scope="row"><label for="fr_key_site">Site key</label></th>
-                        <td><input type="text" name="fr_key_site" id="fr_key_site" size="44" value="<?php echo esc_attr(get_option('fr_key_site')); ?>" /></td>
+                        <th scope="row"><label for="formreach_key_site"><?php echo esc_html(__('Site key', 'form-reach-domain')); ?></label></th>
+                        <td><input type="text" name="formreach_key_site" id="formreach_key_site" size="44" value="<?php echo esc_attr(get_option('formreach_key_site')); ?>" /></td>
                     </tr>
                     <tr valign="top">
-                        <th scope="row"><label for="fr_key_secret">Secret key</label></th>
-                        <td><input type="password" name="fr_key_secret" id="fr_key_secret" size="44" value="<?php echo esc_attr(get_option('fr_key_secret')); ?>" /></td>
+                        <th scope="row"><label for="formreach_key_secret"><?php echo esc_html(__('Secret key', 'form-reach-domain')); ?></label></th>
+                        <td><input type="password" name="formreach_key_secret" id="formreach_key_secret" size="44" value="<?php echo esc_attr(get_option('formreach_key_secret')); ?>" /></td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row"><label for="formreach_recaptcha_score"><?php echo esc_html(__('reCAPTCHA Score', 'form-reach-domain')); ?></label></th>
+                        <td><input type="number" name="formreach_recaptcha_score" id="formreach_recaptcha_score" min="0" max="1" step="0.1" value="<?php echo esc_attr(get_option('formreach_recaptcha_score')); ?>" /></td>
                     </tr>
                 </table>
                 <?php submit_button(); ?>
             </div>
         </form>
     </div>
-    <?php
+    <?php formreach_add_flyout_menu(); ?>
+<?php
 }
 
-// Enregistre les paramètres de reCAPTCHA
-function register_recaptcha_settings() {
-    register_setting('recaptcha_options_group', 'fr_recaptcha_switch');
-    register_setting('recaptcha_options_group', 'fr_key_site');
-    register_setting('recaptcha_options_group', 'fr_key_secret');
+function formreach_register_recaptcha_settings() {
+    register_setting('formreach_recaptcha_options_group', 'formreach_recaptcha_switch');
+    register_setting('formreach_recaptcha_options_group', 'formreach_key_site');
+    register_setting('formreach_recaptcha_options_group', 'formreach_key_secret');
+    register_setting('formreach_recaptcha_options_group', 'formreach_recaptcha_score');
 }
-add_action('admin_init', 'register_recaptcha_settings');
+add_action('admin_init', 'formreach_register_recaptcha_settings');

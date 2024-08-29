@@ -1,9 +1,10 @@
 === Form Reach ===
-Tags: contact, form, whatsapp, logs, contact form, feedback, email, ajax, captcha
-Requires at least: 6.0
-Tested up to: 6.2
-License:
-License URI: 
+Tags: contact, form, whatsapp, logs, email
+Requires at least: 6.1
+Tested up to: 6.5
+Stable Tag: 1.0
+License: GPLv2
+License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 Custom Contact Form Builder to WhatsApp, Email, and more !
 
@@ -37,6 +38,24 @@ With the default configuration, this plugin, in itself, does not:
 If you activate certain features in this plugin, the contact form submitter's personal data, including their IP address, may be sent to the service provider. Thus, confirming the provider's privacy policy is recommended. These features include:
 
 * reCAPTCHA ([Google](https://policies.google.com/?hl=en))
+
+== Third-Party Services Used ==
+
+= WhatsApp API =
+This plugin uses the WhatsApp API to send messages. This service is used in the following circumstances:
+* When a user submits a form that triggers a WhatsApp message.
+
+Link to the service: [WhatsApp API](https://api.whatsapp.com)
+Link to the terms of service: [WhatsApp Terms of Service](https://www.whatsapp.com/legal/terms-of-service)
+Link to the privacy policy: [WhatsApp Privacy Policy](https://www.whatsapp.com/legal/privacy-policy)
+
+= Google reCAPTCHA =
+This plugin uses Google reCAPTCHA to ensure that form submissions are not made by bots. This service is used in the following circumstances:
+* When a user submits a form with reCAPTCHA protection enabled.
+
+Link to the service: [Google reCAPTCHA](https://www.google.com/recaptcha)
+Link to the terms of service: [Google reCAPTCHA Terms of Service](https://policies.google.com/terms)
+Link to the privacy policy: [Google reCAPTCHA Privacy Policy](https://policies.google.com/privacy)
 
 == Installation ==
 

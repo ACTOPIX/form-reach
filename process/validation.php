@@ -1,256 +1,138 @@
 <?php
-     // Calling wp-load
-	$path = preg_replace('/wp-content.*$/','',__DIR__);
-	require_once($path."wp-load.php");
+if (!defined('ABSPATH')) exit;
 
-     // Nonce verification
-     if(isset($_POST['_wpnonce'])){
+function formreach_handle_contact_form() {
+    check_ajax_referer('formreach_send_contact_action', 'formreach_send_contact_nonce');
 
-          if (!wp_verify_nonce( $_POST['_wpnonce'], 'nonce_verification' )){
+    // reCAPTCHA validation if enabled
+    if (get_option('formreach_recaptcha_switch') === '1') {
+        $formreach_recaptcha_response = sanitize_text_field($_POST['recaptcha_response']);
+        $formreach_response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
+            'body' => [
+                'secret' => get_option('formreach_key_secret'),
+                'response' => $formreach_recaptcha_response
+            ]
+        ]);
 
-               // The token verification failed
-               exit;
+        $formreach_result = json_decode(wp_remote_retrieve_body($formreach_response), true);
 
-          }else{
-               // The token verification succeeded
+        if (empty($formreach_result['success']) || $formreach_result['score'] < get_option('formreach_recaptcha_score')) {
+            wp_send_json_error(['message' => 'reCAPTCHA validation failed.']);
+            wp_die();
+        }
+    }
 
-               if(esc_attr(get_option('fr_recaptcha_switch')) === '1') {                     
-               // reCAPTCHA V3 protection activated, verifying server response
+    // Process form data
+    $formreach_postID = (int) $_POST['formreach_container_post'];
+    $formreach_stored_meta_validation_mail = get_post_meta($formreach_postID);
+    $formreach_email_form_content = get_post_meta($formreach_postID, 'formreach_email_form_content', true);
+    include 'mailing.php';
 
-                    $captchaSecretKey = esc_attr( get_option('fr_key_secret') );
+    // Detection of the `name` and the `type`
+    preg_match_all('/\[input[^\]]*type="([^"]+)"[^\]]*name="([^"]+)"[^\]]*\]/', $formreach_email_form_content, $formreach_matches);
+    
+    $formreach_field_types = $formreach_matches[1];
+    $formreach_field_names = $formreach_matches[2];
 
-                    if (isset($_POST['g-recaptcha-response'])) {
+    $formreach_contenuFormPost = '';
+    $formreach_keyShortcode = [];
+    $formreach_valShortcode = [];
 
-                         $postData = array(
-                              'secret' => $captchaSecretKey,
-                              'response' => $_POST['g-recaptcha-response']
-                              
-                         );
+    foreach ($formreach_field_names as $formreach_index => $formreach_field_name) {        
+        if (isset($_POST[$formreach_field_name])) {
+            $formreach_field_value = $_POST[$formreach_field_name];
+            $formreach_field_value_filtered = '';
 
-                         $url = "https://www.google.com/recaptcha/api/siteverify";
-
-                         $curl = curl_init();
-                         curl_setopt($curl, CURLOPT_URL, $url);
-                         curl_setopt($curl, CURLOPT_POST, true);
-                         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($postData));
-                         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-                         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                         $serverResponse = curl_exec($curl);
-                         
-                         if(json_decode($serverResponse,true)['score'] <= 0.5) {
-                         // The reCAPTCHA V3 verification failed
-                              echo ("recaptchaValidation=false") ; exit;
-                         }else{
-                         // reCAPTCHA V3 verification succeeded, processing form data
-
-                              // DÃ©finition des variables
-                              $postID = sanitize_text_field($_POST['fr_container_post']);
-                              $wp_stored_meta_validation_mail = get_post_meta($postID);
-                              
-                              //Admin Email build
-                              include 'mailing.php';
-          
-                              //User Email build
-                              $toUser = esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_to'][0]);
-
-                              // Fetching and filtering user data + defining content
-                              $contenuFormPost ="";
-                              foreach ($_POST as $key=>$val) {
-                                if (!($key== "_wpnonce" || $key == "g-recaptcha-response" || $key == "_wp_http_referer" || $key == "fr_mail_submit" ||$key == "fr_whatsapp_submit" || $key == "fr_container_post")){
-                                        $valFiltered = nl2br(str_replace("\\","",$val));
-                                        $keyFiltered = str_replace("\\","",$key);
-
-                                        $keyShortcode[] = "[$keyFiltered]";
-                                        $valShortcode[] = $valFiltered;
-                                        
-                                        $contenuFormPost .= "$keyFiltered : $valFiltered <br/>";
-                                   }
-                              }
-                            
-                              if ($keyFiltered) {
-                                   // Admin Content
-                                   $contenuReplace = $contenuAdministrateur;
-                                   foreach ($keyShortcode as $index => $shortcode) {
-                                        $contenuReplace = str_replace($shortcode, $valShortcode[$index] . '<br/>', $contenuReplace);
-                                   };
-
-                                   // User To
-                                   $toUserKey = str_replace($keyShortcode,$valShortcode, $toUser);
-                              };
-
-                              if ( ($wp_stored_meta_validation_mail['fr_user_email_switch'][0]) == 0 ){
-                                   // Email adresses 
-                                        $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_to'][0]);
-
-                                   // From
-                                        $GLOBALS['admin_from_name'] = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_from'][0] ));
-
-                                        function custom_wp_mail_from_name($name) {
-                                        if (!empty($GLOBALS['form_reach_mail'])) {
-                                             if (!empty($GLOBALS['admin_from_name'])) {
-                                                  return $GLOBALS['admin_from_name'];
-                                             }
-                                        }
-                                        return $name;
-                                        }
-
-                                        add_filter('wp_mail_from_name', 'custom_wp_mail_from_name');
-                                   
-                                   // Subjects
-                                        $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_subject'][0] ));
-                                   
-                                   // Headers
-                                   $headerAdmin = array(
-                                             'Content-Type: text/html; charset=UTF-8',
-                                             );
-                                   
-                                   // Mail sending
-                                        $toAdminSeveral = explode(',', $toAdmin);
-                                        $toAdminSeveral = array_map('trim', $toAdminSeveral);
-                                        $GLOBALS['form_reach_mail'] = true;
-                                        $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
-                                        $GLOBALS['form_reach_mail'] = false;
-                              }else {
-                                   // Email adresses 
-                                        $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_to'][0]);
-
-                                   // From
-                                        $GLOBALS['admin_from_name'] = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_from'][0] ));
-
-                                        function custom_wp_mail_from_name($name) {
-                                        if (!empty($GLOBALS['form_reach_mail'])) {
-                                             if (!empty($GLOBALS['admin_from_name'])) {
-                                                  return $GLOBALS['admin_from_name'];
-                                             }
-                                        }
-                                        return $name;
-                                        }
-
-                                        add_filter('wp_mail_from_name', 'custom_wp_mail_from_name');
-
-                                   // Subjects
-                                        $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_subject'][0] ));
-                                        $subjectUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_subject'][0] ));
-
-                                   // Headers
-                                        $headerAdmin = array(
-                                                       'Content-Type: text/html; charset=UTF-8',
-                                                       );
-                                        $headerUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_from'][0] ));
-                                   
-                                   // User Content
-                                        $contentUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_content'][0] ));
-                                   
-                                   // Mail sending
-                                        $toAdminSeveral = explode(',', $toAdmin);
-                                        $toAdminSeveral = array_map('trim', $toAdminSeveral);
-                                        $GLOBALS['form_reach_mail'] = true;
-                                        $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
-                                        $mailUser = wp_mail($toUserKey, $subjectUser, $contentUser, $headerUser);
-                                        $GLOBALS['form_reach_mail'] = false;
-                              };
-                            
-                              // Saving to the database
-                              global $wpdp;
-                              $table_name =  $wpdb->prefix . 'form_history';
-
-                              $data= array(
-                                    'type' => 'Mail',
-                                    'content' => $contenuFormPost
-                                   );
-
-                              $result = $wpdb->insert($table_name, $data);        
-                         }
-
+            // Sanitize based on input type
+            switch ($formreach_field_types[$formreach_index]) {
+                case 'email':
+                    if (!filter_var($formreach_field_value, FILTER_VALIDATE_EMAIL)) {
+                        wp_send_json_error(['emailValid' => false, 'success' => false]);
+                        wp_die();
                     }
-
-               } else {
-               // reCAPTCHA V3 protection disabled, processing form data without verification
-
-                    // Definition of variables
-                    $postID = sanitize_text_field($_POST['fr_container_post']);
-                    $wp_stored_meta_validation_mail = get_post_meta($postID);
-
-                    //Admin email build
-                    include 'mailing.php';
-
-                    // User email build
-                    $toUser = esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_to'][0]);
-
-                    // Fetching and filtering user data + defining content
-                    $contenuFormPost ="";
-                    foreach ($_POST as $key=>$val) {
-                        if (!($key== "_wpnonce" || $key == "_wp_http_referer" || $key == "fr_mail_submit" ||$key == "fr_whatsapp_submit" || $key == "fr_container_post")){
-                                $valFiltered = nl2br(str_replace("\\","",$val));
-                                $keyFiltered = str_replace("\\","",$key);
-
-                                $keyShortcode[] = "[$keyFiltered]";
-                                $valShortcode[] = $valFiltered;
-
-                                $contenuFormPost .= "$keyFiltered : $valFiltered <br/>";
+                    $formreach_field_value_filtered = sanitize_email($formreach_field_value);
+                    break;
+                case 'textarea':
+                    $formreach_field_value_filtered = nl2br(sanitize_textarea_field($formreach_field_value));
+                    break;
+                case 'url':
+                    $formreach_field_value_filtered = esc_url_raw($formreach_field_value);
+                    break;
+                case 'number':
+                    $formreach_field_value_filtered = floatval($formreach_field_value); 
+                    break;
+                case 'file':
+                    if (!empty($_FILES[$formreach_field_name]['name'])) {
+                        $formreach_upload = wp_handle_upload($_FILES[$formreach_field_name], ['test_form' => false]);
+                        if (isset($formreach_upload['url'])) {
+                            $formreach_field_value_filtered = esc_url_raw($formreach_upload['url']);
+                        } else {
+                            wp_send_json_error(['upload' => false, 'success' => false]);
+                            wp_die();
                         }
                     }
-                    
-                    if ($keyFiltered) {
-                         // Admin Content
-                         $contenuReplace = str_replace($keyShortcode,$valShortcode, $contenuAdministrateur);
-                         // User To
-                         $toUserKey = str_replace($keyShortcode,$valShortcode, $toUser);
-                    };
+                    break;
+                default:
+                    $formreach_field_value_filtered = sanitize_text_field($formreach_field_value);
+                    break;
+            }
 
-                    if ( ($wp_stored_meta_validation_mail['fr_user_email_switch'][0]) == 0 ){
-                         // Email adresses 
-                              $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_to'][0]);
-                         
-                         // Subjects
-                              $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_subject'][0] ));
-                         
-                         // Headers
-                              $headerAdmin = array(
-                                             'Content-Type: text/html; charset=UTF-8',
-                                             );
-                         
-                         // Mail sending
-                              $toAdminSeveral = explode(',', $toAdmin);
-                              $toAdminSeveral = array_map('trim', $toAdminSeveral);
+            // Build email content
+            $formreach_contenuFormPost .= esc_attr($formreach_field_name) . ' : ' . $formreach_field_value_filtered . '<br/>';
 
-                              $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
-                    }else {
-                         // Email adresses 
-                              $toAdmin = esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_to'][0]);
-                         // Subjects
-                              $subjectAdmin = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_admin_subject'][0] ));
-                              $subjectUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_subject'][0] ));
+            // Prepare shortcodes for replacement
+            $formreach_keyShortcode[] = '[' . esc_attr(str_replace("\\", "", $formreach_field_name)) . ']';
+            $formreach_valShortcode[] = str_replace("\\", "", $formreach_field_value_filtered);
+        }
+    }
 
-                         // Headers
-                              $headerAdmin = array(
-                                             'Content-Type: text/html; charset=UTF-8',
-                                             );
-                              $headerUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_from'][0] ));
+    // Replace placeholders in email content
+    $formreach_contenuReplace = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_contenuAdministrateur);
+    $formreach_contenuReplaceUser = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_contenuUtilisateur);
 
-                         
-                         // User Content
-                              $contentUser = str_replace("&#039;","'",esc_attr ( $wp_stored_meta_validation_mail['fr_email_user_content'][0] ));
+    $formreach_subjectAdmin = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_stored_meta_validation_mail['formreach_email_admin_subject'][0]);
+    $formreach_toUser = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_stored_meta_validation_mail['formreach_email_user_to'][0]);
+    $formreach_toAdmin = $formreach_stored_meta_validation_mail['formreach_email_admin_to'][0];
+    $GLOBALS['formreach_admin_from_name'] = str_replace("&#039;", "'", $formreach_stored_meta_validation_mail['formreach_email_admin_from'][0]);
 
-                         // Mail sending
-                              $toAdminSeveral = explode(',', $toAdmin);
-                              $toAdminSeveral = array_map('trim', $toAdminSeveral);
+    add_filter('wp_mail_from_name', function($formreach_name) {
+        return $GLOBALS['formreach_mail'] ? $GLOBALS['formreach_admin_from_name'] : $formreach_name;
+    });
 
-                              $mailAdmin = wp_mail($toAdminSeveral, $subjectAdmin, $contenuReplace, $headerAdmin);
-                              $mailUser = wp_mail($toUserKey, $subjectUser, $contentUser, $headerUser);
-                    };
-                    
-                    // Saving to the database
-                    global $wpdp;
-                    $table_name =  $wpdb->prefix . 'form_history';
+    $formreach_headerAdmin = ['Content-Type: text/html; charset=UTF-8'];
+    $formreach_toAdminSeveral = array_map('trim', explode(',', $formreach_toAdmin));
+	
+    // Send admin email
+    $GLOBALS['formreach_mail'] = true;
+    wp_mail($formreach_toAdminSeveral, $formreach_subjectAdmin, $formreach_contenuReplace, $formreach_headerAdmin);
+    $GLOBALS['formreach_mail'] = false;
 
-                    $data= array(
-                            'type' => 'Mail',
-                            'content' => $contenuFormPost
-                            );
+    // Send user email if enabled
+    if ($formreach_stored_meta_validation_mail['formreach_user_email_switch'][0] == 1) {
+        $formreach_subjectUser = str_replace("&#039;", "'", $formreach_stored_meta_validation_mail['formreach_email_user_subject'][0]);
+        $formreach_headerUser = str_replace("&#039;", "'", $formreach_stored_meta_validation_mail['formreach_email_user_from'][0]);
+        $GLOBALS['formreach_mail'] = true;
+        wp_mail($formreach_toUser, $formreach_subjectUser, $formreach_contenuReplaceUser, $formreach_headerAdmin);
+        $GLOBALS['formreach_mail'] = false;
+    }
+	
+	$formreach_local_time = gmdate('Y-m-d H:i:s');
+	global $wpdb;
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+	$wpdb->insert(
+		$wpdb->prefix . 'formreach_form_history',
+		[
+			'type' => 'Mail', 
+			'content' => str_replace("\\", "", $formreach_contenuFormPost), 
+			'created_at' => $formreach_local_time
+		],
+		['%s', '%s', '%s']
+	);
 
-                    $result = $wpdb->insert($table_name, $data);
-               }
-          }
-     }                         
+    wp_send_json_success(['success' => true]);
+    wp_die();
+}
+
+add_action('wp_ajax_submit_contact_form', 'formreach_handle_contact_form');
+add_action('wp_ajax_nopriv_submit_contact_form', 'formreach_handle_contact_form');
 ?>
