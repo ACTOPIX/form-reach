@@ -494,12 +494,17 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 			
 			<div class="row mt-2">
 				<?php
-				if(isset($_GET['post'])) {
-					$formreach_form_id = $_GET['post'];
-					$formreach_form_status = get_post_status($formreach_form_id);
-				} else {
-					$formreach_form_status = 'new';
-				}
+					$formreach_form_id = filter_input(INPUT_GET, 'post', FILTER_VALIDATE_INT);
+
+					if ($formreach_form_id) {
+						$formreach_form_status = get_post_status($formreach_form_id);
+
+						if (!$formreach_form_status) {
+							$formreach_form_status = 'invalid';
+						}
+					} else {
+						$formreach_form_status = 'new';
+					}
 				?>
 				
 				<!-- Publish form button -->
@@ -540,14 +545,19 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 				</div>
 
 				<div class="row mt-3">
-				<?php
-					if(isset($_GET['post'])) {
-						$formreach_form_id = $_GET['post'];
-						$formreach_form_status = get_post_status($formreach_form_id);
-					} else {
-						$formreach_form_status = 'new';
-					}
-				?>
+					<?php
+						$formreach_form_id = filter_input(INPUT_GET, 'post', FILTER_VALIDATE_INT);
+
+						if ($formreach_form_id) {
+							$formreach_form_status = get_post_status($formreach_form_id);
+
+							if (!$formreach_form_status) {
+								$formreach_form_status = 'invalid';
+							}
+						} else {
+							$formreach_form_status = 'new';
+						}
+					?>
 				
 					<!-- Publish form button -->
 					<?php if ($formreach_form_status !== 'publish') : ?>
@@ -673,9 +683,14 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 			</div>
 			<div class="row mt-2">
 				<?php
-					if(isset($_GET['post'])) {
-						$formreach_form_id = $_GET['post'];
+					$formreach_form_id = filter_input(INPUT_GET, 'post', FILTER_VALIDATE_INT);
+
+					if ($formreach_form_id) {
 						$formreach_form_status = get_post_status($formreach_form_id);
+
+						if (!$formreach_form_status) {
+							$formreach_form_status = 'invalid';
+						}
 					} else {
 						$formreach_form_status = 'new';
 					}

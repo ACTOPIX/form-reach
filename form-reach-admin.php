@@ -137,7 +137,7 @@ add_action('admin_menu','formreach_remove_metaboxe');
 
 // Customization of the edit page
 function formreach_register_metabox_post_type( $formreach_post ) {
-	$formreach_post_id = isset( $_GET['post'] ) ? $_GET['post'] : 0;
+	$formreach_post_id = filter_input(INPUT_GET, 'post', FILTER_VALIDATE_INT, array('options' => array('default' => 0, 'min_range' => 1)));
 
 	$formreach_post_id = absint( $formreach_post_id );
 
@@ -300,7 +300,7 @@ function formreach_meta_save($formreach_post_id) {
     if (!isset($_POST['formreach_save_post_nonce'])) {
         return;
     }
-    if (!wp_verify_nonce($_POST['formreach_save_post_nonce'], 'formreach_save_post_action')) {
+    if ( ! isset( $_POST['formreach_save_post_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['formreach_save_post_nonce'] ) ) , 'formreach_save_post_action' ) ){
         return;
     }
     if (!current_user_can('edit_post', $formreach_post_id)) {
@@ -311,46 +311,65 @@ function formreach_meta_save($formreach_post_id) {
     }
 
     $formreach_fields = [
-        'formreach_email_admin_to' => true,
-        'formreach_email_admin_from' => true,
-        'formreach_email_admin_subject' => true,
-        'formreach_email_admin_content' => false,
-        'formreach_email_user_to' => true,
-        'formreach_email_user_from' => true,
-        'formreach_email_user_subject' => true,
-        'formreach_email_user_content' => false,
-        'formreach_email_submit' => false,
-        'formreach_whatsapp_submit' => false,
-        'formreach_email_submit_color' => false,
-        'formreach_whatsapp_submit_color' => false,
-        'formreach_email_text_color' => false,
-        'formreach_whatsapp_text_color' => false,
-        'formreach_email_success' => true,
-        'formreach_email_error' => true,
-        'formreach_whatsapp_success' => true,
-        'formreach_whatsapp_error' => true,
-        'formreach_email_form_content' => false,
-        'formreach_whatsapp_form_content' => false,
-        'formreach_whatsapp_tel' => true,
-        'formreach_whatsapp_flag' => true,
-        'formreach_whatsapp_tel_international' => true,
+        'formreach_email_admin_to' => 'email',
+        'formreach_email_admin_from' => 'email',
+        'formreach_email_admin_subject' => 'text',
+        'formreach_email_admin_content' => 'textarea',
+        'formreach_email_user_to' => 'email',
+        'formreach_email_user_from' => 'email',
+        'formreach_email_user_subject' => 'text',
+        'formreach_email_user_content' => 'textarea',
+        'formreach_email_submit' => 'text',
+        'formreach_whatsapp_submit' => 'text',
+        'formreach_email_submit_color' => 'text',
+        'formreach_whatsapp_submit_color' => 'text',
+        'formreach_email_text_color' => 'text',
+        'formreach_whatsapp_text_color' => 'text',
+        'formreach_email_success' => 'text',
+        'formreach_email_error' => 'text',
+        'formreach_whatsapp_success' => 'text',
+        'formreach_whatsapp_error' => 'text',
+        'formreach_email_form_content' => 'textarea',
+        'formreach_whatsapp_form_content' => 'textarea',
+        'formreach_whatsapp_tel' => 'tel',
+        'formreach_whatsapp_flag' => 'text',
+        'formreach_whatsapp_tel_international' => 'tel',
         'formreach_whatsapp_switch' => 'checkbox',
         'formreach_user_email_switch' => 'checkbox',
     ];
+    
 
     foreach ($formreach_fields as $formreach_field => $formreach_sanitize) {
         if (isset($_POST[$formreach_field])) {
-            $formreach_value = $_POST[$formreach_field];
-            if ($formreach_sanitize === true) {
-                $formreach_value = sanitize_text_field($formreach_value);
-            } elseif ($formreach_sanitize === 'checkbox') {
-                $formreach_value = "1";
+            $formreach_value = wp_unslash($_POST[$formreach_field]); // Unslash to remove slashes added by WordPress
+            
+            switch ($formreach_sanitize) {
+                case 'email':
+                    $formreach_value = sanitize_email($formreach_value);
+                    break;
+                case 'tel':
+                    // Example of sanitizing a phone number - you might want to adjust this based on your needs
+                    $formreach_value = preg_replace('/[^0-9+]/', '', $formreach_value);
+                    break;
+                case 'textarea':
+                    $formreach_value = sanitize_textarea_field($formreach_value);
+                    break;
+                case 'checkbox':
+                    $formreach_value = "1";
+                    break;
+                case 'text':
+                default:
+                    $formreach_value = sanitize_text_field($formreach_value);
+                    break;
             }
+            
             update_post_meta($formreach_post_id, $formreach_field, $formreach_value);
         } elseif ($formreach_sanitize === 'checkbox') {
+            // Set to "0" if checkbox is not checked
             update_post_meta($formreach_post_id, $formreach_field, "0");
         }
     }
+    
 }
 
 add_action('save_post_form_reach','formreach_meta_save');
@@ -395,11 +414,23 @@ function formreach_form_log_callback() {
 	 global $wpdb;
     $formreach_table = $wpdb->prefix . "formreach_form_history";
 
-    if (isset($_POST['delete'], $_POST['_wpnonce']) && wp_verify_nonce($_POST['_wpnonce'], 'delete_entry')) {
-        $formreach_entry_id = intval($_POST['delete']);
-        $wpdb->delete($formreach_table, ['ID' => $formreach_entry_id]);
-        echo '<div class="notice notice-success is-dismissible"><p>Entry deleted successfully.</p></div>';
+    if (isset($_POST['delete'])) {
+        if (isset($_POST['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'delete_entry')) {
+            $formreach_entry_id = intval($_POST['delete']);
+
+            $deleted = $wpdb->delete($formreach_table, ['ID' => $formreach_entry_id]);
+
+            if ($deleted) {
+                echo '<div class="notice notice-success is-dismissible"><p>Entry deleted successfully.</p></div>';
+            } else {
+                echo '<div class="notice notice-error is-dismissible"><p>Failed to delete the entry.</p></div>';
+            }
+        } else {
+            echo '<div class="notice notice-error is-dismissible"><p>Invalid request. Please try again.</p></div>';
+        }
     }
+
+    
 	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
     $formreach_entries = $wpdb->get_results("SELECT * FROM $formreach_table ORDER BY created_at DESC");
 
