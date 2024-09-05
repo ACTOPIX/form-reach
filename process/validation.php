@@ -6,7 +6,7 @@ function formreach_handle_contact_form() {
 
     // reCAPTCHA validation if enabled
     if (get_option('formreach_recaptcha_switch') === '1') {
-        $formreach_recaptcha_response = sanitize_text_field($_POST['recaptcha_response']);
+        $formreach_recaptcha_response = isset($_POST['recaptcha_response']) ? sanitize_text_field(wp_unslash($_POST['recaptcha_response'])) : '';
         $formreach_response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
             'body' => [
                 'secret' => get_option('formreach_key_secret'),
@@ -23,7 +23,7 @@ function formreach_handle_contact_form() {
     }
 
     // Process form data
-    $formreach_postID = (int) $_POST['formreach_container_post'];
+    $formreach_postID = isset($_POST['formreach_container_post']) ? (int) $_POST['formreach_container_post'] : 0;
     $formreach_stored_meta_validation_mail = get_post_meta($formreach_postID);
     $formreach_email_form_content = get_post_meta($formreach_postID, 'formreach_email_form_content', true);
     include 'mailing.php';
@@ -40,7 +40,7 @@ function formreach_handle_contact_form() {
 
     foreach ($formreach_field_names as $formreach_index => $formreach_field_name) {        
         if (isset($_POST[$formreach_field_name])) {
-            $formreach_field_value = $_POST[$formreach_field_name];
+            $formreach_field_value = sanitize_textarea_field(wp_unslash($_POST[$formreach_field_name]));
             $formreach_field_value_filtered = '';
 
             // Sanitize based on input type
