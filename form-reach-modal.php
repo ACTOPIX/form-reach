@@ -11,42 +11,63 @@ wp_enqueue_script('bootstrap-js',  plugin_dir_url(__FILE__) . 'assets/bootstrap/
 wp_enqueue_script('intl-tel-input-js',  plugin_dir_url(__FILE__) . 'assets/intl-tel-input/intlTelInput.min.js', array('jquery'), '18.1.1', true);
 wp_enqueue_script('form-reach-admin-js', plugin_dir_url(__FILE__) . 'js/form-reach-admin.js', array('jquery'), '1.0.0', true);
 
-// Default Form
+//Default Form
 function formreach_email_form_default() {
-    return __('[input type="text" label="Name" name="name" required="required" placeholder="Enter your name"]', 'form-reach-domain') . "\n\n" .
-           __('[input type="email" label="Email address" name="email" required="required" placeholder="Enter your email"]', 'form-reach-domain') . "\n\n" .
-           __('[input type="textarea" rows="10" label="Message" name="message" required="required" placeholder="Enter your message"]', 'form-reach-domain');
+    $label_name = esc_html__('Name', 'form-reach-domain');
+    $name_attr = esc_attr__('name', 'form-reach-domain');
+    $placeholder_name = esc_attr__('Enter your name', 'form-reach-domain');
+
+    $label_email = esc_html__('Email address', 'form-reach-domain');
+    $email_attr = esc_attr__('email', 'form-reach-domain');
+    $placeholder_email = esc_attr__('Enter your email', 'form-reach-domain');
+
+    $label_message = esc_html__('Message', 'form-reach-domain');
+    $message_attr = esc_attr__('message', 'form-reach-domain');
+    $placeholder_message = esc_attr__('Enter your message', 'form-reach-domain');
+
+    return '[input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
+           '[input type="email" label="' . $label_email . '" name="' . $email_attr . '" required="required" placeholder="' . $placeholder_email . '"]' . "\n\n" .
+           '[input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
 }
 
 function formreach_whatsapp_form_default() {
-    return __('[input type="text" label="Name" name="name" required="required" placeholder="Enter your name"]', 'form-reach-domain') . "\n\n" .
-           __('[input type="textarea" rows="10" label="Message" name="message" required="required" placeholder="Enter your message"]', 'form-reach-domain');
+    $label_name = esc_html__('Name', 'form-reach-domain');
+    $name_attr = esc_attr__('name', 'form-reach-domain');
+    $placeholder_name = esc_attr__('Enter your name', 'form-reach-domain');
+
+    $label_message = esc_html__('Message', 'form-reach-domain');
+    $message_attr = esc_attr__('message', 'form-reach-domain');
+    $placeholder_message = esc_attr__('Enter your message', 'form-reach-domain');
+
+    return '[input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
+           '[input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
 }
+
 
 $formreach_defaultform = array(
     'formreach_email_form_default' => formreach_email_form_default(),
     'formreach_whatsapp_form_default' => formreach_whatsapp_form_default(),
 	// Submit Default
-	'formreach_email_submit_text_default' => __("Send", 'form-reach-domain'),
-	'formreach_email_submit_text_color_default' => __("#ffffff", 'form-reach-domain'),
-	'formreach_email_submit_color_default' => __("#0d6efd", 'form-reach-domain'),
-	'formreach_whatsapp_submit_text_default' => __("WhatsApp", 'form-reach-domain'),
-	'formreach_whatsapp_submit_text_color_default' => __("#ffffff", 'form-reach-domain'),
-	'formreach_whatsapp_submit_color_default' => __("#198754", 'form-reach-domain'),
+	'formreach_email_submit_text_default' => esc_html__("Send", 'form-reach-domain'),
+	'formreach_email_submit_text_color_default' => esc_attr("#ffffff"),
+	'formreach_email_submit_color_default' => esc_attr("#0d6efd"),
+	'formreach_whatsapp_submit_text_default' => esc_html__("WhatsApp", 'form-reach-domain'),
+	'formreach_whatsapp_submit_text_color_default' => esc_attr("#ffffff"),
+	'formreach_whatsapp_submit_color_default' => esc_attr("#198754"),
 	// Default Values
 	'formreach_email_admin_to_default' => get_option('admin_email'),
-	'formreach_email_admin_from_default' => __("Form Reach", 'form-reach-domain'),
-	'formreach_email_admin_subject_default' => __("User Message", 'form-reach-domain'),
-	'formreach_email_admin_content_default' => __("Name: [name]\nEmail: [email]\nMessage: [message]", 'form-reach-domain'),
-	'formreach_email_user_to_default' => __("[email]", 'form-reach-domain'),
-	'formreach_email_user_from_default' => __("Form Reach", 'form-reach-domain'),
-	'formreach_email_user_subject_default' => __("Form Reach", 'form-reach-domain'),
-	'formreach_email_user_content_default' => __("Thank you for reaching out to us.\n\nWe acknowledge receipt of your message and assure you that we will respond as soon as possible.", 'form-reach-domain'),
+	'formreach_email_admin_from_default' => esc_html__("Form Reach", 'form-reach-domain'),
+	'formreach_email_admin_subject_default' => esc_html__("User Message", 'form-reach-domain'),
+	'formreach_email_admin_content_default' => esc_html__("Name: [name]\nEmail: [email]\nMessage: [message]", 'form-reach-domain'),
+	'formreach_email_user_to_default' => esc_attr("[email]"),
+	'formreach_email_user_from_default' => esc_html__("Form Reach", 'form-reach-domain'),
+	'formreach_email_user_subject_default' => esc_html__("Form Reach", 'form-reach-domain'),
+	'formreach_email_user_content_default' => esc_html__("Thank you for reaching out to us.\n\nWe acknowledge receipt of your message and assure you that we will respond as soon as possible.", 'form-reach-domain'),
 	// Error/Success default
-	'formreach_email_success_default' => __("The form has been successfully submitted.", 'form-reach-domain'),
-	'formreach_email_error_default' => __("The form could not be submitted due to an error. Please try again.", 'form-reach-domain'),
-	'formreach_whatsapp_success_default' => __("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", 'form-reach-domain'),
-	'formreach_whatsapp_error_default' => __("The message could not be submitted due to an error. Please try again.", 'form-reach-domain')
+	'formreach_email_success_default' => esc_html__("The form has been successfully submitted.", 'form-reach-domain'),
+	'formreach_email_error_default' => esc_html__("The form could not be submitted due to an error. Please try again.", 'form-reach-domain'),
+	'formreach_whatsapp_success_default' => esc_html__("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", 'form-reach-domain'),
+	'formreach_whatsapp_error_default' => esc_html__("The message could not be submitted due to an error. Please try again.", 'form-reach-domain')
 );
 
 $formreach_phpFlag = !empty( $formreach_stored_meta['formreach_whatsapp_flag'] ) ? esc_attr( $formreach_stored_meta['formreach_whatsapp_flag'][0] ) : '';

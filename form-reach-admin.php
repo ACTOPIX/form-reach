@@ -173,8 +173,8 @@ function formreach_register_metabox_callback($formreach_post) {
 		'formreach_email_admin_from' => __("Form Reach", "form-reach-domain"),
 		'formreach_email_admin_subject' => __("User Message", "form-reach-domain"),
 		'formreach_email_user_to' => __("[email]", "form-reach-domain"),
-		'formreach_email_user_from' => __("Form Reach", "form-reach-domain"),
-		'formreach_email_user_subject' => __("Form Reach", "form-reach-domain"),
+		'formreach_email_user_from' => "Form Reach",
+		'formreach_email_user_subject' => "Form Reach",
 		'formreach_email_submit' => __("Send", "form-reach-domain"),
 		'formreach_whatsapp_submit' => __("WhatsApp", "form-reach-domain"),
 		'formreach_email_submit_color' => "#0d6efd",
@@ -250,6 +250,12 @@ class formreach_id {
 }
 
 function formreach_input_type($formreach_atts) {
+	global $formreach_is_form_reach_context;
+	
+    if (!isset($formreach_is_form_reach_context) || !$formreach_is_form_reach_context) {
+        return '';
+    }
+	
     $formreach_id_auto = formreach_id::formreach_counter();
     
     $formreach_atts = shortcode_atts(array(
@@ -312,11 +318,11 @@ function formreach_meta_save($formreach_post_id) {
 
     $formreach_fields = [
         'formreach_email_admin_to' => 'email',
-        'formreach_email_admin_from' => 'email',
+        'formreach_email_admin_from' => 'text',
         'formreach_email_admin_subject' => 'text',
         'formreach_email_admin_content' => 'textarea',
-        'formreach_email_user_to' => 'email',
-        'formreach_email_user_from' => 'email',
+        'formreach_email_user_to' => 'text',
+        'formreach_email_user_from' => 'text',
         'formreach_email_user_subject' => 'text',
         'formreach_email_user_content' => 'textarea',
         'formreach_email_submit' => 'text',
@@ -340,36 +346,33 @@ function formreach_meta_save($formreach_post_id) {
     
 
     foreach ($formreach_fields as $formreach_field => $formreach_sanitize) {
-        if (isset($_POST[$formreach_field])) {
-            $formreach_value = wp_unslash($_POST[$formreach_field]); // Unslash to remove slashes added by WordPress
-            
-            switch ($formreach_sanitize) {
-                case 'email':
-                    $formreach_value = sanitize_email($formreach_value);
-                    break;
-                case 'tel':
-                    // Example of sanitizing a phone number - you might want to adjust this based on your needs
-                    $formreach_value = preg_replace('/[^0-9+]/', '', $formreach_value);
-                    break;
-                case 'textarea':
-                    $formreach_value = sanitize_textarea_field($formreach_value);
-                    break;
-                case 'checkbox':
-                    $formreach_value = "1";
-                    break;
-                case 'text':
-                default:
-                    $formreach_value = sanitize_text_field($formreach_value);
-                    break;
-            }
-            
-            update_post_meta($formreach_post_id, $formreach_field, $formreach_value);
-        } elseif ($formreach_sanitize === 'checkbox') {
-            // Set to "0" if checkbox is not checked
-            update_post_meta($formreach_post_id, $formreach_field, "0");
-        }
-    }
-    
+		if (isset($_POST[$formreach_field])) {
+			$formreach_value = wp_kses_post(wp_unslash($_POST[$formreach_field]));
+
+			switch ($formreach_sanitize) {
+				case 'email':
+					$formreach_value = sanitize_email($formreach_value);
+					break;
+				case 'tel':
+					$formreach_value = preg_replace('/[^0-9+]/', '', $formreach_value);
+					break;
+				case 'textarea':
+					$formreach_value = wp_kses_post($formreach_value);
+					break;
+				case 'checkbox':
+					$formreach_value = "1";
+					break;
+				case 'text':
+				default:
+					$formreach_value = sanitize_text_field($formreach_value);
+					break;
+			}
+
+			update_post_meta($formreach_post_id, $formreach_field, $formreach_value);
+		} elseif ($formreach_sanitize === 'checkbox') {
+			update_post_meta($formreach_post_id, $formreach_field, "0");
+		}
+	}    
 }
 
 add_action('save_post_form_reach','formreach_meta_save');
@@ -418,7 +421,7 @@ function formreach_form_log_callback() {
         if (isset($_POST['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'delete_entry')) {
             $formreach_entry_id = intval($_POST['delete']);
 
-            $deleted = $wpdb->delete($formreach_table, ['ID' => $formreach_entry_id]);
+            $deleted = $wpdb->delete($formreach_table, ['ID' => $formreach_entry_id]); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
             if ($deleted) {
                 echo '<div class="notice notice-success is-dismissible"><p>Entry deleted successfully.</p></div>';
@@ -430,9 +433,7 @@ function formreach_form_log_callback() {
         }
     }
 
-    
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-    $formreach_entries = $wpdb->get_results("SELECT * FROM $formreach_table ORDER BY created_at DESC");
+    $formreach_entries = $wpdb->get_results("SELECT * FROM $formreach_table ORDER BY created_at DESC"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
     ?>
 

@@ -3,7 +3,7 @@
 Plugin Name: Form Reach
 Plugin URI: https://form-reach.com/
 Description: Custom Contact Form Builder to WhatsApp, Email, and more!
-Version: 1.0.1
+Version: 1.0
 Author: ACTOPIX
 Author URI: https://actopix.com/
 License: GPLv2 or later
@@ -151,11 +151,16 @@ function formreach_include($formreach_id) {
 					<form class="form-reach" <?php echo ($formreach_stored_meta_front['formreach_whatsapp_switch'][0] == 1) ? 'id="formreach_whatsapp"' : 'id="formreach_mail"'; ?>>
 									
 						<?php
+						global $formreach_is_form_reach_context;
+						$formreach_is_form_reach_context = true;
+	
 						if ($formreach_stored_meta_front['formreach_whatsapp_switch'][0] == 1) {
 							echo do_shortcode(wp_kses_post($formreach_stored_meta_front["formreach_whatsapp_form_content"][0]));
 						} else {
 							echo do_shortcode(wp_kses_post($formreach_stored_meta_front["formreach_email_form_content"][0]));
 						}
+	
+						$formreach_is_in_form_reach = false;
 
 						// Determines whether the WhatsApp submit button should be displayed
 						$formreach_displayWhatsAppSubmit = esc_attr($formreach_stored_meta_front['formreach_whatsapp_switch'][0]) == 1 ? '' : 'style="display:none"';
