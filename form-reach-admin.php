@@ -44,7 +44,7 @@ function formreach_post_type() {
         'supports'           => array('title'), // Added support for common features
     );
 
-    register_post_type('form_reach', $formreach_args);
+    register_post_type('formreach_post_type', $formreach_args);
 }
 
 add_action('init', 'formreach_post_type');
@@ -61,12 +61,12 @@ function formreach_smashing_columns($formreach_columns) {
     );
     return $formreach_newColumns;
 }
-add_filter('manage_form_reach_posts_columns', 'formreach_smashing_columns');
+add_filter('manage_formreach_post_type_posts_columns', 'formreach_smashing_columns');
 
 // Adding the shortcode to the Administrator custom table
 function formreach_shortcode_column($formreach_column, $formreach_post_id) {
     if ('shortcode' === $formreach_column) {
-        echo '<input type="text" class="form-control" style="background-color: transparent; border: none;" readonly="readonly" onfocus="this.select()" value=\'[form-reach id="' . esc_attr($formreach_post_id) . '"]\'>';
+        echo '<input type="text" class="form-control" style="background-color: transparent; border: none;" readonly="readonly" onfocus="this.select()" value=\'[formreach_form id="' . esc_attr($formreach_post_id) . '"]\'>';
     }
 }
 
@@ -89,8 +89,8 @@ function formreach_custom_column_content($formreach_column, $formreach_post_id) 
     }
 }
 
-add_action('manage_form_reach_posts_custom_column', 'formreach_custom_column_content', 10, 2);
-add_action('manage_form_reach_posts_custom_column', 'formreach_shortcode_column', 10, 2);
+add_action('manage_formreach_post_type_posts_custom_column', 'formreach_custom_column_content', 10, 2);
+add_action('manage_formreach_post_type_posts_custom_column', 'formreach_shortcode_column', 10, 2);
 
 // Ajouter les styles personnalisés pour l'administration
 function formreach_enqueue_admin_styles() {
@@ -109,7 +109,7 @@ add_action('admin_enqueue_scripts', 'formreach_enqueue_admin_styles');
  */
 function formreach_optimize_admin_columns() {
     $formreach_screen = get_current_screen();
-    if ( $formreach_screen->id == 'edit-form_reach' ) {
+    if ( $formreach_screen->id == 'edit-formreach_post_type' ) {
         wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
 		
 		formreach_add_flyout_menu();
@@ -131,7 +131,7 @@ function formreach_modify_list_row_actions($actions, $formreach_post) {
 add_filter('post_row_actions', 'formreach_modify_list_row_actions', 10, 2);
 
 function formreach_remove_metaboxe() {
-    remove_meta_box('slugdiv', 'form_reach', 'normal'); // Removing the Slug metabox
+    remove_meta_box('slugdiv', 'formreach_post_type', 'normal'); // Removing the Slug metabox
 }
 add_action('admin_menu','formreach_remove_metaboxe');
 
@@ -141,7 +141,7 @@ function formreach_register_metabox_post_type( $formreach_post ) {
 
 	$formreach_post_id = absint( $formreach_post_id );
 
-	$formreach_shortcode = esc_attr( '[form-reach id="' . $formreach_post_id . '"]' );
+	$formreach_shortcode = esc_attr( '[formreach_form id="' . $formreach_post_id . '"]' );
 
 	$formreach_copyInstruction = __('Copy this shortcode and paste it into your post, page, or text widget content: ', 'form-reach-domain');
 
@@ -156,7 +156,7 @@ function formreach_register_metabox_post_type( $formreach_post ) {
         'formreach_metabox',
         $formreach_finalShortcode, 
         'formreach_register_metabox_callback', 
-        'form_reach',
+        'formreach_post_type',
     );
 }
 
@@ -164,7 +164,7 @@ add_action('add_meta_boxes','formreach_register_metabox_post_type');
 
 function formreach_register_metabox_callback($formreach_post) {
 	
-	if ('form_reach' !== $formreach_post->post_type || !current_user_can('edit_post', $formreach_post->ID)) {
+	if ('formreach_post_type' !== $formreach_post->post_type || !current_user_can('edit_post', $formreach_post->ID)) {
         return;
     }
 
@@ -187,8 +187,8 @@ function formreach_register_metabox_callback($formreach_post) {
 		'formreach_email_error' => __("The form could not be submitted due to an error. Please try again.", "form-reach-domain"),
 		'formreach_whatsapp_success' => __("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", "form-reach-domain"),
 		'formreach_whatsapp_error' => __("The message could not be submitted due to an error. Please try again.", "form-reach-domain"),
-		'formreach_email_form_content' => '[input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[input type="email" label="' . __("Email address", "form-reach-domain") . '" name="email" required="required" placeholder="' . __("Enter your email", "form-reach-domain") . '"]' . "\n\n" . '[input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
-		'formreach_whatsapp_form_content' => '[input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
+		'formreach_email_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[formreach_input type="email" label="' . __("Email address", "form-reach-domain") . '" name="email" required="required" placeholder="' . __("Enter your email", "form-reach-domain") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
+		'formreach_whatsapp_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
 		'formreach_whatsapp_switch' => 0,
 		'formreach_user_email_switch' => 0,
 	];
@@ -204,29 +204,29 @@ function formreach_register_metabox_callback($formreach_post) {
     include 'form-reach-modal.php';
 }
 
-// Organize metaboxes in the "normal" column for the custom post type 'form_reach'
-add_filter('get_user_option_meta-box-order_form_reach', 'formreach_one_column_for_all', 10);
+// Organize metaboxes in the "normal" column for the custom post type 'formreach_post_type'
+add_filter('get_user_option_meta-box-order_formreach_post_type', 'formreach_one_column_for_all', 10);
 function formreach_one_column_for_all($option) {
     // Define the order of metaboxes in the 'normal' column
     return ['normal' => 'formreach_metabox,slugdiv,trackbacksdiv,tagsdiv-post_tag,categorydiv,postimagediv,postcustom,commentstatusdiv,authordiv'];
 }
 
 // Add 'submitdiv' at the bottom of the "normal" column
-add_filter('get_user_option_meta-box-order_form_reach', 'formreach_submitdiv_at_bottom', 999);
+add_filter('get_user_option_meta-box-order_formreach_post_type', 'formreach_submitdiv_at_bottom', 999);
 function formreach_submitdiv_at_bottom($formreach_result) {
     $formreach_result['normal'] .= ',submitdiv';
     return $formreach_result;
 }
 
-// Restrict screen options to a single column layout for 'form_reach'
+// Restrict screen options to a single column layout for 'formreach_post_type'
 add_filter('screen_layout_columns', 'formreach_one_column_on_screen_options');
 function formreach_one_column_on_screen_options($formreach_columns) {
-    $formreach_columns['form_reach'] = 1;
+    $formreach_columns['formreach_post_type'] = 1;
     return $formreach_columns;
 }
 
 // Force a single-column layout, overriding user preferences
-add_filter('get_user_option_screen_layout_form_reach', 'formreach_one_column_layout');
+add_filter('get_user_option_screen_layout_formreach_post_type', 'formreach_one_column_layout');
 function formreach_one_column_layout() {
     return 1;
 }
@@ -234,7 +234,7 @@ function formreach_one_column_layout() {
 add_action('admin_enqueue_scripts', 'formreach_enqueue_bootstrap');
 
 function formreach_enqueue_bootstrap($formreach_hook) {
-  if ($formreach_hook == 'post_type=form_reach') {
+  if ($formreach_hook == 'post_type=formreach_post_type') {
     wp_enqueue_style('bootstrap',  plugin_dir_url(__FILE__) . '/assets/bootstrap/bootstrap.min.css', array(), '5.2.2');
     wp_enqueue_script('bootstrap',  plugin_dir_url(__FILE__) . '/assets/bootstrap/bootstrap.min.js', array('jquery'), '5.2.2', true);
   }
@@ -289,12 +289,12 @@ function formreach_input_type($formreach_atts) {
     
     return $formreach_html;
 }
-add_shortcode('input', 'formreach_input_type');
+add_shortcode('formreach_input', 'formreach_input_type');
 
 function formreach_add_nonce_to_post() {
     global $post;
 
-    if ('form_reach' === $post->post_type) {
+    if ('formreach_post_type' === $post->post_type) {
         wp_nonce_field('formreach_save_post_action', 'formreach_save_post_nonce');
     }
 }
@@ -375,11 +375,11 @@ function formreach_meta_save($formreach_post_id) {
 	}    
 }
 
-add_action('save_post_form_reach','formreach_meta_save');
+add_action('save_post_formreach_post_type','formreach_meta_save');
 
 function formreach_add_custom_submenu() {
 	$formreach_page_hook_suffix = add_submenu_page(
-		"edit.php?post_type=form_reach",
+		"edit.php?post_type=formreach_post_type",
 		__("Form Submissions", "form-reach-domain"), 
 		__("Form Submissions", "form-reach-domain"),
 		"manage_options",
@@ -508,7 +508,7 @@ function formreach_add_flyout_menu() {
 // Add Anti-Spam Settings submenu
 function formreach_add_custom_submenu_reCAPTCHA() {
     $formreach_page_hook_suffix = add_submenu_page(
-        "edit.php?post_type=form_reach",
+        "edit.php?post_type=formreach_post_type",
         "Anti-Spam Settings",
         "Anti-Spam Settings",
         "manage_options",

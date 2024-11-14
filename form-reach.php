@@ -19,7 +19,7 @@ if ( !defined('ABSPATH') ) exit;
 
 // Adding a 'Settings' link to the list of metadata displayed below the plugin description.
 function formreach_settings_link($formreach_links) {
-    $formreach_settings_link = '<a href="edit.php?post_type=form_reach">Settings</a>';
+    $formreach_settings_link = '<a href="edit.php?post_type=formreach_post_type">Settings</a>';
     array_unshift($formreach_links, $formreach_settings_link);
     return $formreach_links;
 }
@@ -44,11 +44,11 @@ function formreach_init_db() {
     global $wpdb;
     $formreach_form_history = $wpdb->prefix . "formreach_form_history";
 
-    $formreach_table_exists = wp_cache_get('formreach_form_history_exists', 'form_reach');
+    $formreach_table_exists = wp_cache_get('formreach_form_history_exists', 'formreach_post_type');
     if (false === $formreach_table_exists) {
  		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
         $formreach_table_exists = ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $wpdb->esc_like($formreach_form_history))) == $formreach_form_history);
-        wp_cache_set('formreach_form_history_exists', $formreach_table_exists, 'form_reach');
+        wp_cache_set('formreach_form_history_exists', $formreach_table_exists, 'formreach_post_type');
     }
 
     // Creation of the custom table if it does not exist.
@@ -64,15 +64,15 @@ function formreach_init_db() {
         dbDelta($formreach_sql);
 
         // Clear the cache to ensure it's checked again after table creation
-        wp_cache_delete('formreach_form_history_exists', 'form_reach');
+        wp_cache_delete('formreach_form_history_exists', 'formreach_post_type');
     }
 
-    // Check if there are any posts of the custom post type 'form_reach'
-    if (wp_cache_get('formreach_posts', 'form_reach') === false) {
-        $formreach_posts = get_posts(array('post_type' => 'form_reach', 'numberposts' => -1));
-        wp_cache_set('formreach_posts', $formreach_posts, 'form_reach');
+    // Check if there are any posts of the custom post type 'formreach_post_type'
+    if (wp_cache_get('formreach_posts', 'formreach_post_type') === false) {
+        $formreach_posts = get_posts(array('post_type' => 'formreach_post_type', 'numberposts' => -1));
+        wp_cache_set('formreach_posts', $formreach_posts, 'formreach_post_type');
     } else {
-        $formreach_posts = wp_cache_get('formreach_posts', 'form_reach');
+        $formreach_posts = wp_cache_get('formreach_posts', 'formreach_post_type');
     }
 
     // Create a default post if none exist
@@ -82,13 +82,13 @@ function formreach_init_db() {
             'post_content' => '',
             'post_status'  => 'draft',
             'post_author'  => get_current_user_id(),
-            'post_type'    => 'form_reach'
+            'post_type'    => 'formreach_post_type'
         );
         $formreach_post_id = wp_insert_post($formreach_post_arr);
 
         // Update the cache with the new post
         $formreach_posts[] = $formreach_post_id;
-        wp_cache_set('formreach_posts', $formreach_posts, 'form_reach');
+        wp_cache_set('formreach_posts', $formreach_posts, 'formreach_post_type');
     }
 }
 
@@ -97,19 +97,19 @@ function formreach_delete_db() {
     global $wpdb;
     $formreach_table_name = $wpdb->prefix . "formreach_form_history";
 
-    $formreach_table_exists = wp_cache_get('formreach_form_history_exists', 'form_reach');
+    $formreach_table_exists = wp_cache_get('formreach_form_history_exists', 'formreach_post_type');
 
     if ($formreach_table_exists === false) {
  		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
         $formreach_table_exists = $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( $formreach_table_name ) ) );
-        wp_cache_set('formreach_form_history_exists', $formreach_table_exists, 'form_reach');
+        wp_cache_set('formreach_form_history_exists', $formreach_table_exists, 'formreach_post_type');
     }
 
     if ($formreach_table_exists) {
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         $formreach_sql = "DROP TABLE IF EXISTS $formreach_table_name";
         dbDelta($formreach_sql);
-        wp_cache_delete('formreach_form_history_exists', 'form_reach');
+        wp_cache_delete('formreach_form_history_exists', 'formreach_post_type');
     }
 }
 
@@ -224,7 +224,7 @@ function formreach_include($formreach_id) {
 	return ob_get_clean();
 }
 
-add_shortcode( 'form-reach', 'formreach_include' );
+add_shortcode( 'formreach_form', 'formreach_include' );
 
 include 'process/validation.php';
 include 'process/whatsapp.php';

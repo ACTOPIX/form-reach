@@ -25,9 +25,9 @@ function formreach_email_form_default() {
     $message_attr = esc_attr__('message', 'form-reach-domain');
     $placeholder_message = esc_attr__('Enter your message', 'form-reach-domain');
 
-    return '[input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
-           '[input type="email" label="' . $label_email . '" name="' . $email_attr . '" required="required" placeholder="' . $placeholder_email . '"]' . "\n\n" .
-           '[input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
+    return '[formreach_input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
+           '[formreach_input type="email" label="' . $label_email . '" name="' . $email_attr . '" required="required" placeholder="' . $placeholder_email . '"]' . "\n\n" .
+           '[formreach_input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
 }
 
 function formreach_whatsapp_form_default() {
@@ -39,8 +39,8 @@ function formreach_whatsapp_form_default() {
     $message_attr = esc_attr__('message', 'form-reach-domain');
     $placeholder_message = esc_attr__('Enter your message', 'form-reach-domain');
 
-    return '[input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
-           '[input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
+    return '[formreach_input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
+           '[formreach_input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
 }
 
 
@@ -180,7 +180,7 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 
 						<div class="modal-footer position-relative">
 							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" id="formreach_generatedTextShortcode" readonly="readonly" style="width:365px" value="[input]" >
+								<input type="text" name="text" id="formreach_generatedTextShortcode" readonly="readonly" style="width:365px" value="[formreach_input]" >
 							</div>
 							<div>
 								<button type="button" id="formreach_submit_text" class="btn btn-primary formreach_wp-blue">Finish</button>
@@ -252,7 +252,7 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 
 						<div class="modal-footer position-relative">
 							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" id="formreach_generatedEmailShortcode" readonly="readonly" style="width:365px" value="[input]" >
+								<input type="text" name="text" id="formreach_generatedEmailShortcode" readonly="readonly" style="width:365px" value="[formreach_input]" >
 							</div>
 							<div>
 								<button type="button" id="formreach_submit_email"class="btn btn-primary formreach_wp-blue">Finish</button>
@@ -340,7 +340,7 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 
 						<div class="modal-footer position-relative">
 							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" id="formreach_generatedTextareaShortcode" readonly="readonly" style="width:365px" value="[input]" >
+								<input type="text" name="text" id="formreach_generatedTextareaShortcode" readonly="readonly" style="width:365px" value="[formreach_input]" >
 							</div>
 							<div>
 								<button type="button" id="formreach_submit_textarea" class="btn btn-primary formreach_wp-blue">Finish</button>
@@ -412,7 +412,7 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 
 						<div class="modal-footer position-relative">
 							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" id="formreach_generatedTelShortcode" readonly="readonly" style="width:365px" value="[input]" >
+								<input type="text" name="text" id="formreach_generatedTelShortcode" readonly="readonly" style="width:365px" value="[formreach_input]" >
 							</div>
 							<div>
 								<button type="button" id="formreach_submit_tel" class="btn btn-primary formreach_wp-blue">Finish</button>
