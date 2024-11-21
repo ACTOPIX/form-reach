@@ -8,8 +8,17 @@ wp_enqueue_style('form-reach-css', plugin_dir_url(__FILE__) . 'style/form-reach.
 
 wp_enqueue_script('jquery');
 wp_enqueue_script('bootstrap-js',  plugin_dir_url(__FILE__) . 'assets/bootstrap/bootstrap.min.js', array('jquery'), '5.2.2', true);
-wp_enqueue_script('intl-tel-input-js',  plugin_dir_url(__FILE__) . 'assets/intl-tel-input/intlTelInput.min.js', array('jquery'), '18.1.1', true);
-wp_enqueue_script('form-reach-admin-js', plugin_dir_url(__FILE__) . 'js/form-reach-admin.js', array('jquery'), '1.0.0', true);
+
+// Styles
+wp_enqueue_style('wcvn-intl-tel-input-css', plugin_dir_url(__FILE__) . 'assets/css/intlTelInput.min.css', array(), '1.0.0');
+
+// Scripts
+wp_enqueue_script('wcvn-bundle-js', plugin_dir_url(__FILE__) . 'assets/js/bundle.min.js', array('jquery'), '1.0.0', true);
+
+// Passer le chemin vers utils.js à admin.js
+wp_localize_script('wcvn-bundle-js', 'wcvn_params', array(
+	'utilsScript' => plugin_dir_url(__FILE__) . 'assets/js/utils.js',
+));
 
 //Default Form
 function formreach_email_form_default() {
