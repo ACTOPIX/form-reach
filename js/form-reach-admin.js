@@ -680,10 +680,10 @@
       });
   
       var reset = function() {
-          input.classList.remove("form-reach-error");
+          input.classList.remove("is-invalid");
           errorMsg.innerHTML = "";
-          errorMsg.classList.add("form-reach-hide");
-          validMsg.classList.add("form-reach-hide");
+          errorMsg.classList.add("d-none");
+          validMsg.classList.add("d-none");
       };
   
       // Valide le numéro
@@ -691,12 +691,12 @@
           reset();
           if (input.value.trim()) {
               if (iti.isValidNumber()) {
-                  validMsg.classList.remove("form-reach-hide");
+                  validMsg.classList.remove("d-none");
               } else {
-                  input.classList.add("form-reach-error");
+                  input.classList.add("is-invalid");
                   var errorCode = iti.getValidationError();
                   errorMsg.innerHTML = "Numéro invalide : " + errorMap[errorCode];
-                  errorMsg.classList.remove("form-reach-hide");
+                  errorMsg.classList.remove("d-none");
               }
           }
       };

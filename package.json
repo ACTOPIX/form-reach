@@ -2,13 +2,13 @@
   "name": "form-reach",
   "version": "1.0.0",
   "description": "Extension WordPress de formulaire de contact",
-  "main": "index.js",
+  "main": "form-reach.php",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "gulp"
   },
   "keywords": [],
-  "author": "",
+  "author": "ACTOPIX",
   "license": "ISC",
   "dependencies": {
     "intl-tel-input": "^24.7.0"
