@@ -567,9 +567,9 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 			<div id="formreach_email" class="tab-pane fade mt-3 container" role="tabpanel">						
 				<div class="form-group">
 					<label for="formreach_whatsapp_tel" class="d-block mb-1"><strong>Number :</strong></label>
-					<input type="tel" id="formreach_whatsapp_tel" name="formreach_whatsapp_tel" autocomplete="on" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel'][0]); ?>" class="form-control" />
+					<input type="tel" id="formreach_whatsapp_tel" name="formreach_whatsapp_tel" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" class="form-control" />
 					<span id="formreach_whatsapp_message" class="text-danger hide"></span>
-					<input type="hidden" id="formreach_whatsapp_tel_international" name="formreach_whatsapp_tel_international" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel'][0]); ?>" />
+					<input type="hidden" id="formreach_whatsapp_tel_international" name="formreach_whatsapp_tel_international" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" />
 				</div>
 
 				<div class="row mt-3">
