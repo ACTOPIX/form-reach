@@ -561,8 +561,8 @@ $formreach_defaultform = array(
 				<div class="form-group">
 					<label for="formreach_whatsapp_tel" class="d-block mb-1"><strong>Number :</strong></label>
 					<input type="tel" id="formreach_whatsapp_tel" name="formreach_whatsapp_tel" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" class="form-control" />
-					<span id="formreach_whatsapp_message" class="text-danger hide"></span>
-					<span id="formreach_whatsapp_message_valide" class="text-success hide">✓ Numéro valide</span>
+					<span id="formreach_whatsapp_message" class="text-danger ms-3 d-none"></span>
+					<span id="formreach_whatsapp_message_valide" class="text-success ms-3 d-none">✓ Valid Number</span>
 					<input type="hidden" id="formreach_whatsapp_tel_international" name="formreach_whatsapp_tel_international" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" />
 				</div>
 

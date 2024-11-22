@@ -677,6 +677,7 @@
           },
           separateDialCode: true,
           loadUtilsOnInit: form_reach_params.utilsScript,
+          countryOrder: ['us', 'fr', 'de', 'gb', 'it'],
       });
   
       var reset = function() {
@@ -692,10 +693,11 @@
           if (input.value.trim()) {
               if (iti.isValidNumber()) {
                   validMsg.classList.remove("d-none");
+                  input.classList.add("is-valid");
               } else {
                   input.classList.add("is-invalid");
                   var errorCode = iti.getValidationError();
-                  errorMsg.innerHTML = "Numéro invalide : " + errorMap[errorCode];
+                  errorMsg.innerHTML = "Invalid Number : " + errorMap[errorCode];
                   errorMsg.classList.remove("d-none");
               }
           }
@@ -703,11 +705,11 @@
   
       // Message d'erreur
       var errorMap = [
-          "Numéro invalide",
-          "Code pays invalide",
-          "Trop court",
-          "Trop long",
-          "Numéro invalide"
+          "Invalid Number",
+          "Invalid Country Code",
+          "Too short",
+          "Too long",
+          "Invalid Number"
       ];
   
       // Événements
