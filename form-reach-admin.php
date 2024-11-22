@@ -337,8 +337,6 @@ function formreach_meta_save($formreach_post_id) {
         'formreach_whatsapp_error' => 'text',
         'formreach_email_form_content' => 'textarea',
         'formreach_whatsapp_form_content' => 'textarea',
-        'formreach_whatsapp_tel' => 'tel',
-        'formreach_whatsapp_flag' => 'text',
         'formreach_whatsapp_tel_international' => 'tel',
         'formreach_whatsapp_switch' => 'checkbox',
         'formreach_user_email_switch' => 'checkbox',

@@ -725,7 +725,6 @@
               hiddenInput.value = iti.getNumber();
           } else {
               event.preventDefault();
-              alert("Veuillez entrer un numéro de téléphone valide.");
           }
       });
   });
