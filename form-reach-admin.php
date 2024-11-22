@@ -96,7 +96,7 @@ add_action('manage_form_reach_posts_custom_column', 'formreach_shortcode_column'
 function formreach_enqueue_admin_styles() {
     wp_enqueue_style(
         'formreach-admin-css',
-        plugin_dir_url(__FILE__) . 'style/form-reach-admin.css', 
+        plugin_dir_url(__FILE__) . 'assets/css/form-reach-admin.min.css', 
         array(), 
         '1.0'
     );
@@ -110,7 +110,7 @@ add_action('admin_enqueue_scripts', 'formreach_enqueue_admin_styles');
 function formreach_optimize_admin_columns() {
     $formreach_screen = get_current_screen();
     if ( $formreach_screen->id == 'edit-form_reach' ) {
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
+        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
 		
 		formreach_add_flyout_menu();
 	}
@@ -403,7 +403,7 @@ function formreach_add_custom_submenu() {
 		wp_enqueue_script('datatables-responsive-bootstrap-js', plugin_dir_url(__FILE__) . 'assets/DataTables/responsive.bootstrap5.min.js', array('jquery', 'datatables-js', 'datatables-responsive-js', 'bootstrap'), '2.2.9', true);
 
         wp_enqueue_script('form-reach-submission-script', plugin_dir_url(__FILE__) . 'js/form-reach-submissions.js', array(), '1.0.0', true);
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
+        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
     });
 }
 add_action("admin_menu", "formreach_add_custom_submenu");
@@ -520,7 +520,7 @@ function formreach_add_custom_submenu_reCAPTCHA() {
         if ($formreach_hook !== $formreach_page_hook_suffix) {
             return;
         }
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
+        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
         wp_enqueue_script('form-reach-custom-style', plugin_dir_url(__FILE__) . 'js/form-reach-spam-settings.js', array(), '1.0.0', true);
     });
 }

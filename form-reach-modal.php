@@ -3,19 +3,19 @@
 if ( !defined('ABSPATH') ) exit;
 
 wp_enqueue_style('bootstrap-css',  plugin_dir_url(__FILE__) . 'assets/bootstrap/bootstrap.min.css', array(), '5.2.2');
-wp_enqueue_style('form-reach-css', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
+wp_enqueue_style('form-reach-css', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
 
 wp_enqueue_script('jquery');
 wp_enqueue_script('bootstrap-js',  plugin_dir_url(__FILE__) . 'assets/bootstrap/bootstrap.min.js', array('jquery'), '5.2.2', true);
 
 // Styles
-wp_enqueue_style('wcvn-intl-tel-input-css', plugin_dir_url(__FILE__) . 'assets/css/intlTelInput.min.css', array(), '1.0.0');
+wp_enqueue_style('form-reach-intl-tel-input-css', plugin_dir_url(__FILE__) . 'assets/css/intlTelInput.min.css', array(), '1.0.0');
 
 // Scripts
-wp_enqueue_script('wcvn-bundle-js', plugin_dir_url(__FILE__) . 'assets/js/bundle.min.js', array('jquery'), '1.0.0', true);
+wp_enqueue_script('form-reach-bundle-js', plugin_dir_url(__FILE__) . 'assets/js/bundle.min.js', array('jquery'), '1.0.0', true);
 
 // Passer le chemin vers utils.js à admin.js
-wp_localize_script('wcvn-bundle-js', 'wcvn_params', array(
+wp_localize_script('form-reach-bundle-js', 'form_reach_params', array(
 	'utilsScript' => plugin_dir_url(__FILE__) . 'assets/js/utils.js',
 ));
 
@@ -77,13 +77,6 @@ $formreach_defaultform = array(
 	'formreach_whatsapp_success_default' => esc_html__("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", 'form-reach-domain'),
 	'formreach_whatsapp_error_default' => esc_html__("The message could not be submitted due to an error. Please try again.", 'form-reach-domain')
 );
-
-$formreach_phpFlag = !empty( $formreach_stored_meta['formreach_whatsapp_flag'] ) ? esc_attr( $formreach_stored_meta['formreach_whatsapp_flag'][0] ) : '';
-    
-wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_defaultform, array(
-    'phpFlag' => $formreach_phpFlag,
-	'utilsScriptUrl' => plugins_url('assets/intl-tel-input/utils.js', __FILE__)
-)));
 
 ?>
 
@@ -569,6 +562,7 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 					<label for="formreach_whatsapp_tel" class="d-block mb-1"><strong>Number :</strong></label>
 					<input type="tel" id="formreach_whatsapp_tel" name="formreach_whatsapp_tel" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" class="form-control" />
 					<span id="formreach_whatsapp_message" class="text-danger hide"></span>
+					<span id="formreach_whatsapp_message_valide" class="text-success hide">✓ Numéro valide</span>
 					<input type="hidden" id="formreach_whatsapp_tel_international" name="formreach_whatsapp_tel_international" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" />
 				</div>
 

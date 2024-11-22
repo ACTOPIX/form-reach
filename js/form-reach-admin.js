@@ -659,7 +659,7 @@
       var input = document.querySelector("#formreach_whatsapp_tel");
       var hiddenInput = document.querySelector("#formreach_whatsapp_tel_international");
       var errorMsg = document.querySelector("#formreach_whatsapp_message");
-      var validMsg = document.querySelector("#formreach_whatsapp_message");
+      var validMsg = document.querySelector("#formreach_whatsapp_message_valide");
   
       // Initialise intl-tel-input
       var iti = intlTelInput(input, {
@@ -676,14 +676,14 @@
                   });
           },
           separateDialCode: true,
-          loadUtilsOnInit: wcvn_params.utilsScript,
+          loadUtilsOnInit: form_reach_params.utilsScript,
       });
   
       var reset = function() {
-          input.classList.remove("wcvn-error");
+          input.classList.remove("form-reach-error");
           errorMsg.innerHTML = "";
-          errorMsg.classList.add("wcvn-hide");
-          validMsg.classList.add("wcvn-hide");
+          errorMsg.classList.add("form-reach-hide");
+          validMsg.classList.add("form-reach-hide");
       };
   
       // Valide le numéro
@@ -691,12 +691,12 @@
           reset();
           if (input.value.trim()) {
               if (iti.isValidNumber()) {
-                  validMsg.classList.remove("wcvn-hide");
+                  validMsg.classList.remove("form-reach-hide");
               } else {
-                  input.classList.add("wcvn-error");
+                  input.classList.add("form-reach-error");
                   var errorCode = iti.getValidationError();
                   errorMsg.innerHTML = "Numéro invalide : " + errorMap[errorCode];
-                  errorMsg.classList.remove("wcvn-hide");
+                  errorMsg.classList.remove("form-reach-hide");
               }
           }
       };

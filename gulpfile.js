@@ -13,7 +13,8 @@ const paths = {
     styles: {
         src: [
             'node_modules/intl-tel-input/build/css/intlTelInput.css',
-            'style/form-reach-admin.css'
+            'assets/css/form-reach-admin.css',
+            'assets/css/form-reach.css'
         ],
         dest: './assets/css/'
     },
