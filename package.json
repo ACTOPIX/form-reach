@@ -11,6 +11,7 @@
   "author": "ACTOPIX",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^5.3.3",
     "intl-tel-input": "^24.7.0"
   },
   "devDependencies": {

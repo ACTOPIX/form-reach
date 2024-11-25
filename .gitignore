@@ -43,19 +43,3 @@ yarn.lock
 
 # Ignorer les fichiers de cache de Gulp
 gulp-cache/
-
-# Ignorer les dépendances Composer (si vous utilisez Composer)
-vendor/
-
-# Ignorer les fichiers spécifiques à macOS
-._*
-
-# Ignorer les fichiers de tests (si vous en avez)
-tests/
-
-# Ignorer les fichiers de logs divers
-logs/
-*.log
-
-# Ignorer les fichiers de Sass compilés (si vous utilisez Sass)
-assets/css/*.css.map
