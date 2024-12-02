@@ -2,11 +2,9 @@
 
 if ( !defined('ABSPATH') ) exit;
 
-wp_enqueue_style('bootstrap-css',  plugin_dir_url(__FILE__) . 'assets/bootstrap/bootstrap.min.css', array(), '5.2.2');
 wp_enqueue_style('form-reach-css', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
 
 wp_enqueue_script('jquery');
-wp_enqueue_script('bootstrap-js',  plugin_dir_url(__FILE__) . 'assets/bootstrap/bootstrap.min.js', array('jquery'), '5.2.2', true);
 
 // Styles
 wp_enqueue_style('form-reach-intl-tel-input-css', plugin_dir_url(__FILE__) . 'assets/css/intlTelInput.min.css', array(), '1.0.0');
