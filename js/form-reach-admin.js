@@ -15,7 +15,7 @@
           formreach_value = ''; // Effacer la valeur si placeholder est coché
       }
 
-      $('#formreach_generatedTextShortcode').val('[input' + formreach_type + formreach_label + formreach_name + formreach_value + formreach_id + formreach_class + formreach_required + formreach_placeholder + ']');
+      $('#formreach_generatedTextShortcode').val('[formreach_input' + formreach_type + formreach_label + formreach_name + formreach_value + formreach_id + formreach_class + formreach_required + formreach_placeholder + ']');
   };
 })(jQuery);
 
@@ -35,7 +35,7 @@
           formreach_value = ''; // Reset value if placeholder is used
       }
 
-      $('#formreach_generatedEmailShortcode').val('[input' + formreach_type + formreach_label + formreach_name + formreach_value + formreach_id + formreach_class + formreach_required + formreach_placeholder + ']');
+      $('#formreach_generatedEmailShortcode').val('[formreach_input' + formreach_type + formreach_label + formreach_name + formreach_value + formreach_id + formreach_class + formreach_required + formreach_placeholder + ']');
   };
 })(jQuery);
 
@@ -53,7 +53,7 @@
       // Reset value if placeholder is used
       const formreach_final_value = formreach_placeholder ? '' : formreach_value;
 
-      $('#formreach_generatedTelShortcode').val(`[input${formreach_type}${formreach_label}${formreach_name}${formreach_final_value}${formreach_id}${formreach_class}${formreach_required}${formreach_placeholder}]`);
+      $('#formreach_generatedTelShortcode').val(`[formreach_input${formreach_type}${formreach_label}${formreach_name}${formreach_final_value}${formreach_id}${formreach_class}${formreach_required}${formreach_placeholder}]`);
   };
 })(jQuery);
 
@@ -75,7 +75,7 @@
           formreach_value = '';
       }
 
-      $('#formreach_generatedTextareaShortcode').val('[input' + formreach_type + formreach_rows + formreach_cols + formreach_label + formreach_name + formreach_value + formreach_id + formreach_class + formreach_required + formreach_placeholder + ']');
+      $('#formreach_generatedTextareaShortcode').val('[formreach_input' + formreach_type + formreach_rows + formreach_cols + formreach_label + formreach_name + formreach_value + formreach_id + formreach_class + formreach_required + formreach_placeholder + ']');
   };
 })(jQuery);
 
@@ -249,7 +249,7 @@
             }
             });
             const formreach_generatedShortcode = document.getElementById(`formreach_generated${formreach_capitalizeFirstLetter(formreach_type)}Shortcode`);
-            if (formreach_generatedShortcode) formreach_generatedShortcode.value = `[input type="${formreach_type}"]`;
+            if (formreach_generatedShortcode) formreach_generatedShortcode.value = `[formreach_input type="${formreach_type}"]`;
         }
 
         // Fonction pour capitaliser la première lettre d'une chaîne
@@ -336,16 +336,16 @@ function formreach_buttonDefaultEmailSending() {
         formreach_defaultEmailUserSubject : formReach.formreach_email_user_subject_default,
         formreach_defaultEmailUserContent : formReach.formreach_email_user_content_default
     };
-document.getElementById('formreach_email_admin_to').value = formreach_defaultValues.formreach_defaultEmailAdminTo;
-document.getElementById('formreach_email_admin_from').value = formreach_defaultValues.formreach_defaultEmailAdminFrom;
-document.getElementById('formreach_email_admin_subject').value = formreach_defaultValues.formreach_defaultEmailAdminSubject;
-document.getElementById('formreach_email_admin_content').value = formreach_defaultValues.formreach_defaultEmailAdminContent;
+	document.getElementById('formreach_email_admin_to').value = formreach_defaultValues.formreach_defaultEmailAdminTo;
+	document.getElementById('formreach_email_admin_from').value = formreach_defaultValues.formreach_defaultEmailAdminFrom;
+	document.getElementById('formreach_email_admin_subject').value = formreach_defaultValues.formreach_defaultEmailAdminSubject;
+	document.getElementById('formreach_email_admin_content').value = formreach_defaultValues.formreach_defaultEmailAdminContent;
 
-document.getElementById('formreach_email_user_to').value = formreach_defaultValues.formreach_defaultEmailUserTo;
-document.getElementById('formreach_email_user_from').value = formreach_defaultValues.formreach_defaultEmailUserFrom;
-document.getElementById('formreach_email_user_subject').value = formreach_defaultValues.formreach_efaultEmailUserSubject;
-document.getElementById('formreach_email_user_content').value = formreach_defaultValues.formreach_defaultEmailUserContent;
-}
+	document.getElementById('formreach_email_user_to').value = formreach_defaultValues.formreach_defaultEmailUserTo;
+	document.getElementById('formreach_email_user_from').value = formreach_defaultValues.formreach_defaultEmailUserFrom;
+	document.getElementById('formreach_email_user_subject').value = formreach_defaultValues.formreach_defaultEmailUserSubject;
+	document.getElementById('formreach_email_user_content').value = formreach_defaultValues.formreach_defaultEmailUserContent;
+	}
 
 // Sélectionnez le formulaire à surveiller
 const formreach_formulaire = document.getElementById("post");
@@ -595,7 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formreach_button.style.backgroundColor = formreach_buttonColorInput.value || formreach_colorTextInputEmail.value || formreach_colorTextInputEmailText.value;
         formreach_buttonText.textContent = formreach_buttonTextInput.value;
         formreach_buttonText.style.color = formreach_buttonTextColorInput.value || formreach_colorTextInputEmailText.value;
-        formreach_buttonIconColor.style.color = formreach_buttonTextColorInput.value || formreach_colorTextInputEmailText.value;
+        formreach_buttonIconColor.style.fill = formreach_buttonTextColorInput.value || formreach_colorTextInputEmailText.value;
     }
     };
 
@@ -624,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formreach_button.style.backgroundColor = formreach_buttonColorInput.value || formreach_colorTextInputWhatsApp.value || formreach_colorTextInputWhatsAppText.value;
             formreach_buttonText.textContent = formreach_buttonTextInput.value;
             formreach_buttonText.style.color = formreach_buttonTextColorInput.value || formreach_colorTextInputWhatsAppText.value;
-            formreach_buttonIconColor.style.color = formreach_buttonTextColorInput.value || formreach_colorTextInputWhatsAppText.value;
+            formreach_buttonIconColor.style.fill = formreach_buttonTextColorInput.value || formreach_colorTextInputWhatsAppText.value;
         }
     };
 
@@ -790,4 +790,34 @@ document.addEventListener("DOMContentLoaded", function() {
         formreach_input.placeholder = '';
         formreach_input.classList.remove('formreach_placeholder-error');
     }
+});
+
+// tabs memorizer
+document.addEventListener("DOMContentLoaded", function () {
+    const tabKey = "activeTab";
+
+    // Masquer temporairement le contenu
+    const tabContentContainer = document.getElementById("formreach_myTabContent");
+    tabContentContainer.style.visibility = "hidden";
+
+    // Activer l'onglet sauvegardé dans localStorage
+    const activeTab = localStorage.getItem(tabKey);
+    if (activeTab) {
+        const tab = document.querySelector(`[data-bs-target="${activeTab}"]`);
+        if (tab) {
+            const tabInstance = new bootstrap.Tab(tab);
+            tabInstance.show();
+        }
+    }
+
+    // Restaurer la visibilité après que l'onglet est activé
+    tabContentContainer.style.visibility = "visible";
+
+    // Sauvegarder l'onglet actif lors des changements
+    const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
+    tabs.forEach(tab => {
+        tab.addEventListener("shown.bs.tab", function (event) {
+            localStorage.setItem(tabKey, event.target.getAttribute("data-bs-target"));
+        });
+    });
 });
