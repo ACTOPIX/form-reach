@@ -29,7 +29,7 @@ function formreach_handle_whatsapp_form() {
     $formreach_whatsapp_form_content = get_post_meta($formreach_postID, 'formreach_whatsapp_form_content', true);
     
     // Detection of the name and the type
-    preg_match_all('/\[input[^\]]*type="([^"]+)"[^\]]*name="([^"]+)"[^\]]*\]/', $formreach_whatsapp_form_content, $formreach_matches);
+    preg_match_all('/\[formreach_input[^\]]*type="([^"]+)"[^\]]*name="([^"]+)"[^\]]*\]/', $formreach_whatsapp_form_content, $formreach_matches);
     
     $formreach_field_types = $formreach_matches[1];
     $formreach_field_names = $formreach_matches[2];

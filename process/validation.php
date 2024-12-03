@@ -29,7 +29,7 @@ function formreach_handle_contact_form() {
     include 'mailing.php';
 
     // Detection of the `name` and the `type`
-    preg_match_all('/\[input[^\]]*type="([^"]+)"[^\]]*name="([^"]+)"[^\]]*\]/', $formreach_email_form_content, $formreach_matches);
+    preg_match_all('/\[formreach_input[^\]]*type="([^"]+)"[^\]]*name="([^"]+)"[^\]]*\]/', $formreach_email_form_content, $formreach_matches);
     
     $formreach_field_types = $formreach_matches[1];
     $formreach_field_names = $formreach_matches[2];
