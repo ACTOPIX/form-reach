@@ -7,11 +7,14 @@ const sourcemaps = require("gulp-sourcemaps");
 
 const paths = {
   scripts: {
-    entry: "./js/form-reach-admin.js",
+    global: "./js/form-reach-admin.js", // Fichier JS global
+    datatables: "./js/form-reach-submissions.js", // Fichier JS spécifique à DataTables
     dest: "./assets/js/",
   },
   styles: {
     src: [
+      "node_modules/datatables.net-bs5/css/dataTables.bootstrap5.css",
+      "node_modules/datatables.net-responsive-bs5/css/responsive.bootstrap5.css",
       "node_modules/intl-tel-input/build/css/intlTelInput.css",
       "assets/css/form-reach-admin.css",
       "assets/css/form-reach.css",
@@ -24,14 +27,15 @@ const paths = {
   },
 };
 
-function scripts() {
+// Tâche pour le bundle global
+function scriptsGlobal() {
   return gulp
-    .src(paths.scripts.entry)
+    .src(paths.scripts.global)
     .pipe(
       webpackStream(
         {
           mode: "production",
-          entry: paths.scripts.entry,
+          entry: paths.scripts.global,
           output: {
             filename: "bundle.min.js",
           },
@@ -63,6 +67,49 @@ function scripts() {
     .pipe(gulp.dest(paths.scripts.dest));
 }
 
+function scriptsDataTables() {
+  return gulp
+    .src(paths.scripts.datatables)
+    .pipe(
+      webpackStream(
+        {
+          mode: "production",
+          entry: paths.scripts.datatables,
+          output: {
+            filename: "bundle-datatables.min.js",
+          },
+          module: {
+            rules: [
+              {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                  loader: "babel-loader",
+                  options: {
+                    presets: ["@babel/preset-env"],
+                  },
+                },
+              },
+              {
+                test: /\.css$/, // Gestion des fichiers CSS
+                use: ["style-loader", "css-loader"],
+              },
+              {
+                test: /\.(scss|sass)$/, // Gestion des fichiers SCSS/SASS
+                use: ["style-loader", "css-loader", "sass-loader"],
+              },
+            ],
+          },
+          externals: {
+            jquery: "jQuery",
+          },
+        },
+        webpack
+      )
+    )
+    .pipe(gulp.dest(paths.scripts.dest));
+}
+
 // Tâche pour les styles CSS
 function styles() {
   return gulp
@@ -79,9 +126,12 @@ function copyUtils() {
 }
 
 // Tâche par défaut
-const build = gulp.series(gulp.parallel(scripts, styles, copyUtils));
+const build = gulp.series(
+  gulp.parallel(scriptsGlobal, scriptsDataTables, styles, copyUtils)
+);
 
-exports.scripts = scripts;
+exports.scriptsGlobal = scriptsGlobal;
+exports.scriptsDataTables = scriptsDataTables;
 exports.styles = styles;
 exports.build = build;
 exports.default = build;

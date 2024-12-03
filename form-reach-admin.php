@@ -389,20 +389,12 @@ function formreach_add_custom_submenu() {
         if ($formreach_hook !== $formreach_page_hook_suffix) {
             return;
         }
+    
+        wp_enqueue_style('datatables-css', plugin_dir_url(__FILE__) . 'assets/css/dataTables.bootstrap5.min.css', array(), '2.1.18');
+        wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . 'assets/js/bundle-datatables.min.js', array('jquery'), '2.1.18', true);
 
-		// DataTables Basic
-		wp_enqueue_style('datatables-css', plugin_dir_url(__FILE__) . 'assets/DataTables/dataTables.bootstrap5.min.css', array(), '1.13.4');
-		wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . 'assets/DataTables/jquery.dataTables.min.js', array('jquery'), '1.13.4', true);
-		wp_enqueue_script('datatables-bootstrap-js', plugin_dir_url(__FILE__) . 'assets/DataTables/dataTables.bootstrap5.min.js', array('jquery', 'datatables-js'), '1.13.4', true);
-
-		// DataTables Responsive
-		wp_enqueue_style('datatables-responsive-css', plugin_dir_url(__FILE__) . 'assets/DataTables/responsive.bootstrap5.min.css', array(), '2.2.9');
-		wp_enqueue_script('datatables-responsive-js', plugin_dir_url(__FILE__) . 'assets/DataTables/dataTables.responsive.min.js', array('jquery', 'datatables-js'), '2.2.9', true);
-		wp_enqueue_script('datatables-responsive-bootstrap-js', plugin_dir_url(__FILE__) . 'assets/DataTables/responsive.bootstrap5.min.js', array('jquery', 'datatables-js', 'datatables-responsive-js', 'bootstrap'), '2.2.9', true);
-
-        wp_enqueue_script('form-reach-submission-script', plugin_dir_url(__FILE__) . 'js/form-reach-submissions.js', array(), '1.0.0', true);
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
-    });
+        wp_enqueue_style('form-reach-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
+    });    
 }
 add_action("admin_menu", "formreach_add_custom_submenu");
 
