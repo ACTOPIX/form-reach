@@ -25,6 +25,7 @@ code {
     position: relative;
     user-select: none;
     float: left;
+    margin: 0 10% 0 10%;
 }
 
 .formreach_slider-label:after {
@@ -241,7 +242,7 @@ code {
 }
 
 /* Displays as one column*/
-.formreach_post-type-form_reach #poststuff #post-body.formreach_columns-2 {
+.formreach_post-type-formreach_post_type #poststuff #post-body.formreach_columns-2 {
     margin-right: 0;
 }
 
@@ -257,7 +258,7 @@ code {
 /* Flyout Menu */
 .formreach_flyout-button {
     position: fixed;
-    bottom: 20px;
+    bottom: 30px;
     right: 20px;
     width: 54px;
     height: 54px;
@@ -292,11 +293,13 @@ code {
     background-color: #242422;
 }
 
-.formreach_flyout-menu i {
-    font-size: 24px;
-    color: #c5b863;
-    text-align: center;
-    line-height: 40px;
+.formreach_flyout-menu svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 24px;
+    width: 40px;
 }
 
 /* Wordpress blue-color */
@@ -399,3 +402,8 @@ body::-webkit-scrollbar {
 
 /* formreach_submit_textarea button */
 input[type=number]::-webkit-inner-spin-button { opacity: 1}
+
+/* horizontal scroll bar in a form edit*/
+#titlediv {
+    overflow: hidden
+}
