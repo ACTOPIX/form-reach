@@ -1138,7 +1138,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     },
     separateDialCode: true,
-    loadUtilsOnInit: form_reach_params.utilsScript,
+    loadUtils: () => import("intl-tel-input/utils"),
     countryOrder: ["us", "fr", "de", "gb", "it"],
   });
 
