@@ -1119,7 +1119,6 @@ document.addEventListener("DOMContentLoaded", function () {
     "#formreach_whatsapp_tel_international"
   );
   var errorMsg = document.querySelector("#formreach_whatsapp_message");
-  var validMsg = document.querySelector("#formreach_whatsapp_message_valide");
 
   // Initialise intl-tel-input
   var iti = intlTelInput(input, {
@@ -1146,7 +1145,6 @@ document.addEventListener("DOMContentLoaded", function () {
     input.classList.remove("is-invalid");
     errorMsg.innerHTML = "";
     errorMsg.classList.add("d-none");
-    validMsg.classList.add("d-none");
   };
 
   // Valide le numéro
@@ -1154,7 +1152,6 @@ document.addEventListener("DOMContentLoaded", function () {
     reset();
     if (input.value.trim()) {
       if (iti.isValidNumber()) {
-        validMsg.classList.remove("d-none");
         input.classList.add("is-valid");
       } else {
         input.classList.add("is-invalid");

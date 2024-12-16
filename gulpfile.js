@@ -21,10 +21,6 @@ const paths = {
     ],
     dest: "./assets/css/",
   },
-  utils: {
-    src: "node_modules/intl-tel-input/build/js/utils.js",
-    dest: "assets/js/",
-  },
 };
 
 // Tâche pour le bundle global
@@ -121,13 +117,9 @@ function styles() {
     .pipe(gulp.dest(paths.styles.dest));
 }
 
-function copyUtils() {
-  return gulp.src(paths.utils.src).pipe(gulp.dest(paths.utils.dest));
-}
-
 // Tâche par défaut
 const build = gulp.series(
-  gulp.parallel(scriptsGlobal, scriptsDataTables, styles, copyUtils)
+  gulp.parallel(scriptsGlobal, scriptsDataTables, styles)
 );
 
 exports.scriptsGlobal = scriptsGlobal;
