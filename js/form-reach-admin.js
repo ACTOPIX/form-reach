@@ -795,23 +795,21 @@ document.addEventListener("DOMContentLoaded", function() {
 // tabs memorizer
 document.addEventListener("DOMContentLoaded", function () {
     const tabKey = "activeTab";
+    const defaultTabSelector = '[data-bs-target="#formreach_formulaire"]'; // Sélecteur du premier onglet
+	const sectionFOUC = document.getElementById('formreach_section_metabox');
+	
+	sectionFOUC.style.visibility = "visible";
 
-    // Masquer temporairement le contenu
-    const tabContentContainer = document.getElementById("formreach_myTabContent");
-    tabContentContainer.style.visibility = "hidden";
-
-    // Activer l'onglet sauvegardé dans localStorage
+    // Récupérer l'onglet actif depuis le localStorage ou utiliser le premier onglet
     const activeTab = localStorage.getItem(tabKey);
-    if (activeTab) {
-        const tab = document.querySelector(`[data-bs-target="${activeTab}"]`);
-        if (tab) {
-            const tabInstance = new bootstrap.Tab(tab);
-            tabInstance.show();
-        }
-    }
+    const tabToActivate = activeTab
+        ? document.querySelector(`[data-bs-target="${activeTab}"]`)
+        : document.querySelector(defaultTabSelector);
 
-    // Restaurer la visibilité après que l'onglet est activé
-    tabContentContainer.style.visibility = "visible";
+    if (tabToActivate) {
+        const tabInstance = new bootstrap.Tab(tabToActivate);
+        tabInstance.show(); // Activer l'onglet correspondant
+    }
 
     // Sauvegarder l'onglet actif lors des changements
     const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
