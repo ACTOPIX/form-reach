@@ -79,7 +79,7 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 
 ?>
 
-<section onload="formreach_modalTextGenerator(),formreach_modalTextareaGenerator(),formreach_modalEmailGenerator(),formreach_modalTelGenerator()">
+<section onload="formreach_modalTextGenerator(),formreach_modalTextareaGenerator(),formreach_modalEmailGenerator(),formreach_modalTelGenerator()" id="formreach_section_metabox" style="visibility: hidden;">
 
 	<div class="tab-content" id="formreach_myTabContent">
 		<ul class="nav nav-tabs" id="formreach_myTab" role="tablist">
