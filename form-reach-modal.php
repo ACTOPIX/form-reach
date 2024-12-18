@@ -530,17 +530,20 @@ $formreach_defaultform = array(
 				<!-- Publish form button -->
 				<?php if ($formreach_form_status !== 'publish') : ?>
 					<div class="col-auto pe-0">
-						<input name="original_publish" type="hidden" value="Publish">
-						<input type="submit" name="publish" id="formreach_publish_final" class="btn btn-success btn-sm" value="Publish">
+						<button name="formreach_publish" id="formreach_publish_final" class="btn btn-success btn-sm">
+							Publish
+						</button>
 					</div>
 				<?php endif; ?>
 
 				<!-- Save form button -->
-				<div class="col-auto pe-0">
-					<button type="submit" id="formreach_save_final" class="btn btn-primary btn-sm formreach_wp-blue">
-						Save Changes
-					</button>
-				</div>
+				<?php if ($formreach_form_status == 'publish') : ?>
+					<div class="col-auto pe-0">
+						<button type="submit" name="save" id="formreach_save_final" class="btn btn-primary btn-sm formreach_wp-blue">
+							Save Changes
+						</button>
+					</div>
+				<?php endif; ?>
 
 				<!-- Restore default form button -->
 				<div class="col-auto">
@@ -580,18 +583,21 @@ $formreach_defaultform = array(
 				
 					<!-- Publish form button -->
 					<?php if ($formreach_form_status !== 'publish') : ?>
-						<div id="publishing-action" class="col-auto pe-0">
-							<input name="original_publish" type="hidden" id="formreach_publishFormWhatsapp" value="Publish">
-							<input type="submit" name="publish" id="publish" class="btn btn-success btn-sm" value="Publish">
+						<div class="col-auto pe-0">
+							<button name="formreach_publish" id="formreach_publish_whatsapp" class="btn btn-success btn-sm">
+								Publish
+							</button>
 						</div>
 					<?php endif; ?>
 						
 					<!-- Save form button -->
-					<div class="col-auto pe-0">
-						<button type="submit" id="formreach_saveFormWhatsapp" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
-							Save Changes
-						</button>
-					</div>
+					<?php if ($formreach_form_status == 'publish') : ?>
+						<div class="col-auto pe-0">
+							<button type="submit" id="formreach_saveFormWhatsapp" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
+								Save Changes
+							</button>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 			
@@ -658,18 +664,21 @@ $formreach_defaultform = array(
 					
 					<!-- Publish form button -->
 					<?php if ($formreach_form_status !== 'publish') : ?>
-						<div id="publishing-action" class="col-auto pe-0">
-							<input name="original_publish" type="hidden" id="formreach_publish_email" value="Publish">
-							<input type="submit" name="publish" id="publish" class="btn btn-success btn-sm" value="Publish">
+						<div class="col-auto pe-0">
+							<button name="formreach_publish" id="formreach_publish_email" class="btn btn-success btn-sm">
+								Publish
+							</button>
 						</div>
 					<?php endif; ?>
 
 					<!-- Save form button -->
-					<div class="col-auto pe-0">
-						<button type="submit" id="formreach_save_email" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
-							Save Changes
-						</button>
-					</div>
+					<?php if ($formreach_form_status == 'publish') : ?>
+						<div class="col-auto pe-0">
+							<button type="submit" id="formreach_save_email" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
+								Save Changes
+							</button>
+						</div>
+					<?php endif; ?>
 
 					<!-- Restore default form button -->
 					<div class="col-auto">
@@ -717,18 +726,21 @@ $formreach_defaultform = array(
 				
 				<!-- Publish form button -->
 				<?php if ($formreach_form_status !== 'publish') : ?>
-					<div id="publishing-action" class="col-auto pe-0">
-						<input name="original_publish" type="hidden" id="formreach_publish_messages" value="Publish">
-						<input type="submit" name="publish" id="publish" class="btn btn-success btn-sm" value="Publish">
+					<div class="col-auto pe-0">
+						<button name="formreach_publish" id="formreach_publish_messages" class="btn btn-success btn-sm">
+							Publish
+						</button>
 					</div>
 				<?php endif; ?>
 
 				<!-- Save form button -->
-				<div class="col-auto pe-0">
-					<button type="submit" id="formreach_save_messages" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
-						Save Changes
-					</button>
-				</div>
+				<?php if ($formreach_form_status == 'publish') : ?>
+					<div class="col-auto pe-0">
+						<button type="submit" id="formreach_save_messages" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
+							Save Changes
+						</button>
+					</div>
+				<?php endif; ?>
 
 				<!-- Restore default form button -->
 				<div class="col-auto">

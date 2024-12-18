@@ -642,7 +642,7 @@ if (formreach_formulaire) {
   // Gestionnaire de clics pour les boutons de soumission pour éviter les répétitions
   document.addEventListener("DOMContentLoaded", () => {
     const formreach_boutonsDeSoumission = document.querySelectorAll(
-      "#formreach_whatsapp_switch, #formreach_save_messages, #formreach_saveFormWhatsapp, #formreach_save_email, #formreach_save_final, #formreach_publish_final"
+      "#formreach_whatsapp_switch, #formreach_save_messages, #formreach_saveFormWhatsapp, #formreach_save_email, #formreach_save_final, #formreach_publish_final, #formreach_publish_whatsapp, #formreach_publish_email, #formreach_publish_messages"
     );
 
     formreach_boutonsDeSoumission.forEach((formreach_bouton) => {
@@ -1114,78 +1114,85 @@ document.addEventListener("DOMContentLoaded", function () {
 import intlTelInput from "intl-tel-input";
 
 document.addEventListener("DOMContentLoaded", function () {
-  var input = document.querySelector("#formreach_whatsapp_tel");
-  var hiddenInput = document.querySelector(
-    "#formreach_whatsapp_tel_international"
+  var formreach_whatsapp_tel = document.querySelector(
+    "#formreach_whatsapp_tel"
   );
-  var errorMsg = document.querySelector("#formreach_whatsapp_message");
+  if (formreach_whatsapp_tel) {
+    var formreach_hiddenInput = document.querySelector(
+      "#formreach_whatsapp_tel_international"
+    );
+    var formreach_whatsapp_message = document.querySelector(
+      "#formreach_whatsapp_message"
+    );
 
-  // Initialise intl-tel-input
-  var iti = intlTelInput(input, {
-    initialCountry: "auto",
-    geoIpLookup: function (success, failure) {
-      fetch("https://ipinfo.io/json")
-        .then(function (resp) {
-          return resp.json();
-        })
-        .then(function (resp) {
-          var countryCode = resp && resp.country ? resp.country : "us";
-          success(countryCode);
-        })
-        .catch(function () {
-          success("us");
-        });
-    },
-    separateDialCode: true,
-    loadUtils: () => import("intl-tel-input/utils"),
-    countryOrder: ["us", "fr", "de", "gb", "it"],
-  });
+    // Initialise intl-tel-input
+    var iti = intlTelInput(formreach_whatsapp_tel, {
+      initialCountry: "auto",
+      geoIpLookup: function (success, failure) {
+        fetch("https://ipinfo.io/json")
+          .then(function (resp) {
+            return resp.json();
+          })
+          .then(function (resp) {
+            var countryCode = resp && resp.country ? resp.country : "us";
+            success(countryCode);
+          })
+          .catch(function () {
+            success("us");
+          });
+      },
+      separateDialCode: true,
+      loadUtils: () => import("intl-tel-input/utils"),
+      countryOrder: ["us", "fr", "de", "gb", "it"],
+    });
 
-  var reset = function () {
-    input.classList.remove("is-invalid");
-    errorMsg.innerHTML = "";
-    errorMsg.classList.add("d-none");
-  };
+    var reset = function () {
+      formreach_whatsapp_tel.classList.remove("is-invalid");
+      formreach_whatsapp_message.innerHTML = "";
+      formreach_whatsapp_message.classList.add("d-none");
+    };
 
-  // Valide le numéro
-  var validate = function () {
-    reset();
-    if (input.value.trim()) {
-      if (iti.isValidNumber()) {
-        input.classList.add("is-valid");
-      } else {
-        input.classList.add("is-invalid");
-        var errorCode = iti.getValidationError();
-        errorMsg.innerHTML = "Invalid Number : " + errorMap[errorCode];
-        errorMsg.classList.remove("d-none");
+    // Valide le numéro
+    var validate = function () {
+      reset();
+      if (formreach_whatsapp_tel.value.trim()) {
+        if (iti.isValidNumber()) {
+          formreach_whatsapp_tel.classList.add("is-valid");
+        } else {
+          formreach_whatsapp_tel.classList.add("is-invalid");
+          var errorCode = iti.getValidationError();
+          formreach_whatsapp_message.innerHTML =
+            "Invalid Number : " + formreach_errorMap[errorCode];
+          formreach_whatsapp_message.classList.remove("d-none");
+        }
       }
-    }
-  };
+    };
 
-  // Message d'erreur
-  var errorMap = [
-    "Invalid Number",
-    "Invalid Country Code",
-    "Too short",
-    "Too long",
-    "Invalid Number",
-  ];
+    // Message d'erreur
+    var formreach_errorMap = [
+      "Invalid Number",
+      "Invalid Country Code",
+      "Too short",
+      "Too long",
+      "Invalid Number",
+    ];
 
-  // Événements
-  input.addEventListener("blur", validate);
-  input.addEventListener("change", reset);
-  input.addEventListener("keyup", validate);
+    // Événements
+    formreach_whatsapp_tel.addEventListener("blur", validate);
+    formreach_whatsapp_tel.addEventListener("change", reset);
+    formreach_whatsapp_tel.addEventListener("keyup", validate);
 
-  // Avant la soumission du formulaire
-  var form = input.form;
-  form.addEventListener("submit", function (event) {
-    validate();
-    if (iti.isValidNumber()) {
-      hiddenInput.value = iti.getNumber();
-    } else {
-      event.preventDefault();
-    }
-  });
+    // Avant la soumission du formulaire
+    var form = formreach_whatsapp_tel.form;
+    form.addEventListener("submit", function (event) {
+      validate();
+      if (iti.isValidNumber()) {
+        formreach_hiddenInput.value = iti.getNumber();
+      } else {
+        event.preventDefault();
+      }
+    });
+  }
 });
 
 //missing email

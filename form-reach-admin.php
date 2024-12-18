@@ -10,7 +10,7 @@ function formreach_post_type() {
         'menu_name'             => __('Form Reach', 'form-reach-domain'),
         'name_admin_bar'        => __('Form Reach', 'form-reach-domain'),
         'add_new'               => __('Create New Form', 'form-reach-domain'),
-        'add_new_item'          => __('Form Creation', 'form-reach-domain'),
+        'add_new_item'          => __('Add Form', 'form-reach-domain'),
         'new_item'              => __('New Form', 'form-reach-domain'),
         'edit_item'             => __('Edit Form', 'form-reach-domain'),
         'all_items'             => __('All Forms', 'form-reach-domain'),
@@ -31,7 +31,8 @@ function formreach_post_type() {
     $formreach_args = array(
         'labels'             => $formreach_labels,
         'public'             => false,
-        'publicly_queryable' => true,
+        'publicly_queryable' => false,
+        'exclude_from_search' => true,
         'show_ui'            => true,
         'show_in_menu'       => true,
         'query_var'          => true,
@@ -117,21 +118,27 @@ function formreach_optimize_admin_columns() {
 }
 add_action('admin_footer', 'formreach_optimize_admin_columns');
 
-/**
- * Modifies the list row actions for posts.
- *
- * @param array $actions An array of row action links.
- * @param WP_Post $post The post object.
- * @return array The modified actions.post_type
- */
-function formreach_modify_list_row_actions($actions, $formreach_post) {
-    unset($actions['view']);
+function formreach_always_publish( $data, $postarr ) {
+    if ( 'form_reach' === $data['post_type'] && !in_array( $data['post_status'], array('auto-draft', 'trash') ) ) {
+        $data['post_status'] = 'publish';
+    }
+    return $data;
+}
+add_filter( 'wp_insert_post_data', 'formreach_always_publish', 10, 2 );
+
+function formreach_remove_quick_edit($actions, $post) {
+    if (get_post_type($post) === 'form_reach') {
+        if (isset($actions['inline hide-if-no-js'])) {
+            unset($actions['inline hide-if-no-js']);
+        }
+    }
+
     return $actions;
 }
-add_filter('post_row_actions', 'formreach_modify_list_row_actions', 10, 2);
+add_filter('post_row_actions', 'formreach_remove_quick_edit', 10, 2);
 
 function formreach_remove_metaboxe() {
-    remove_meta_box('slugdiv', 'form_reach', 'normal'); // Removing the Slug metabox
+    remove_meta_box('slugdiv', 'form_reach', 'normal');
 }
 add_action('admin_menu','formreach_remove_metaboxe');
 

@@ -1,401 +1,428 @@
 /* Changing the font in the textareas */
 .code,
 code {
-    font-family: system-ui;
-    direction: ltr;
-    unicode-bidi: embed;
+  font-family: system-ui;
+  direction: ltr;
+  unicode-bidi: embed;
 }
 
 /* Style of the toggle button */
 .formreach_slider-input {
-    height: 0;
-    width: 0;
-    visibility: hidden;
-    user-select: none;
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  user-select: none;
 }
 
 .formreach_slider-label {
-    cursor: pointer;
-    text-indent: -9999px;
-    width: 50px;
-    height: 25.5px;
-    background: grey;
-    display: block;
-    border-radius: 100px;
-    position: relative;
-    user-select: none;
-    float: left;
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 50px;
+  height: 25.5px;
+  background: grey;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+  user-select: none;
+  float: left;
 }
 
 .formreach_slider-label:after {
-    content: '';
-    position: absolute;
-    top: 2.562px;
-    left: 2.5px;
-    width: 20px;
-    height: 20px;
-    background: #fff;
-    border-radius: 90px;
-    transition: 0.3s;
+  content: "";
+  position: absolute;
+  top: 2.562px;
+  left: 2.5px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
 }
 
-.formreach_slider-input:checked+.formreach_slider-label {
-    background: #2271b1;
+.formreach_slider-input:checked + .formreach_slider-label {
+  background: #2271b1;
 }
 
-.formreach_slider-input:checked+.formreach_slider-label:after {
-    left: calc(100% - 2.5px);
-    transform: translateX(-100%);
+.formreach_slider-input:checked + .formreach_slider-label:after {
+  left: calc(100% - 2.5px);
+  transform: translateX(-100%);
 }
 
 .formreach_slider-label:active:after {
-    width: 32.5px;
+  width: 32.5px;
 }
 
 /* Style of the toggle button to switch WhatsApp form */
 .formreach_slider-input-whatsapp {
-    height: 0;
-    width: 0;
-    visibility: hidden;
-    user-select: none;
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  user-select: none;
 }
 
 .formreach_slider-label-whatsapp {
-    cursor: pointer;
-    text-indent: -9999px;
-    width: 50px;
-    height: 25.5px;
-    background: #2271b1;
-    display: block;
-    border-radius: 100px;
-    position: relative;
-    user-select: none;
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 50px;
+  height: 25.5px;
+  background: #2271b1;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+  user-select: none;
 }
 
 .formreach_slider-label-whatsapp:after {
-    content: '';
-    position: absolute;
-    top: 2.562px;
-    left: 2.5px;
-    width: 20px;
-    height: 20px;
-    background: #fff;
-    border-radius: 22.5px;
-    transition: 0.3s;
+  content: "";
+  position: absolute;
+  top: 2.562px;
+  left: 2.5px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 22.5px;
+  transition: 0.3s;
 }
 
-.formreach_slider-input-whatsapp:checked+.formreach_slider-label-whatsapp {
-    background: #25d366;
+.formreach_slider-input-whatsapp:checked + .formreach_slider-label-whatsapp {
+  background: #25d366;
 }
 
-.formreach_slider-input-whatsapp:checked+.formreach_slider-label-whatsapp:after {
-    left: calc(100% - 2.5px);
-    transform: translateX(-100%);
+.formreach_slider-input-whatsapp:checked
+  + .formreach_slider-label-whatsapp:after {
+  left: calc(100% - 2.5px);
+  transform: translateX(-100%);
 }
 
 .formreach_slider-label-whatsapp:active:after {
-    width: 32.5px;
+  width: 32.5px;
 }
 
 .formreach_warning-container {
-    transition: opacity 0.5s ease, height 0.5s ease;
+  transition: opacity 0.5s ease, height 0.5s ease;
 }
 
 .formreach_warning-hidden {
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    transition: opacity 0.5s ease, height 0.5s ease;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease, height 0.5s ease;
 }
 
 /* Animation for missing information */
 .formreach_missing-information {
-    -webkit-animation-name: bounceIn;
-    animation-name: bounceIn;
-    -webkit-animation-duration: .75s;
-    animation-duration: .75s;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1.5s;
-    animation-iteration-count: infinite;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
+  -webkit-animation-name: bounceIn;
+  animation-name: bounceIn;
+  -webkit-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
 @-webkit-keyframes bounceIn {
+  0%,
+  20%,
+  40%,
+  60%,
+  80%,
+  100% {
+    -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
 
-    0%,
-    20%,
-    40%,
-    60%,
-    80%,
-    100% {
-        -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-    }
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
 
-    0% {
-        opacity: 0;
-        -webkit-transform: scale3d(.3, .3, .3);
-        transform: scale3d(.3, .3, .3);
-    }
+  20% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
 
-    20% {
-        -webkit-transform: scale3d(1.1, 1.1, 1.1);
-        transform: scale3d(1.1, 1.1, 1.1);
-    }
+  40% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
 
-    40% {
-        -webkit-transform: scale3d(.9, .9, .9);
-        transform: scale3d(.9, .9, .9);
-    }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.03, 1.03, 1.03);
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
 
-    60% {
-        opacity: 1;
-        -webkit-transform: scale3d(1.03, 1.03, 1.03);
-        transform: scale3d(1.03, 1.03, 1.03);
-    }
+  80% {
+    -webkit-transform: scale3d(0.97, 0.97, 0.97);
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
 
-    80% {
-        -webkit-transform: scale3d(.97, .97, .97);
-        transform: scale3d(.97, .97, .97);
-    }
-
-    100% {
-        opacity: 1;
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-    }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
 }
 
 @keyframes bounceIn {
+  0%,
+  20%,
+  40%,
+  60%,
+  80%,
+  100% {
+    -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
 
-    0%,
-    20%,
-    40%,
-    60%,
-    80%,
-    100% {
-        -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-    }
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
 
-    0% {
-        opacity: 0;
-        -webkit-transform: scale3d(.3, .3, .3);
-        transform: scale3d(.3, .3, .3);
-    }
+  20% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
 
-    20% {
-        -webkit-transform: scale3d(1.1, 1.1, 1.1);
-        transform: scale3d(1.1, 1.1, 1.1);
-    }
+  40% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
 
-    40% {
-        -webkit-transform: scale3d(.9, .9, .9);
-        transform: scale3d(.9, .9, .9);
-    }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.03, 1.03, 1.03);
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
 
-    60% {
-        opacity: 1;
-        -webkit-transform: scale3d(1.03, 1.03, 1.03);
-        transform: scale3d(1.03, 1.03, 1.03);
-    }
+  80% {
+    -webkit-transform: scale3d(0.97, 0.97, 0.97);
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
 
-    80% {
-        -webkit-transform: scale3d(.97, .97, .97);
-        transform: scale3d(.97, .97, .97);
-    }
-
-    100% {
-        opacity: 1;
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-    }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
 }
 
 /* Input type color enhanced */
 .formreach_color {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 3rem;
-    height: 2rem;
-    background-color: transparent;
-    border: none !important;
-    outline: none;
-    cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 3rem;
+  height: 2rem;
+  background-color: transparent;
+  border: none !important;
+  outline: none;
+  cursor: pointer;
 }
 
 .formreach_color::-webkit-color-swatch {
-    border-radius: 0.3rem;
-    border: none;
-    outline: none;
-    border: 0.01rem solid #888888;
+  border-radius: 0.3rem;
+  border: none;
+  outline: none;
+  border: 0.01rem solid #888888;
 }
 
 .formreach_color::-moz-color-swatch {
-    border-radius: 0.3rem;
-    border: none;
-    outline: none;
-    border: 0.01rem solid #888888;
+  border-radius: 0.3rem;
+  border: none;
+  outline: none;
+  border: 0.01rem solid #888888;
 }
 
 /* Displays as one column*/
 .formreach_post-type-form_reach #poststuff #post-body.formreach_columns-2 {
-    margin-right: 0;
+  margin-right: 0;
 }
 
 #poststuff #post-body.formreach_columns-2 #side-sortables {
-    display: none;
+  display: none;
 }
 
 /* Placeholder error */
 .formreach_placeholder-error::-webkit-input-placeholder {
-    color: rgba(255, 0, 0, 0.563);
+  color: rgba(255, 0, 0, 0.563);
 }
 
 /* Flyout Menu */
 .formreach_flyout-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    background-image: url("../../image/form-reach-logo.png");
-    background-size: cover;
-    background-position: center;
-    background-size: 85%;
-    border: 3px solid #c5b863;
-    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    z-index: 9999;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-image: url("../../image/form-reach-logo.png");
+  background-size: cover;
+  background-position: center;
+  background-size: 85%;
+  border: 3px solid #c5b863;
+  box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 9999;
 }
 
 .formreach_flyout-menu {
-    position: fixed;
-    bottom: 75px;
-    right: 27px;
-    text-align: center;
-    vertical-align: middle;
+  position: fixed;
+  bottom: 75px;
+  right: 27px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .formreach_flyout-menu a {
-    display: block;
-    right: 30px;
-    margin-bottom: 15px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    background-color: #242422;
+  display: block;
+  right: 30px;
+  margin-bottom: 15px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  background-color: #242422;
 }
 
 .formreach_flyout-menu i {
-    font-size: 24px;
-    color: #c5b863;
-    text-align: center;
-    line-height: 40px;
+  font-size: 24px;
+  color: #c5b863;
+  text-align: center;
+  line-height: 40px;
 }
 
 /* Wordpress blue-color */
 .formreach_wp-blue {
-    background-color: #2271b1 !important;
+  background-color: #2271b1 !important;
 }
 
 .handle-actions,
 #screen-options-link-wrap,
 .wpforms-edit-post-education-notice,
-#wpforms-notice-global-review_lite_request
-{
-    display: none;
+#wpforms-notice-global-review_lite_request {
+  display: none;
 }
 
 #submitdiv {
-    display: none;
+  display: none;
 }
 
 .ui-draggable-handle,
 .ui-sortable-handle {
-    touch-action: unset;
+  touch-action: unset;
 }
 
 .post-new-php .postbox-header {
-    display: none;
+  display: none;
 }
 
 #titlediv #title-prompt-text {
-    line-height: 1em;
+  line-height: 1em;
 }
 
 /* Pagination Form Submissions */
 @media (min-width: 768px) {
-    .col-md-6 {
-        flex: 0 0 auto;
-        width: 50%;
-    }
+  .col-md-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
 
-    .col-md-5 {
-        flex: 0 0 auto;
-        width: 41.66666667%;
-    }
+  .col-md-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+  }
 
-    .col-md-7 {
-        flex: 0 0 auto;
-        width: 58.33333333%;
-    }
+  .col-md-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+  }
 
-    .pagination {
-        display: flex;
-        padding-left: 0;
-        list-style: none;
-    }
+  .pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+  }
 
-    .paginate_button {
-        padding-right: 10px;
-    }
+  .paginate_button {
+    padding-right: 10px;
+  }
 
-    .row {
-        display: flex;
-    }
+  .row {
+    display: flex;
+  }
 }
 
-.disabled>.page-link,
+.disabled > .page-link,
 .page-link.disabled {
-    color: #6c757d;
-    pointer-events: none;
+  color: #6c757d;
+  pointer-events: none;
 }
 
 .wp-core-ui .button-link-delete {
-    border-color: #d63638;
+  border-color: #d63638;
 }
 
 /* Draggable items */
 .formreach_draggable {
-    cursor: move;
-    display: inline-block;
-    padding: 0.5em 1em 0.5em 1em;
-    border: 1px solid #8c8f94;
-    border-radius: 4px;
-    margin: 2px;
-    background-color: #f0f0f1;
+  cursor: move;
+  display: inline-block;
+  padding: 0.5em 1em 0.5em 1em;
+  border: 1px solid #8c8f94;
+  border-radius: 4px;
+  margin: 2px;
+  background-color: #f0f0f1;
 }
 
 /* Mail Tab */
 body {
-    overflow-y: scroll;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
 body::-webkit-scrollbar {
-    width: 0px; /* Safari and Chrome */
-    height: 0px;
+  width: 0px; /* Safari and Chrome */
+  height: 0px;
 }
 
 /* All Forms Column */
-@media(min-width:783px){#cb{width:3%;}.column-type{width:4%;}.column-title{width:30%;}.column-author,.column-shortcode,.column-date{width:21%;}}@media(max-width:782px){.column-type{display:none;}td.type.column-type svg{padding-left:2.75em;}}
+@media (min-width: 783px) {
+  #cb {
+    width: 3%;
+  }
+  .column-type {
+    width: 4%;
+  }
+  .column-title {
+    width: 30%;
+  }
+  .column-author,
+  .column-shortcode,
+  .column-date {
+    width: 21%;
+  }
+}
+@media (max-width: 782px) {
+  .column-type {
+    display: none;
+  }
+  td.type.column-type svg {
+    padding-left: 2.75em;
+  }
+}
 
 /* formreach_submit_textarea button */
-input[type=number]::-webkit-inner-spin-button { opacity: 1}
+input[type="number"]::-webkit-inner-spin-button {
+  opacity: 1;
+}
+
+.shortcode input.form-control {
+  width: 100%;
+}
