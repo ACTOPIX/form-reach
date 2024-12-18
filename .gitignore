@@ -1,0 +1,47 @@
+# Ignorer les dépendances Node.js
+node_modules/
+
+# Ignorer les fichiers de logs npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorer les fichiers de cache
+.DS_Store
+Thumbs.db
+.cache/
+.tmp/
+
+# Ignorer les fichiers générés par Gulp
+assets/css/*.css.map
+assets/js/*.js.map
+
+# Ignorer les fichiers de configuration environnementale
+.env
+
+# Ignorer les fichiers de l'éditeur
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignorer les fichiers de système
+*.swp
+.sass-cache/
+*.bak
+*.tmp
+
+# Ignorer les fichiers de build (si vous ne souhaitez pas les inclure)
+dist/
+
+# Ignorer les fichiers de package lock (selon vos préférences)
+package-lock.json
+yarn.lock
+
+# Ignorer les fichiers de configuration npm personnels
+.npmrc
+
+# Ignorer les fichiers de cache de Gulp
+gulp-cache/
+
+form-reach.zip

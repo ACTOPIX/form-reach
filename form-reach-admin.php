@@ -10,7 +10,7 @@ function formreach_post_type() {
         'menu_name'             => __('Form Reach', 'form-reach-domain'),
         'name_admin_bar'        => __('Form Reach', 'form-reach-domain'),
         'add_new'               => __('Create New Form', 'form-reach-domain'),
-        'add_new_item'          => __('Form Creation', 'form-reach-domain'),
+        'add_new_item'          => __('Add Form', 'form-reach-domain'),
         'new_item'              => __('New Form', 'form-reach-domain'),
         'edit_item'             => __('Edit Form', 'form-reach-domain'),
         'all_items'             => __('All Forms', 'form-reach-domain'),
@@ -31,7 +31,8 @@ function formreach_post_type() {
     $formreach_args = array(
         'labels'             => $formreach_labels,
         'public'             => false,
-        'publicly_queryable' => true,
+        'publicly_queryable' => false,
+        'exclude_from_search' => true,
         'show_ui'            => true,
         'show_in_menu'       => true,
         'query_var'          => true,
@@ -98,7 +99,7 @@ add_action('manage_formreach_post_type_posts_custom_column', 'formreach_shortcod
 function formreach_enqueue_admin_styles() {
     wp_enqueue_style(
         'formreach-admin-css',
-        plugin_dir_url(__FILE__) . 'style/form-reach-admin.css', 
+        plugin_dir_url(__FILE__) . 'assets/css/form-reach-admin.min.css', 
         array(), 
         '1.0'
     );
@@ -112,28 +113,34 @@ add_action('admin_enqueue_scripts', 'formreach_enqueue_admin_styles');
 function formreach_optimize_admin_columns() {
     $formreach_screen = get_current_screen();
     if ( $formreach_screen->id == 'edit-formreach_post_type' ) {
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
+        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.css', array(), '1.0.0');
 		
 		formreach_add_flyout_menu();
 	}
 }
 add_action('admin_footer', 'formreach_optimize_admin_columns');
 
-/**
- * Modifies the list row actions for posts.
- *
- * @param array $actions An array of row action links.
- * @param WP_Post $post The post object.
- * @return array The modified actions.post_type
- */
-function formreach_modify_list_row_actions($actions, $formreach_post) {
-    unset($actions['view']);
+function formreach_always_publish( $data, $postarr ) {
+    if ( 'formreach_post_type' === $data['post_type'] && !in_array( $data['post_status'], array('auto-draft', 'trash') ) ) {
+        $data['post_status'] = 'publish';
+    }
+    return $data;
+}
+add_filter( 'wp_insert_post_data', 'formreach_always_publish', 10, 2 );
+
+function formreach_remove_quick_edit($actions, $post) {
+    if (get_post_type($post) === 'formreach_post_type') {
+        if (isset($actions['inline hide-if-no-js'])) {
+            unset($actions['inline hide-if-no-js']);
+        }
+    }
+
     return $actions;
 }
-add_filter('post_row_actions', 'formreach_modify_list_row_actions', 10, 2);
+add_filter('post_row_actions', 'formreach_remove_quick_edit', 10, 2);
 
 function formreach_remove_metaboxe() {
-    remove_meta_box('slugdiv', 'formreach_post_type', 'normal'); // Removing the Slug metabox
+    remove_meta_box('slugdiv', 'form_reach_post_type', 'normal');
 }
 add_action('admin_menu','formreach_remove_metaboxe');
 
@@ -339,8 +346,6 @@ function formreach_meta_save($formreach_post_id) {
         'formreach_whatsapp_error' => 'text',
         'formreach_email_form_content' => 'textarea',
         'formreach_whatsapp_form_content' => 'textarea',
-        'formreach_whatsapp_tel' => 'tel',
-        'formreach_whatsapp_flag' => 'text',
         'formreach_whatsapp_tel_international' => 'tel',
         'formreach_whatsapp_switch' => 'checkbox',
         'formreach_user_email_switch' => 'checkbox',
@@ -393,20 +398,12 @@ function formreach_add_custom_submenu() {
         if ($formreach_hook !== $formreach_page_hook_suffix) {
             return;
         }
+    
+        wp_enqueue_style('datatables-css', plugin_dir_url(__FILE__) . 'assets/css/dataTables.bootstrap5.min.css', array(), '2.1.18');
+        wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . 'assets/js/bundle-datatables.min.js', array('jquery'), '2.1.18', true);
 
-		// DataTables Basic
-		wp_enqueue_style('datatables-css', plugin_dir_url(__FILE__) . 'assets/DataTables/dataTables.bootstrap5.min.css', array(), '1.13.4');
-		wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . 'assets/DataTables/jquery.dataTables.min.js', array('jquery'), '1.13.4', true);
-		wp_enqueue_script('datatables-bootstrap-js', plugin_dir_url(__FILE__) . 'assets/DataTables/dataTables.bootstrap5.min.js', array('jquery', 'datatables-js'), '1.13.4', true);
-
-		// DataTables Responsive
-		wp_enqueue_style('datatables-responsive-css', plugin_dir_url(__FILE__) . 'assets/DataTables/responsive.bootstrap5.min.css', array(), '2.2.9');
-		wp_enqueue_script('datatables-responsive-js', plugin_dir_url(__FILE__) . 'assets/DataTables/dataTables.responsive.min.js', array('jquery', 'datatables-js'), '2.2.9', true);
-		wp_enqueue_script('datatables-responsive-bootstrap-js', plugin_dir_url(__FILE__) . 'assets/DataTables/responsive.bootstrap5.min.js', array('jquery', 'datatables-js', 'datatables-responsive-js', 'bootstrap'), '2.2.9', true);
-
-        wp_enqueue_script('form-reach-submission-script', plugin_dir_url(__FILE__) . 'js/form-reach-submissions.js', array(), '1.0.0', true);
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
-    });
+        wp_enqueue_style('form-reach-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
+    });    
 }
 add_action("admin_menu", "formreach_add_custom_submenu");
 
@@ -447,7 +444,7 @@ function formreach_form_log_callback() {
             <form method="post">
                 <?php wp_nonce_field('delete_entry'); ?>
 				<div class="table-responsive">
-                <table class="table wp-list-table widefat fixed striped table-view-list posts" id="formreach_form_history_table">
+                <table class="table wp-list-table widefat fixed striped table-view-list posts display nowrap" id="formreach_form_history_table">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -495,7 +492,6 @@ function formreach_form_log_callback() {
 }
 
 function formreach_add_flyout_menu() {
-	wp_enqueue_script('fontawesome', plugin_dir_url(__FILE__) . 'assets/fontawesome/85a869994b.js', array(), '1.0.0', true);
     wp_enqueue_script('formreach-flyout', plugin_dir_url(__FILE__) . 'js/form-reach-flyout.js', array(), '1.0.0', true);
 		?>
 			<!-- Flyout menu -->
@@ -524,7 +520,7 @@ function formreach_add_custom_submenu_reCAPTCHA() {
         if ($formreach_hook !== $formreach_page_hook_suffix) {
             return;
         }
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
+        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
         wp_enqueue_script('form-reach-custom-style', plugin_dir_url(__FILE__) . 'js/form-reach-spam-settings.js', array(), '1.0.0', true);
     });
 }

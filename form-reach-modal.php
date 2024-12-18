@@ -2,14 +2,15 @@
 
 if ( !defined('ABSPATH') ) exit;
 
-wp_enqueue_style('bootstrap-css',  plugin_dir_url(__FILE__) . 'assets/bootstrap/bootstrap.min.css', array(), '5.2.2');
-wp_enqueue_style('intl-tel-input-css',  plugin_dir_url(__FILE__) . 'assets/intl-tel-input/intlTelInput.css', array(), '18.1.1');
-wp_enqueue_style('form-reach-css', plugin_dir_url(__FILE__) . 'style/form-reach.css', array(), '1.0.0');
+wp_enqueue_style('form-reach-css', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
 
 wp_enqueue_script('jquery');
-wp_enqueue_script('bootstrap-js',  plugin_dir_url(__FILE__) . 'assets/bootstrap/bootstrap.min.js', array('jquery'), '5.2.2', true);
-wp_enqueue_script('intl-tel-input-js',  plugin_dir_url(__FILE__) . 'assets/intl-tel-input/intlTelInput.min.js', array('jquery'), '18.1.1', true);
-wp_enqueue_script('form-reach-admin-js', plugin_dir_url(__FILE__) . 'js/form-reach-admin.js', array('jquery'), '1.0.0', true);
+
+// Styles
+wp_enqueue_style('form-reach-intl-tel-input-css', plugin_dir_url(__FILE__) . 'assets/css/intlTelInput.min.css', array(), '1.0.0');
+
+// Scripts
+wp_enqueue_script('form-reach-bundle-js', plugin_dir_url(__FILE__) . 'assets/js/bundle.min.js', array('jquery'), '1.0.0', true);
 
 //Default Form
 function formreach_email_form_default() {
@@ -70,16 +71,9 @@ $formreach_defaultform = array(
 	'formreach_whatsapp_error_default' => esc_html__("The message could not be submitted due to an error. Please try again.", 'form-reach-domain')
 );
 
-$formreach_phpFlag = !empty( $formreach_stored_meta['formreach_whatsapp_flag'] ) ? esc_attr( $formreach_stored_meta['formreach_whatsapp_flag'][0] ) : '';
-    
-wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_defaultform, array(
-    'phpFlag' => $formreach_phpFlag,
-	'utilsScriptUrl' => plugins_url('assets/intl-tel-input/utils.js', __FILE__)
-)));
-
 ?>
 
-<section onload="formreach_modalTextGenerator(),formreach_modalTextareaGenerator(),formreach_modalEmailGenerator(),formreach_modalTelGenerator()">
+<section onload="formreach_modalTextGenerator(),formreach_modalTextareaGenerator(),formreach_modalEmailGenerator(),formreach_modalTelGenerator()" id="formreach_section_metabox" style="visibility: hidden;">
 
 	<div class="tab-content" id="formreach_myTabContent">
 		<ul class="nav nav-tabs" id="formreach_myTab" role="tablist">
@@ -535,17 +529,20 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 				<!-- Publish form button -->
 				<?php if ($formreach_form_status !== 'publish') : ?>
 					<div class="col-auto pe-0">
-						<input name="original_publish" type="hidden" value="Publish">
-						<input type="submit" name="publish" id="formreach_publish_final" class="btn btn-success btn-sm" value="Publish">
+						<button name="formreach_publish" id="formreach_publish_final" class="btn btn-success btn-sm">
+							Publish
+						</button>
 					</div>
 				<?php endif; ?>
 
 				<!-- Save form button -->
-				<div class="col-auto pe-0">
-					<button type="submit" id="formreach_save_final" class="btn btn-primary btn-sm formreach_wp-blue">
-						Save Changes
-					</button>
-				</div>
+				<?php if ($formreach_form_status == 'publish') : ?>
+					<div class="col-auto pe-0">
+						<button type="submit" name="save" id="formreach_save_final" class="btn btn-primary btn-sm formreach_wp-blue">
+							Save Changes
+						</button>
+					</div>
+				<?php endif; ?>
 
 				<!-- Restore default form button -->
 				<div class="col-auto">
@@ -565,9 +562,8 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 			<div id="formreach_email" class="tab-pane fade mt-3 container" role="tabpanel">						
 				<div class="form-group">
 					<label for="formreach_whatsapp_tel" class="d-block mb-1"><strong>Number :</strong></label>
-					<input type="tel" id="formreach_whatsapp_tel" name="formreach_whatsapp_tel" autocomplete="on" pattern="^[\d\u002D\u0028\u0029]*$" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel'][0]); ?>" class="form-control" />
-					<span id="formreach_whatsapp_message" class="text-danger hide"></span>
-					<input type="hidden" id="formreach_whatsapp_flag" name="formreach_whatsapp_flag" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_flag'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_flag'][0]); ?>" />
+					<input type="tel" id="formreach_whatsapp_tel" name="formreach_whatsapp_tel" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" class="form-control" />
+					<span id="formreach_whatsapp_message" class="text-danger ms-3 d-none"></span>
 					<input type="hidden" id="formreach_whatsapp_tel_international" name="formreach_whatsapp_tel_international" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" />
 				</div>
 
@@ -588,18 +584,21 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 				
 					<!-- Publish form button -->
 					<?php if ($formreach_form_status !== 'publish') : ?>
-						<div id="publishing-action" class="col-auto pe-0">
-							<input name="original_publish" type="hidden" id="formreach_publishFormWhatsapp" value="Publish">
-							<input type="submit" name="publish" id="publish" class="btn btn-success btn-sm" value="Publish">
+						<div class="col-auto pe-0">
+							<button name="formreach_publish" id="formreach_publish_whatsapp" class="btn btn-success btn-sm">
+								Publish
+							</button>
 						</div>
 					<?php endif; ?>
 						
 					<!-- Save form button -->
-					<div class="col-auto pe-0">
-						<button type="submit" id="formreach_saveFormWhatsapp" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
-							Save Changes
-						</button>
-					</div>
+					<?php if ($formreach_form_status == 'publish') : ?>
+						<div class="col-auto pe-0">
+							<button type="submit" id="formreach_saveFormWhatsapp" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
+								Save Changes
+							</button>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 			
@@ -667,18 +666,21 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 					
 					<!-- Publish form button -->
 					<?php if ($formreach_form_status !== 'publish') : ?>
-						<div id="publishing-action" class="col-auto pe-0">
-							<input name="original_publish" type="hidden" id="formreach_publish_email" value="Publish">
-							<input type="submit" name="publish" id="publish" class="btn btn-success btn-sm" value="Publish">
+						<div class="col-auto pe-0">
+							<button name="formreach_publish" id="formreach_publish_email" class="btn btn-success btn-sm">
+								Publish
+							</button>
 						</div>
 					<?php endif; ?>
 
 					<!-- Save form button -->
-					<div class="col-auto pe-0">
-						<button type="submit" id="formreach_save_email" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
-							Save Changes
-						</button>
-					</div>
+					<?php if ($formreach_form_status == 'publish') : ?>
+						<div class="col-auto pe-0">
+							<button type="submit" id="formreach_save_email" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
+								Save Changes
+							</button>
+						</div>
+					<?php endif; ?>
 
 					<!-- Restore default form button -->
 					<div class="col-auto">
@@ -730,18 +732,21 @@ wp_localize_script('form-reach-admin-js', 'formReach', array_merge($formreach_de
 				
 				<!-- Publish form button -->
 				<?php if ($formreach_form_status !== 'publish') : ?>
-					<div id="publishing-action" class="col-auto pe-0">
-						<input name="original_publish" type="hidden" id="formreach_publish_messages" value="Publish">
-						<input type="submit" name="publish" id="publish" class="btn btn-success btn-sm" value="Publish">
+					<div class="col-auto pe-0">
+						<button name="formreach_publish" id="formreach_publish_messages" class="btn btn-success btn-sm">
+							Publish
+						</button>
 					</div>
 				<?php endif; ?>
 
 				<!-- Save form button -->
-				<div class="col-auto pe-0">
-					<button type="submit" id="formreach_save_messages" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
-						Save Changes
-					</button>
-				</div>
+				<?php if ($formreach_form_status == 'publish') : ?>
+					<div class="col-auto pe-0">
+						<button type="submit" id="formreach_save_messages" style="height:min-content;" class="btn btn-primary btn-sm formreach_wp-blue">
+							Save Changes
+						</button>
+					</div>
+				<?php endif; ?>
 
 				<!-- Restore default form button -->
 				<div class="col-auto">
