@@ -45,7 +45,7 @@ function formreach_post_type() {
         'supports'           => array('title'), // Added support for common features
     );
 
-    register_post_type('form_reach', $formreach_args);
+    register_post_type('formreach_post_type', $formreach_args);
 }
 
 add_action('init', 'formreach_post_type');
@@ -62,12 +62,12 @@ function formreach_smashing_columns($formreach_columns) {
     );
     return $formreach_newColumns;
 }
-add_filter('manage_form_reach_posts_columns', 'formreach_smashing_columns');
+add_filter('manage_formreach_post_type_posts_columns', 'formreach_smashing_columns');
 
 // Adding the shortcode to the Administrator custom table
 function formreach_shortcode_column($formreach_column, $formreach_post_id) {
     if ('shortcode' === $formreach_column) {
-        echo '<input type="text" class="form-control" style="background-color: transparent; border: none;" readonly="readonly" onfocus="this.select()" value=\'[form-reach id="' . esc_attr($formreach_post_id) . '"]\'>';
+        echo '<input type="text" class="form-control" style="background-color: transparent; border: none;" readonly="readonly" onfocus="this.select()" value=\'[formreach_form id="' . esc_attr($formreach_post_id) . '"]\'>';
     }
 }
 
@@ -78,10 +78,12 @@ function formreach_custom_column_content($formreach_column, $formreach_post_id) 
 
         switch ($formreach_formType) {
             case "0":
-                echo '<i class="fa fa-envelope mx-2" style="color: #2271b1 ; font-size: 27px;"></i>';
+                echo '<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 26 26" fill="none"><g clip-path="url(#clip0_660_96)"><path d="M24.9983 9.48608C25.1887 9.33472 25.4719 9.47632 25.4719 9.71558V19.7009C25.4719 20.9949 24.4221 22.0447 23.1282 22.0447H2.81567C1.52173 22.0447 0.471924 20.9949 0.471924 19.7009V9.72046C0.471924 9.47632 0.750244 9.3396 0.945557 9.49097C2.03931 10.3406 3.4895 11.4197 8.46997 15.0378C9.50024 15.7898 11.2385 17.3718 12.9719 17.3621C14.7151 17.3767 16.4875 15.7605 17.4788 15.0378C22.4592 11.4197 23.9045 10.3357 24.9983 9.48608ZM12.9719 15.7947C14.1047 15.8142 15.7356 14.3689 16.5559 13.7732C23.0354 9.07105 23.5286 8.66089 25.0227 7.48901C25.3059 7.26929 25.4719 6.92749 25.4719 6.56616V5.63843C25.4719 4.34448 24.4221 3.29468 23.1282 3.29468H2.81567C1.52173 3.29468 0.471924 4.34448 0.471924 5.63843V6.56616C0.471924 6.92749 0.637939 7.2644 0.921143 7.48901C2.41528 8.65601 2.90845 9.07105 9.38794 13.7732C10.2083 14.3689 11.8391 15.8142 12.9719 15.7947Z" fill="#2271b1"/></g><defs><clipPath id="clip0_660_96"><rect width="25" height="25" fill="white" transform="translate(0.471924 0.169678)"/></clipPath></defs>
+                    </svg>';
                 break;
             case "1":
-                echo '<i class="fa fa-whatsapp mx-2" style="color: #25d366; font-size: 27px;"></i>';
+                echo '<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none"><path d="M21.774 5.12051C19.5645 2.90566 16.6219 1.6875 13.4947 1.6875C7.04004 1.6875 1.7877 6.93984 1.7877 13.3945C1.7877 15.4564 2.32559 17.4709 3.34863 19.248L1.6875 25.3125L7.89434 23.683C9.60293 24.6164 11.5277 25.1068 13.4895 25.1068H13.4947C19.9441 25.1068 25.3125 19.8545 25.3125 13.3998C25.3125 10.2727 23.9836 7.33535 21.774 5.12051ZM13.4947 23.1346C11.7439 23.1346 10.0301 22.6652 8.53769 21.7793L8.18437 21.5684L4.50352 22.5334L5.48438 18.9422L5.25234 18.573C4.27676 17.0227 3.76523 15.235 3.76523 13.3945C3.76523 8.03145 8.13164 3.66504 13.5 3.66504C16.0998 3.66504 18.5414 4.67754 20.3766 6.51797C22.2117 8.3584 23.3402 10.8 23.335 13.3998C23.335 18.7682 18.8578 23.1346 13.4947 23.1346ZM18.8314 15.8467C18.5414 15.699 17.1018 14.9924 16.8328 14.8975C16.5639 14.7973 16.3688 14.7498 16.1736 15.0451C15.9785 15.3404 15.4195 15.9943 15.2455 16.1947C15.0768 16.3898 14.9027 16.4162 14.6127 16.2686C12.8936 15.409 11.765 14.734 10.6313 12.7881C10.3307 12.2713 10.9318 12.3082 11.4908 11.1902C11.5857 10.9951 11.5383 10.8264 11.4645 10.6787C11.3906 10.5311 10.8053 9.09141 10.5627 8.50605C10.3254 7.93652 10.0828 8.01563 9.90352 8.00508C9.73477 7.99453 9.53965 7.99453 9.34453 7.99453C9.14941 7.99453 8.83301 8.06836 8.56406 8.3584C8.29512 8.65371 7.54102 9.36035 7.54102 10.8C7.54102 12.2396 8.59043 13.6318 8.73281 13.827C8.88047 14.0221 10.7947 16.9752 13.732 18.2461C15.5883 19.0477 16.316 19.1162 17.2441 18.9791C17.8084 18.8947 18.9738 18.2725 19.2164 17.5869C19.459 16.9014 19.459 16.316 19.3852 16.1947C19.3166 16.0629 19.1215 15.9891 18.8314 15.8467Z" fill="#25d366"/>
+                    </svg>';
                 break;
             default:
                 echo esc_html__('Not yet defined', 'form-reach-domain');
@@ -90,8 +92,8 @@ function formreach_custom_column_content($formreach_column, $formreach_post_id) 
     }
 }
 
-add_action('manage_form_reach_posts_custom_column', 'formreach_custom_column_content', 10, 2);
-add_action('manage_form_reach_posts_custom_column', 'formreach_shortcode_column', 10, 2);
+add_action('manage_formreach_post_type_posts_custom_column', 'formreach_custom_column_content', 10, 2);
+add_action('manage_formreach_post_type_posts_custom_column', 'formreach_shortcode_column', 10, 2);
 
 // Ajouter les styles personnalisés pour l'administration
 function formreach_enqueue_admin_styles() {
@@ -110,8 +112,8 @@ add_action('admin_enqueue_scripts', 'formreach_enqueue_admin_styles');
  */
 function formreach_optimize_admin_columns() {
     $formreach_screen = get_current_screen();
-    if ( $formreach_screen->id == 'edit-form_reach' ) {
-        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
+    if ( $formreach_screen->id == 'edit-formreach_post_type' ) {
+        wp_enqueue_style('form-reach-custom-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.css', array(), '1.0.0');
 		
 		formreach_add_flyout_menu();
 	}
@@ -138,7 +140,7 @@ function formreach_remove_quick_edit($actions, $post) {
 add_filter('post_row_actions', 'formreach_remove_quick_edit', 10, 2);
 
 function formreach_remove_metaboxe() {
-    remove_meta_box('slugdiv', 'form_reach', 'normal');
+    remove_meta_box('slugdiv', 'form_reach_post_type', 'normal');
 }
 add_action('admin_menu','formreach_remove_metaboxe');
 
@@ -148,7 +150,7 @@ function formreach_register_metabox_post_type( $formreach_post ) {
 
 	$formreach_post_id = absint( $formreach_post_id );
 
-	$formreach_shortcode = esc_attr( '[form-reach id="' . $formreach_post_id . '"]' );
+	$formreach_shortcode = esc_attr( '[formreach_form id="' . $formreach_post_id . '"]' );
 
 	$formreach_copyInstruction = __('Copy this shortcode and paste it into your post, page, or text widget content: ', 'form-reach-domain');
 
@@ -163,7 +165,7 @@ function formreach_register_metabox_post_type( $formreach_post ) {
         'formreach_metabox',
         $formreach_finalShortcode, 
         'formreach_register_metabox_callback', 
-        'form_reach',
+        'formreach_post_type',
     );
 }
 
@@ -171,7 +173,7 @@ add_action('add_meta_boxes','formreach_register_metabox_post_type');
 
 function formreach_register_metabox_callback($formreach_post) {
 	
-	if ('form_reach' !== $formreach_post->post_type || !current_user_can('edit_post', $formreach_post->ID)) {
+	if ('formreach_post_type' !== $formreach_post->post_type || !current_user_can('edit_post', $formreach_post->ID)) {
         return;
     }
 
@@ -194,8 +196,8 @@ function formreach_register_metabox_callback($formreach_post) {
 		'formreach_email_error' => __("The form could not be submitted due to an error. Please try again.", "form-reach-domain"),
 		'formreach_whatsapp_success' => __("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", "form-reach-domain"),
 		'formreach_whatsapp_error' => __("The message could not be submitted due to an error. Please try again.", "form-reach-domain"),
-		'formreach_email_form_content' => '[input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[input type="email" label="' . __("Email address", "form-reach-domain") . '" name="email" required="required" placeholder="' . __("Enter your email", "form-reach-domain") . '"]' . "\n\n" . '[input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
-		'formreach_whatsapp_form_content' => '[input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
+		'formreach_email_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[formreach_input type="email" label="' . __("Email address", "form-reach-domain") . '" name="email" required="required" placeholder="' . __("Enter your email", "form-reach-domain") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
+		'formreach_whatsapp_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
 		'formreach_whatsapp_switch' => 0,
 		'formreach_user_email_switch' => 0,
 	];
@@ -211,29 +213,29 @@ function formreach_register_metabox_callback($formreach_post) {
     include 'form-reach-modal.php';
 }
 
-// Organize metaboxes in the "normal" column for the custom post type 'form_reach'
-add_filter('get_user_option_meta-box-order_form_reach', 'formreach_one_column_for_all', 10);
+// Organize metaboxes in the "normal" column for the custom post type 'formreach_post_type'
+add_filter('get_user_option_meta-box-order_formreach_post_type', 'formreach_one_column_for_all', 10);
 function formreach_one_column_for_all($option) {
     // Define the order of metaboxes in the 'normal' column
     return ['normal' => 'formreach_metabox,slugdiv,trackbacksdiv,tagsdiv-post_tag,categorydiv,postimagediv,postcustom,commentstatusdiv,authordiv'];
 }
 
 // Add 'submitdiv' at the bottom of the "normal" column
-add_filter('get_user_option_meta-box-order_form_reach', 'formreach_submitdiv_at_bottom', 999);
+add_filter('get_user_option_meta-box-order_formreach_post_type', 'formreach_submitdiv_at_bottom', 999);
 function formreach_submitdiv_at_bottom($formreach_result) {
     $formreach_result['normal'] .= ',submitdiv';
     return $formreach_result;
 }
 
-// Restrict screen options to a single column layout for 'form_reach'
+// Restrict screen options to a single column layout for 'formreach_post_type'
 add_filter('screen_layout_columns', 'formreach_one_column_on_screen_options');
 function formreach_one_column_on_screen_options($formreach_columns) {
-    $formreach_columns['form_reach'] = 1;
+    $formreach_columns['formreach_post_type'] = 1;
     return $formreach_columns;
 }
 
 // Force a single-column layout, overriding user preferences
-add_filter('get_user_option_screen_layout_form_reach', 'formreach_one_column_layout');
+add_filter('get_user_option_screen_layout_formreach_post_type', 'formreach_one_column_layout');
 function formreach_one_column_layout() {
     return 1;
 }
@@ -241,7 +243,7 @@ function formreach_one_column_layout() {
 add_action('admin_enqueue_scripts', 'formreach_enqueue_bootstrap');
 
 function formreach_enqueue_bootstrap($formreach_hook) {
-  if ($formreach_hook == 'post_type=form_reach') {
+  if ($formreach_hook == 'post_type=formreach_post_type') {
     wp_enqueue_style('bootstrap',  plugin_dir_url(__FILE__) . '/assets/bootstrap/bootstrap.min.css', array(), '5.2.2');
     wp_enqueue_script('bootstrap',  plugin_dir_url(__FILE__) . '/assets/bootstrap/bootstrap.min.js', array('jquery'), '5.2.2', true);
   }
@@ -296,12 +298,12 @@ function formreach_input_type($formreach_atts) {
     
     return $formreach_html;
 }
-add_shortcode('input', 'formreach_input_type');
+add_shortcode('formreach_input', 'formreach_input_type');
 
 function formreach_add_nonce_to_post() {
     global $post;
 
-    if ('form_reach' === $post->post_type) {
+    if ('formreach_post_type' === $post->post_type) {
         wp_nonce_field('formreach_save_post_action', 'formreach_save_post_nonce');
     }
 }
@@ -380,11 +382,11 @@ function formreach_meta_save($formreach_post_id) {
 	}    
 }
 
-add_action('save_post_form_reach','formreach_meta_save');
+add_action('save_post_formreach_post_type','formreach_meta_save');
 
 function formreach_add_custom_submenu() {
 	$formreach_page_hook_suffix = add_submenu_page(
-		"edit.php?post_type=form_reach",
+		"edit.php?post_type=formreach_post_type",
 		__("Form Submissions", "form-reach-domain"), 
 		__("Form Submissions", "form-reach-domain"),
 		"manage_options",
@@ -458,10 +460,12 @@ function formreach_form_log_callback() {
                                 <td><?php echo esc_html($formreach_entry->ID); ?></td>
                                 <td><?php switch ($formreach_entry->Type) {
                                     case "Mail":
-                                        echo '<i class="fa fa-envelope mx-2" style="color:#2271b1; font-size: 27px;"></i>';
+                                        echo '<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 26 26" fill="none"><g clip-path="url(#clip0_660_96)"><path d="M24.9983 9.48608C25.1887 9.33472 25.4719 9.47632 25.4719 9.71558V19.7009C25.4719 20.9949 24.4221 22.0447 23.1282 22.0447H2.81567C1.52173 22.0447 0.471924 20.9949 0.471924 19.7009V9.72046C0.471924 9.47632 0.750244 9.3396 0.945557 9.49097C2.03931 10.3406 3.4895 11.4197 8.46997 15.0378C9.50024 15.7898 11.2385 17.3718 12.9719 17.3621C14.7151 17.3767 16.4875 15.7605 17.4788 15.0378C22.4592 11.4197 23.9045 10.3357 24.9983 9.48608ZM12.9719 15.7947C14.1047 15.8142 15.7356 14.3689 16.5559 13.7732C23.0354 9.07105 23.5286 8.66089 25.0227 7.48901C25.3059 7.26929 25.4719 6.92749 25.4719 6.56616V5.63843C25.4719 4.34448 24.4221 3.29468 23.1282 3.29468H2.81567C1.52173 3.29468 0.471924 4.34448 0.471924 5.63843V6.56616C0.471924 6.92749 0.637939 7.2644 0.921143 7.48901C2.41528 8.65601 2.90845 9.07105 9.38794 13.7732C10.2083 14.3689 11.8391 15.8142 12.9719 15.7947Z" fill="#2271b1"/></g><defs><clipPath id="clip0_660_96"><rect width="25" height="25" fill="white" transform="translate(0.471924 0.169678)"/></clipPath></defs>
+                                            </svg>';
                                         break;
                                     case "Whatsapp":
-                                        echo '<i class="fa fa-whatsapp mx-2" style="color:#25d366; font-size: 27px;"></i>';
+                                        echo '<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none"><path d="M21.774 5.12051C19.5645 2.90566 16.6219 1.6875 13.4947 1.6875C7.04004 1.6875 1.7877 6.93984 1.7877 13.3945C1.7877 15.4564 2.32559 17.4709 3.34863 19.248L1.6875 25.3125L7.89434 23.683C9.60293 24.6164 11.5277 25.1068 13.4895 25.1068H13.4947C19.9441 25.1068 25.3125 19.8545 25.3125 13.3998C25.3125 10.2727 23.9836 7.33535 21.774 5.12051ZM13.4947 23.1346C11.7439 23.1346 10.0301 22.6652 8.53769 21.7793L8.18437 21.5684L4.50352 22.5334L5.48438 18.9422L5.25234 18.573C4.27676 17.0227 3.76523 15.235 3.76523 13.3945C3.76523 8.03145 8.13164 3.66504 13.5 3.66504C16.0998 3.66504 18.5414 4.67754 20.3766 6.51797C22.2117 8.3584 23.3402 10.8 23.335 13.3998C23.335 18.7682 18.8578 23.1346 13.4947 23.1346ZM18.8314 15.8467C18.5414 15.699 17.1018 14.9924 16.8328 14.8975C16.5639 14.7973 16.3688 14.7498 16.1736 15.0451C15.9785 15.3404 15.4195 15.9943 15.2455 16.1947C15.0768 16.3898 14.9027 16.4162 14.6127 16.2686C12.8936 15.409 11.765 14.734 10.6313 12.7881C10.3307 12.2713 10.9318 12.3082 11.4908 11.1902C11.5857 10.9951 11.5383 10.8264 11.4645 10.6787C11.3906 10.5311 10.8053 9.09141 10.5627 8.50605C10.3254 7.93652 10.0828 8.01563 9.90352 8.00508C9.73477 7.99453 9.53965 7.99453 9.34453 7.99453C9.14941 7.99453 8.83301 8.06836 8.56406 8.3584C8.29512 8.65371 7.54102 9.36035 7.54102 10.8C7.54102 12.2396 8.59043 13.6318 8.73281 13.827C8.88047 14.0221 10.7947 16.9752 13.732 18.2461C15.5883 19.0477 16.316 19.1162 17.2441 18.9791C17.8084 18.8947 18.9738 18.2725 19.2164 17.5869C19.459 16.9014 19.459 16.316 19.3852 16.1947C19.3166 16.0629 19.1215 15.9891 18.8314 15.8467Z" fill="#25d366"/>
+                                            </svg>';
                                         break;
                                     default:
                                         echo 'Type undefined';
@@ -495,9 +499,9 @@ function formreach_add_flyout_menu() {
 			<button type="button" class="formreach_flyout-button"></button>
 
 			<div class="formreach_flyout-menu" style="display:none;">
-                <a style="transform: scale(0); opacity:0;" href="https://form-reach.com/suggestion" title="Suggestion" target="_blank"><i class="fa fa-lightbulb-o"  aria-hidden="true"></i></a>
-                <a style="transform: scale(0); opacity:0;" href="https://form-reach.com/support" title="Support" target="_blank"><i class="fa fa-life-ring" aria-hidden="true"></i></a>
-                <a style="transform: scale(0); opacity:0;" href="https://form-reach.com/documentation" title="Documentation" target="_blank"><i class="fa fa-book"  aria-hidden="true"></i></a>
+                <a style="transform: scale(0); opacity:0;" href="https://form-reach.com/suggestion" title="Suggestion" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 25 25" fill="none"><g clip-path="url(#clip0_661_88)"><path d="M8.59668 22.1851C8.59717 22.4922 8.68799 22.793 8.8584 23.0489L9.69287 24.3033C9.83542 24.5177 10.0288 24.6936 10.2557 24.8152C10.4827 24.9369 10.7362 25.0005 10.9937 25.0005H14.0068C14.2643 25.0005 14.5178 24.9369 14.7448 24.8152C14.9717 24.6936 15.1651 24.5177 15.3076 24.3033L16.1421 23.0489C16.3124 22.793 16.4035 22.4925 16.4038 22.1851L16.4058 20.3125H8.59424L8.59668 22.1851ZM3.90625 8.59379C3.90625 10.7603 4.70947 12.7369 6.0332 14.2471C6.83984 15.1675 8.10156 17.0904 8.58252 18.7124C8.58447 18.7251 8.58594 18.7378 8.58789 18.7505H16.4121C16.4141 18.7378 16.4155 18.7256 16.4175 18.7124C16.8984 17.0904 18.1602 15.1675 18.9668 14.2471C20.2905 12.7369 21.0938 10.7603 21.0938 8.59379C21.0938 3.83842 17.2319 -0.0146068 12.4731 4.16298e-05C7.49219 0.0151783 3.90625 4.05131 3.90625 8.59379ZM12.5 4.68754C10.3462 4.68754 8.59375 6.43998 8.59375 8.59379C8.59375 9.02543 8.24414 9.37504 7.8125 9.37504C7.38086 9.37504 7.03125 9.02543 7.03125 8.59379C7.03125 5.57817 9.48438 3.12504 12.5 3.12504C12.9316 3.12504 13.2812 3.47465 13.2812 3.90629C13.2812 4.33793 12.9316 4.68754 12.5 4.68754Z" fill="#c5b863"/></g><defs><clipPath id="clip0_661_88"><rect width="25" height="25" fill="white"/></clipPath></defs></svg></a>
+                <a style="transform: scale(0); opacity:0;" href="https://form-reach.com/support" title="Support" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 26 26" fill="none"><g clip-path="url(#clip0_660_92)"><path d="M13 0.40625C19.9554 0.40625 25.5938 6.04464 25.5938 13C25.5938 19.9554 19.9554 25.5938 13 25.5938C6.04464 25.5938 0.40625 19.9554 0.40625 13C0.40625 6.04464 6.04464 0.40625 13 0.40625ZM4.1795 6.47761L7.39898 9.69709C7.95691 8.75464 8.75332 7.95773 9.69709 7.39898L6.4776 4.1795C5.60288 4.82853 4.82853 5.60288 4.1795 6.47761ZM13 17.875C15.6924 17.875 17.875 15.6924 17.875 13C17.875 10.3076 15.6924 8.125 13 8.125C10.3076 8.125 8.125 10.3076 8.125 13C8.125 15.6924 10.3076 17.875 13 17.875ZM19.5224 4.1795L16.3029 7.39898C17.2454 7.95691 18.0423 8.75332 18.601 9.69709L21.8205 6.47761C21.1715 5.60286 20.3971 4.82851 19.5224 4.1795ZM21.8205 19.5224L18.601 16.3029C18.0431 17.2454 17.2467 18.0423 16.3029 18.601L19.5224 21.8205C20.3971 21.1715 21.1715 20.3971 21.8205 19.5224ZM6.4776 21.8205L9.69709 18.601C8.75464 18.0431 7.95773 17.2467 7.39898 16.3029L4.1795 19.5224C4.82853 20.3971 5.60288 21.1715 6.4776 21.8205Z" fill="#c5b863"/></g><defs><clipPath id="clip0_660_92"><rect width="26" height="26" fill="white" transform="matrix(-1 0 0 1 26 0)"/></clipPath></defs></svg></a>
+                <a style="transform: scale(0); opacity:0;" href="https://form-reach.com/documentation" title="Documentation" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 28 26" fill="none"><path d="M26.25 18.2812V1.21875C26.25 0.543359 25.6648 0 24.9375 0H7C4.10156 0 1.75 2.18359 1.75 4.875V21.125C1.75 23.8164 4.10156 26 7 26H24.9375C25.6648 26 26.25 25.4566 26.25 24.7812V23.9688C26.25 23.5879 26.0586 23.2426 25.7633 23.0191C25.5336 22.2371 25.5336 20.0078 25.7633 19.2258C26.0586 19.0074 26.25 18.6621 26.25 18.2812ZM8.75 6.80469C8.75 6.63711 8.89766 6.5 9.07812 6.5H20.6719C20.8523 6.5 21 6.63711 21 6.80469V7.82031C21 7.98789 20.8523 8.125 20.6719 8.125H9.07812C8.89766 8.125 8.75 7.98789 8.75 7.82031V6.80469ZM8.75 10.0547C8.75 9.88711 8.89766 9.75 9.07812 9.75H20.6719C20.8523 9.75 21 9.88711 21 10.0547V11.0703C21 11.2379 20.8523 11.375 20.6719 11.375H9.07812C8.89766 11.375 8.75 11.2379 8.75 11.0703V10.0547ZM22.6078 22.75H7C6.03203 22.75 5.25 22.0238 5.25 21.125C5.25 20.2312 6.0375 19.5 7 19.5H22.6078C22.5039 20.3684 22.5039 21.8816 22.6078 22.75Z" fill="#c5b863"/></svg></a>
 			</div>
 	<?php
 }
@@ -505,7 +509,7 @@ function formreach_add_flyout_menu() {
 // Add Anti-Spam Settings submenu
 function formreach_add_custom_submenu_reCAPTCHA() {
     $formreach_page_hook_suffix = add_submenu_page(
-        "edit.php?post_type=form_reach",
+        "edit.php?post_type=formreach_post_type",
         "Anti-Spam Settings",
         "Anti-Spam Settings",
         "manage_options",

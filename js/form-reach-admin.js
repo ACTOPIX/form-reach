@@ -37,7 +37,7 @@ import "bootstrap/scss/bootstrap.scss";
     }
 
     $("#formreach_generatedTextShortcode").val(
-      "[input" +
+      "[formreach_input" +
         formreach_type +
         formreach_label +
         formreach_name +
@@ -83,7 +83,7 @@ import "bootstrap/scss/bootstrap.scss";
     }
 
     $("#formreach_generatedEmailShortcode").val(
-      "[input" +
+      "[formreach_input" +
         formreach_type +
         formreach_label +
         formreach_name +
@@ -128,7 +128,7 @@ import "bootstrap/scss/bootstrap.scss";
     const formreach_final_value = formreach_placeholder ? "" : formreach_value;
 
     $("#formreach_generatedTelShortcode").val(
-      `[input${formreach_type}${formreach_label}${formreach_name}${formreach_final_value}${formreach_id}${formreach_class}${formreach_required}${formreach_placeholder}]`
+      `[formreach_input${formreach_type}${formreach_label}${formreach_name}${formreach_final_value}${formreach_id}${formreach_class}${formreach_required}${formreach_placeholder}]`
     );
   };
 })(jQuery);
@@ -176,7 +176,7 @@ import "bootstrap/scss/bootstrap.scss";
     }
 
     $("#formreach_generatedTextareaShortcode").val(
-      "[input" +
+      "[formreach_input" +
         formreach_type +
         formreach_rows +
         formreach_cols +
@@ -479,7 +479,7 @@ import "bootstrap/scss/bootstrap.scss";
         )}Shortcode`
       );
       if (formreach_generatedShortcode)
-        formreach_generatedShortcode.value = `[input type="${formreach_type}"]`;
+        formreach_generatedShortcode.value = `[formreach_input type="${formreach_type}"]`;
     }
 
     // Fonction pour capitaliser la première lettre d'une chaîne
@@ -994,7 +994,7 @@ document.addEventListener("DOMContentLoaded", () => {
       formreach_buttonText.style.color =
         formreach_buttonTextColorInput.value ||
         formreach_colorTextInputEmailText.value;
-      formreach_buttonIconColor.style.color =
+      formreach_buttonIconColor.style.fill =
         formreach_buttonTextColorInput.value ||
         formreach_colorTextInputEmailText.value;
     }
@@ -1061,7 +1061,7 @@ document.addEventListener("DOMContentLoaded", () => {
       formreach_buttonText.style.color =
         formreach_buttonTextColorInput.value ||
         formreach_colorTextInputWhatsAppText.value;
-      formreach_buttonIconColor.style.color =
+      formreach_buttonIconColor.style.fill =
         formreach_buttonTextColorInput.value ||
         formreach_colorTextInputWhatsAppText.value;
     }
@@ -1224,4 +1224,32 @@ document.addEventListener("DOMContentLoaded", function () {
     formreach_input.placeholder = "";
     formreach_input.classList.remove("formreach_placeholder-error");
   }
+});
+
+// tabs memorizer
+document.addEventListener("DOMContentLoaded", function () {
+  const tabKey = "activeTab";
+  const defaultTabSelector = '[data-bs-target="#formreach_formulaire"]'; // Sélecteur du premier onglet
+  const sectionFOUC = document.getElementById("formreach_section_metabox");
+
+  sectionFOUC.style.visibility = "visible";
+
+  // Récupérer l'onglet actif depuis le localStorage ou utiliser le premier onglet
+  const activeTab = localStorage.getItem(tabKey);
+  const tabToActivate = activeTab
+    ? document.querySelector(`[data-bs-target="${activeTab}"]`)
+    : document.querySelector(defaultTabSelector);
+
+  if (tabToActivate) {
+    const tabInstance = new bootstrap.Tab(tabToActivate);
+    tabInstance.show(); // Activer l'onglet correspondant
+  }
+
+  // Sauvegarder l'onglet actif lors des changements
+  const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
+  tabs.forEach((tab) => {
+    tab.addEventListener("shown.bs.tab", function (event) {
+      localStorage.setItem(tabKey, event.target.getAttribute("data-bs-target"));
+    });
+  });
 });

@@ -1,10 +1,10 @@
-#adminmenu #menu-posts-form_reach {
+#adminmenu #menu-posts-formreach_post_type {
     background-color: #1D1D1D;
     margin-top: 0.3em;
     margin-bottom: 0.3em;
 }
 
-#adminmenu #menu-posts-form_reach .wp-menu-image:before {
+#adminmenu #menu-posts-formreach_post_type .wp-menu-image:before {
     content: '';
     width: 20px;
     height: 7px;

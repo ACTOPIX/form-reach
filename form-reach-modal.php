@@ -31,9 +31,9 @@ function formreach_email_form_default() {
     $message_attr = esc_attr__('message', 'form-reach-domain');
     $placeholder_message = esc_attr__('Enter your message', 'form-reach-domain');
 
-    return '[input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
-           '[input type="email" label="' . $label_email . '" name="' . $email_attr . '" required="required" placeholder="' . $placeholder_email . '"]' . "\n\n" .
-           '[input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
+    return '[formreach_input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
+           '[formreach_input type="email" label="' . $label_email . '" name="' . $email_attr . '" required="required" placeholder="' . $placeholder_email . '"]' . "\n\n" .
+           '[formreach_input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
 }
 
 function formreach_whatsapp_form_default() {
@@ -45,8 +45,8 @@ function formreach_whatsapp_form_default() {
     $message_attr = esc_attr__('message', 'form-reach-domain');
     $placeholder_message = esc_attr__('Enter your message', 'form-reach-domain');
 
-    return '[input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
-           '[input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
+    return '[formreach_input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
+           '[formreach_input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
 }
 
 
@@ -78,12 +78,12 @@ $formreach_defaultform = array(
 
 ?>
 
-<section onload="formreach_modalTextGenerator(),formreach_modalTextareaGenerator(),formreach_modalEmailGenerator(),formreach_modalTelGenerator()">
+<section onload="formreach_modalTextGenerator(),formreach_modalTextareaGenerator(),formreach_modalEmailGenerator(),formreach_modalTelGenerator()" id="formreach_section_metabox" style="visibility: hidden;">
 
 	<div class="tab-content" id="formreach_myTabContent">
 		<ul class="nav nav-tabs" id="formreach_myTab" role="tablist">
 			<li class="nav-item" role="presentation">
-				<button class="nav-link active" id="formreach_home-tab" data-bs-toggle="tab" data-bs-target="#formreach_formulaire" type="button" role="tab" aria-controls="home" aria-selected="true">Form</button>
+				<button class="nav-link" id="formreach_home-tab" data-bs-toggle="tab" data-bs-target="#formreach_formulaire" type="button" role="tab" aria-controls="home" aria-selected="true">Form</button>
 			</li>
 			<li class="nav-item" role="presentation">
 				<button class="nav-link" id="formreach_profile-tab" data-bs-toggle="tab" data-bs-target="#formreach_email" type="button" role="tab" aria-controls="profile" aria-selected="false"><?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 1 ) { ?>WhatsApp<?php }else{?> Email<?php } ?></button>
@@ -93,23 +93,27 @@ $formreach_defaultform = array(
 			</li>
 			<li id="formreach_switch_container" class="ms-auto d-flex align-items-center">
 				<!-- Email Icon -->
-				<i class="fa fa-envelope mx-2" style="color: <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?> #2271b1 <?php }else{ ?> #a4a4a4a4 <?php } ?>; font-size: 27px;"></i>				
+				 <?php $formreach_envelope_svg_color = (isset($formreach_stored_meta['formreach_whatsapp_switch'][0]) && $formreach_stored_meta['formreach_whatsapp_switch'][0] == 0) ? '#2271b1' : '#a4a4a4'; ?>
+				<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 26 26" fill="none" style="margin: 0 8px 0 8px"><g clip-path="url(#clip0_660_96)"><path d="M24.9983 9.48608C25.1887 9.33472 25.4719 9.47632 25.4719 9.71558V19.7009C25.4719 20.9949 24.4221 22.0447 23.1282 22.0447H2.81567C1.52173 22.0447 0.471924 20.9949 0.471924 19.7009V9.72046C0.471924 9.47632 0.750244 9.3396 0.945557 9.49097C2.03931 10.3406 3.4895 11.4197 8.46997 15.0378C9.50024 15.7898 11.2385 17.3718 12.9719 17.3621C14.7151 17.3767 16.4875 15.7605 17.4788 15.0378C22.4592 11.4197 23.9045 10.3357 24.9983 9.48608ZM12.9719 15.7947C14.1047 15.8142 15.7356 14.3689 16.5559 13.7732C23.0354 9.07105 23.5286 8.66089 25.0227 7.48901C25.3059 7.26929 25.4719 6.92749 25.4719 6.56616V5.63843C25.4719 4.34448 24.4221 3.29468 23.1282 3.29468H2.81567C1.52173 3.29468 0.471924 4.34448 0.471924 5.63843V6.56616C0.471924 6.92749 0.637939 7.2644 0.921143 7.48901C2.41528 8.65601 2.90845 9.07105 9.38794 13.7732C10.2083 14.3689 11.8391 15.8142 12.9719 15.7947Z" fill="<?php echo htmlspecialchars($formreach_envelope_svg_color, ENT_QUOTES, 'UTF-8'); ?>"/></g><defs><clipPath id="clip0_660_96"><rect width="25" height="25" fill="white" transform="translate(0.471924 0.169678)"/></clipPath></defs>
+                </svg>				
 				<!-- Toggle button to switch WhatsApp form -->
 				<input type="checkbox" name="formreach_whatsapp_switch" id="formreach_whatsapp_switch" class="formreach_slider-input-whatsapp position-absolute" <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 1 ) { ?>checked="checked"<?php }else{?><?php } ?> /><label id="formreach_whatsapp_label" for="formreach_whatsapp_switch" class="formreach_slider-label-whatsapp">Toggle</label>
 				
 				<!-- WhatsApp Icon -->
-				<i class="fa fa-whatsapp mx-2" style="color: <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 1 ) { ?> #25d366 <?php }else{ ?> #a4a4a4a4 <?php } ?>; font-size: 27px;"></i>
+				 <?php $formreach_whatsapp_svg_color = (isset($formreach_stored_meta['formreach_whatsapp_switch'][0]) && $formreach_stored_meta['formreach_whatsapp_switch'][0] == 0) ? '#a4a4a4' : '#25d366'; ?>
+				<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none" style="margin: 0 8px 0 8px"><path d="M21.774 5.12051C19.5645 2.90566 16.6219 1.6875 13.4947 1.6875C7.04004 1.6875 1.7877 6.93984 1.7877 13.3945C1.7877 15.4564 2.32559 17.4709 3.34863 19.248L1.6875 25.3125L7.89434 23.683C9.60293 24.6164 11.5277 25.1068 13.4895 25.1068H13.4947C19.9441 25.1068 25.3125 19.8545 25.3125 13.3998C25.3125 10.2727 23.9836 7.33535 21.774 5.12051ZM13.4947 23.1346C11.7439 23.1346 10.0301 22.6652 8.53769 21.7793L8.18437 21.5684L4.50352 22.5334L5.48438 18.9422L5.25234 18.573C4.27676 17.0227 3.76523 15.235 3.76523 13.3945C3.76523 8.03145 8.13164 3.66504 13.5 3.66504C16.0998 3.66504 18.5414 4.67754 20.3766 6.51797C22.2117 8.3584 23.3402 10.8 23.335 13.3998C23.335 18.7682 18.8578 23.1346 13.4947 23.1346ZM18.8314 15.8467C18.5414 15.699 17.1018 14.9924 16.8328 14.8975C16.5639 14.7973 16.3688 14.7498 16.1736 15.0451C15.9785 15.3404 15.4195 15.9943 15.2455 16.1947C15.0768 16.3898 14.9027 16.4162 14.6127 16.2686C12.8936 15.409 11.765 14.734 10.6313 12.7881C10.3307 12.2713 10.9318 12.3082 11.4908 11.1902C11.5857 10.9951 11.5383 10.8264 11.4645 10.6787C11.3906 10.5311 10.8053 9.09141 10.5627 8.50605C10.3254 7.93652 10.0828 8.01563 9.90352 8.00508C9.73477 7.99453 9.53965 7.99453 9.34453 7.99453C9.14941 7.99453 8.83301 8.06836 8.56406 8.3584C8.29512 8.65371 7.54102 9.36035 7.54102 10.8C7.54102 12.2396 8.59043 13.6318 8.73281 13.827C8.88047 14.0221 10.7947 16.9752 13.732 18.2461C15.5883 19.0477 16.316 19.1162 17.2441 18.9791C17.8084 18.8947 18.9738 18.2725 19.2164 17.5869C19.459 16.9014 19.459 16.316 19.3852 16.1947C19.3166 16.0629 19.1215 15.9891 18.8314 15.8467Z" fill="<?php echo htmlspecialchars($formreach_whatsapp_svg_color, ENT_QUOTES, 'UTF-8'); ?>"/>
+                </svg>
 			</li>
 		</ul>
 
 		<!-- Creation of containers for the content associated with tabs -->
-		<div id="formreach_formulaire" class="tab-pane fade show active mt-3 container" role="tabpanel">
+		<div id="formreach_formulaire" class="tab-pane fade  mt-3 container" role="tabpanel">
 		
 		<?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?>
 			<div class="row">
 				<div class="col-xl-10 col-lg-10 col-md-10 col-xs-12 col-sm-12 formreach_warning-container" id="formreach_warning_inputs_uncalled_container" style="height:0;opacity:0;">
 					<div class="alert alert-primary d-flex align-items-center text-primary" role="alert" style="margin-right:auto;">
-						<i class="fa-solid fa-circle-info mx-2" style="color:#2271b1;font-size:27px;"></i>
+						<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><g clip-path="url(#clip0_660_94)"><path d="M13 0.40625C6.04515 0.40625 0.40625 6.04718 0.40625 13C0.40625 19.9569 6.04515 25.5938 13 25.5938C19.9548 25.5938 25.5938 19.9569 25.5938 13C25.5938 6.04718 19.9548 0.40625 13 0.40625ZM13 5.99219C14.1779 5.99219 15.1328 6.94708 15.1328 8.125C15.1328 9.30292 14.1779 10.2578 13 10.2578C11.8221 10.2578 10.8672 9.30292 10.8672 8.125C10.8672 6.94708 11.8221 5.99219 13 5.99219ZM15.8438 18.8906C15.8438 19.2272 15.5709 19.5 15.2344 19.5H10.7656C10.4291 19.5 10.1562 19.2272 10.1562 18.8906V17.6719C10.1562 17.3353 10.4291 17.0625 10.7656 17.0625H11.375V13.8125H10.7656C10.4291 13.8125 10.1562 13.5397 10.1562 13.2031V11.9844C10.1562 11.6478 10.4291 11.375 10.7656 11.375H14.0156C14.3522 11.375 14.625 11.6478 14.625 11.9844V17.0625H15.2344C15.5709 17.0625 15.8438 17.3353 15.8438 17.6719V18.8906Z" fill="#2271b1"/></g><defs><clipPath id="clip0_660_94"><rect width="26" height="26" fill="white"/></clipPath></defs></svg>
 						<div class="ms-2" id="formreach_warning_inputs_uncalled">
 						</div>
 					</div>
@@ -179,7 +183,7 @@ $formreach_defaultform = array(
 
 						<div class="modal-footer position-relative">
 							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" id="formreach_generatedTextShortcode" readonly="readonly" style="width:365px" value="[input]" >
+								<input type="text" name="text" id="formreach_generatedTextShortcode" readonly="readonly" style="width:365px" value="[formreach_input]" >
 							</div>
 							<div>
 								<button type="button" id="formreach_submit_text" class="btn btn-primary formreach_wp-blue">Finish</button>
@@ -251,7 +255,7 @@ $formreach_defaultform = array(
 
 						<div class="modal-footer position-relative">
 							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" id="formreach_generatedEmailShortcode" readonly="readonly" style="width:365px" value="[input]" >
+								<input type="text" name="text" id="formreach_generatedEmailShortcode" readonly="readonly" style="width:365px" value="[formreach_input]" >
 							</div>
 							<div>
 								<button type="button" id="formreach_submit_email"class="btn btn-primary formreach_wp-blue">Finish</button>
@@ -339,7 +343,7 @@ $formreach_defaultform = array(
 
 						<div class="modal-footer position-relative">
 							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" id="formreach_generatedTextareaShortcode" readonly="readonly" style="width:365px" value="[input]" >
+								<input type="text" name="text" id="formreach_generatedTextareaShortcode" readonly="readonly" style="width:365px" value="[formreach_input]" >
 							</div>
 							<div>
 								<button type="button" id="formreach_submit_textarea" class="btn btn-primary formreach_wp-blue">Finish</button>
@@ -411,7 +415,7 @@ $formreach_defaultform = array(
 
 						<div class="modal-footer position-relative">
 							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" id="formreach_generatedTelShortcode" readonly="readonly" style="width:365px" value="[input]" >
+								<input type="text" name="text" id="formreach_generatedTelShortcode" readonly="readonly" style="width:365px" value="[formreach_input]" >
 							</div>
 							<div>
 								<button type="button" id="formreach_submit_tel" class="btn btn-primary formreach_wp-blue">Finish</button>
@@ -479,16 +483,16 @@ $formreach_defaultform = array(
 													<div>
 														<?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 1 ) { ?>
 															<div class="d-block mb-1 mt-3"><strong>Button preview:</strong></div>
-															<button type="button" id="formreach_whatsapp_submit_result" class="btn">
-																	<i id="formreach_icon_whatsapp" class="fa fa-whatsapp"></i>
+															<button type="button" id="formreach_whatsapp_submit_result" class="btn" style="display: flex;align-items: center;width: fit-content;justify-content: space-around;">
+																	<svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 27 27" style="margin-right: 0.4em;"><path id="formreach_icon_whatsapp" d="M21.774 5.12051C19.5645 2.90566 16.6219 1.6875 13.4947 1.6875C7.04004 1.6875 1.7877 6.93984 1.7877 13.3945C1.7877 15.4564 2.32559 17.4709 3.34863 19.248L1.6875 25.3125L7.89434 23.683C9.60293 24.6164 11.5277 25.1068 13.4895 25.1068H13.4947C19.9441 25.1068 25.3125 19.8545 25.3125 13.3998C25.3125 10.2727 23.9836 7.33535 21.774 5.12051ZM13.4947 23.1346C11.7439 23.1346 10.0301 22.6652 8.53769 21.7793L8.18437 21.5684L4.50352 22.5334L5.48438 18.9422L5.25234 18.573C4.27676 17.0227 3.76523 15.235 3.76523 13.3945C3.76523 8.03145 8.13164 3.66504 13.5 3.66504C16.0998 3.66504 18.5414 4.67754 20.3766 6.51797C22.2117 8.3584 23.3402 10.8 23.335 13.3998C23.335 18.7682 18.8578 23.1346 13.4947 23.1346ZM18.8314 15.8467C18.5414 15.699 17.1018 14.9924 16.8328 14.8975C16.5639 14.7973 16.3688 14.7498 16.1736 15.0451C15.9785 15.3404 15.4195 15.9943 15.2455 16.1947C15.0768 16.3898 14.9027 16.4162 14.6127 16.2686C12.8936 15.409 11.765 14.734 10.6313 12.7881C10.3307 12.2713 10.9318 12.3082 11.4908 11.1902C11.5857 10.9951 11.5383 10.8264 11.4645 10.6787C11.3906 10.5311 10.8053 9.09141 10.5627 8.50605C10.3254 7.93652 10.0828 8.01563 9.90352 8.00508C9.73477 7.99453 9.53965 7.99453 9.34453 7.99453C9.14941 7.99453 8.83301 8.06836 8.56406 8.3584C8.29512 8.65371 7.54102 9.36035 7.54102 10.8C7.54102 12.2396 8.59043 13.6318 8.73281 13.827C8.88047 14.0221 10.7947 16.9752 13.732 18.2461C15.5883 19.0477 16.316 19.1162 17.2441 18.9791C17.8084 18.8947 18.9738 18.2725 19.2164 17.5869C19.459 16.9014 19.459 16.316 19.3852 16.1947C19.3166 16.0629 19.1215 15.9891 18.8314 15.8467Z" fill="white"/></svg>
 																	<span id="formreach_whatsapp_submit_text_result" ></span>
 															</button>
 														<?php };?>
 
 														<?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?>
 															<div class="d-block mb-1 mt-3"><strong>Button preview:</strong></div>
-															<button type="button" id="formreach_email_submit_result" class="btn">
-																	<i class="fa fa-envelope" id="formreach_icon_email"></i>
+															<button type="button" id="formreach_email_submit_result" class="btn" style="display: flex;align-items: center;width: fit-content;justify-content: space-around;">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 26 26" fill="none" style="margin-right: 0.4em;"><g clip-path="url(#clip0_660_96)"><path id="formreach_icon_email" d="M24.9983 9.48608C25.1887 9.33472 25.4719 9.47632 25.4719 9.71558V19.7009C25.4719 20.9949 24.4221 22.0447 23.1282 22.0447H2.81567C1.52173 22.0447 0.471924 20.9949 0.471924 19.7009V9.72046C0.471924 9.47632 0.750244 9.3396 0.945557 9.49097C2.03931 10.3406 3.4895 11.4197 8.46997 15.0378C9.50024 15.7898 11.2385 17.3718 12.9719 17.3621C14.7151 17.3767 16.4875 15.7605 17.4788 15.0378C22.4592 11.4197 23.9045 10.3357 24.9983 9.48608ZM12.9719 15.7947C14.1047 15.8142 15.7356 14.3689 16.5559 13.7732C23.0354 9.07105 23.5286 8.66089 25.0227 7.48901C25.3059 7.26929 25.4719 6.92749 25.4719 6.56616V5.63843C25.4719 4.34448 24.4221 3.29468 23.1282 3.29468H2.81567C1.52173 3.29468 0.471924 4.34448 0.471924 5.63843V6.56616C0.471924 6.92749 0.637939 7.2644 0.921143 7.48901C2.41528 8.65601 2.90845 9.07105 9.38794 13.7732C10.2083 14.3689 11.8391 15.8142 12.9719 15.7947Z" fill="white"/></g><defs><clipPath id="clip0_660_96"><rect width="25" height="25" fill="white" transform="translate(0.471924 0.169678)"/></clipPath></defs></svg>
 																	<span  id="formreach_email_submit_text_result"></span>
 															</button>
 														<?php };?>
@@ -547,8 +551,10 @@ $formreach_defaultform = array(
 
 				<!-- Restore default form button -->
 				<div class="col-auto">
-					<button type="button" id="formreach_default_final" class="btn btn-secondary btn-sm" <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?> onclick="formreach_buttonDefaultMail()"<?php }else{?> onclick="formreach_buttonDefaultWhatsapp()" <?php } ?>>
-						<i class="fa-solid fa-rotate-left"></i> Restore default
+					<button type="button" id="formreach_default_final" style="height:min-content; display:flex; align-items:center; justify-content:space-around ;width:105%" class="btn btn-secondary btn-sm" <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?> onclick="formreach_buttonDefaultMail()"<?php }else{?> onclick="formreach_buttonDefaultWhatsapp()" <?php } ?>>
+						<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 26 26" fill="none"><path d="M10.5299 11.9272H0.595095C0.266454 11.9272 0 11.6608 0 11.3321V1.39734C0 1.0687 0.266454 0.802246 0.595095 0.802246H2.97548C3.30412 0.802246 3.57057 1.0687 3.57057 1.39734V5.27102C5.84051 2.75014 9.13769 1.17269 12.8032 1.19932C19.5926 1.24862 25.0249 6.73485 25.0105 13.5243C24.996 20.3044 19.4953 25.7963 12.7119 25.7963C9.53363 25.7963 6.63715 24.5905 4.45444 22.6117C4.20157 22.3825 4.18992 21.9892 4.43128 21.7479L6.11575 20.0634C6.33762 19.8415 6.69408 19.8295 6.92909 20.0374C8.46821 21.3993 10.4925 22.2257 12.7119 22.2257C17.5355 22.2257 21.4399 18.3221 21.4399 13.4976C21.4399 8.67402 17.5363 4.76955 12.7119 4.76955C9.81099 4.76955 7.24296 6.18171 5.65633 8.35663H10.5299C10.8585 8.35663 11.125 8.62309 11.125 8.95173V11.3321C11.125 11.6608 10.8585 11.9272 10.5299 11.9272Z" fill="white"/>
+						</svg>
+						Restore default
 					</button>
 				</div>
 			</div>
@@ -606,7 +612,8 @@ $formreach_defaultform = array(
 				<div class="row">
 					<div class="col-xl-10 col-lg-10 col-md-10 col-xs-12 col-sm-12 formreach_warning-container" id="formreach_warning_inputs_inexistent_container" style="height:0;opacity:0;">
 							<div class="alert alert-primary d-flex align-items-center text-primary" role="alert" style="margin-right:auto;">
-								<i class="fa-solid fa-circle-info mx-2" style="color:#2271b1;font-size:27px;"></i>
+								<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><g clip-path="url(#clip0_660_94)"><path d="M13 0.40625C6.04515 0.40625 0.40625 6.04718 0.40625 13C0.40625 19.9569 6.04515 25.5938 13 25.5938C19.9548 25.5938 25.5938 19.9569 25.5938 13C25.5938 6.04718 19.9548 0.40625 13 0.40625ZM13 5.99219C14.1779 5.99219 15.1328 6.94708 15.1328 8.125C15.1328 9.30292 14.1779 10.2578 13 10.2578C11.8221 10.2578 10.8672 9.30292 10.8672 8.125C10.8672 6.94708 11.8221 5.99219 13 5.99219ZM15.8438 18.8906C15.8438 19.2272 15.5709 19.5 15.2344 19.5H10.7656C10.4291 19.5 10.1562 19.2272 10.1562 18.8906V17.6719C10.1562 17.3353 10.4291 17.0625 10.7656 17.0625H11.375V13.8125H10.7656C10.4291 13.8125 10.1562 13.5397 10.1562 13.2031V11.9844C10.1562 11.6478 10.4291 11.375 10.7656 11.375H14.0156C14.3522 11.375 14.625 11.6478 14.625 11.9844V17.0625H15.2344C15.5709 17.0625 15.8438 17.3353 15.8438 17.6719V18.8906Z" fill="#2271b1"/></g><defs><clipPath id="clip0_660_94"><rect width="26" height="26" fill="white"/></clipPath></defs>
+								</svg>
 								<div class="ms-2" id="formreach_warning_inputs_inexistent">
 								</div>
 							</div>
@@ -682,8 +689,10 @@ $formreach_defaultform = array(
 
 					<!-- Restore default form button -->
 					<div class="col-auto">
-						<button type="button" id="formreach_default_email" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?> onclick="formreach_buttonDefaultEmailSending()"<?php }?>>
-							<i class="fa-solid fa-rotate-left"></i> Restore default
+						<button type="button" id="formreach_default_email" style="height:min-content; display:flex; align-items:center; justify-content:space-around ;width:105%" class="btn btn-secondary btn-sm" <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?> onclick="formreach_buttonDefaultEmailSending()"<?php }?>>
+							<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 26 26" fill="none"><path d="M10.5299 11.9272H0.595095C0.266454 11.9272 0 11.6608 0 11.3321V1.39734C0 1.0687 0.266454 0.802246 0.595095 0.802246H2.97548C3.30412 0.802246 3.57057 1.0687 3.57057 1.39734V5.27102C5.84051 2.75014 9.13769 1.17269 12.8032 1.19932C19.5926 1.24862 25.0249 6.73485 25.0105 13.5243C24.996 20.3044 19.4953 25.7963 12.7119 25.7963C9.53363 25.7963 6.63715 24.5905 4.45444 22.6117C4.20157 22.3825 4.18992 21.9892 4.43128 21.7479L6.11575 20.0634C6.33762 19.8415 6.69408 19.8295 6.92909 20.0374C8.46821 21.3993 10.4925 22.2257 12.7119 22.2257C17.5355 22.2257 21.4399 18.3221 21.4399 13.4976C21.4399 8.67402 17.5363 4.76955 12.7119 4.76955C9.81099 4.76955 7.24296 6.18171 5.65633 8.35663H10.5299C10.8585 8.35663 11.125 8.62309 11.125 8.95173V11.3321C11.125 11.6608 10.8585 11.9272 10.5299 11.9272Z" fill="white"></path>
+							</svg>
+							Restore default
 						</button>
 					</div>		
 				</div>
@@ -695,7 +704,8 @@ $formreach_defaultform = array(
 			<div class="mb-3 col-xl-8 col-lg-8 col-md-8 col-xs-12 col-sm-12">
 				<label for="<?php if ($formreach_stored_meta['formreach_whatsapp_switch'][0] == 1){?>formreach_whatsapp_success<?php }else{?>formreach_email_success<?php }?>" class="form-label"><strong>The user's message has been sent successfully:</strong></label>
 				<div class="alert alert-success">
-					<i class="fas fa-check mx-2" style="font-size:20px;vertical-align:sub;"></i>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 35 35" fill="none"><path d="M8.4911 21.4554L0.366101 13.3304C-0.122034 12.8422 -0.122034 12.0508 0.366101 11.5626L2.13383 9.79481C2.62196 9.30663 3.41346 9.30663 3.9016 9.79481L9.37499 15.2682L21.0984 3.54481C21.5865 3.05668 22.378 3.05668 22.8662 3.54481L24.6339 5.31259C25.122 5.80072 25.122 6.59218 24.6339 7.08036L10.2589 21.4554C9.77069 21.9435 8.97924 21.9435 8.4911 21.4554Z" fill="#0f5132"/>
+					</svg>
 					<?php if ($formreach_stored_meta['formreach_whatsapp_switch'][0] == 1){?> <input type="text" name="formreach_whatsapp_success" id="formreach_whatsapp_success" class="large-text w-75" style="background-color: transparent;" value="<?php if (! empty ($formreach_stored_meta['formreach_whatsapp_success'])) echo esc_attr ( $formreach_stored_meta['formreach_whatsapp_success'][0] );?>"/><?php }else{
 					?> <input type="text" name="formreach_email_success" id="formreach_email_success" class="large-text w-75" style="background-color: transparent;" value="<?php if (! empty ($formreach_stored_meta['formreach_email_success'])) echo esc_attr ( $formreach_stored_meta['formreach_email_success'][0] );?>"/><?php };?>
 				</div>
@@ -704,7 +714,8 @@ $formreach_defaultform = array(
 			<div class="mb-3 col-xl-8 col-lg-8 col-md-8 col-xs-12 col-sm-12">
 				<label for="<?php if ($formreach_stored_meta['formreach_whatsapp_switch'][0] == 1){?>formreach_whatsapp_error<?php }else{?>formreach_email_error<?php }?>" class="form-label"><strong>The user's message could not be sent:</strong></label>
 				<div class="alert alert-danger">
-					<i class="fas fa-times mx-2" style="font-size:20px; vertical-align:sub;"></i>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 384 512" style="margin-right:2px"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" fill="#842029"/>
+					</svg>
 					<?php if ($formreach_stored_meta['formreach_whatsapp_switch'][0] == 1){?> <input type="text" name="formreach_whatsapp_error" id="formreach_whatsapp_error" class="large-text w-75" style="background-color: transparent;" value="<?php if (! empty ($formreach_stored_meta['formreach_whatsapp_error'])) echo esc_attr ( $formreach_stored_meta['formreach_whatsapp_error'][0] );?>"/><?php };?>
 					<?php if ($formreach_stored_meta['formreach_whatsapp_switch'][0] == 0){?> <input type="text" name="formreach_email_error" id="formreach_email_error" class="large-text w-75" style="background-color: transparent;" value="<?php if (! empty ($formreach_stored_meta['formreach_email_error'])) echo esc_attr ( $formreach_stored_meta['formreach_email_error'][0] );?>"/><?php };?>
 				</div>
@@ -744,8 +755,10 @@ $formreach_defaultform = array(
 
 				<!-- Restore default form button -->
 				<div class="col-auto">
-					<button type="button" id="formreach_default_messages" style="height:min-content;" class="btn btn-secondary btn-sm" <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?> onclick="formreach_buttonDefaultEmailMessages()"<?php }else{?> onclick="formreach_buttonDefaultWhatsappMessages()" <?php } ?>>
-						<i class="fa-solid fa-rotate-left"></i> Restore default
+					<button type="button" id="formreach_default_messages" style="height:min-content; display:flex; align-items:center; justify-content:space-around ;width:105%" class="btn btn-secondary btn-sm" <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?> onclick="formreach_buttonDefaultEmailMessages()"<?php }else{?> onclick="formreach_buttonDefaultWhatsappMessages()" <?php } ?>>
+						<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 26 26" fill="none"><path d="M10.5299 11.9272H0.595095C0.266454 11.9272 0 11.6608 0 11.3321V1.39734C0 1.0687 0.266454 0.802246 0.595095 0.802246H2.97548C3.30412 0.802246 3.57057 1.0687 3.57057 1.39734V5.27102C5.84051 2.75014 9.13769 1.17269 12.8032 1.19932C19.5926 1.24862 25.0249 6.73485 25.0105 13.5243C24.996 20.3044 19.4953 25.7963 12.7119 25.7963C9.53363 25.7963 6.63715 24.5905 4.45444 22.6117C4.20157 22.3825 4.18992 21.9892 4.43128 21.7479L6.11575 20.0634C6.33762 19.8415 6.69408 19.8295 6.92909 20.0374C8.46821 21.3993 10.4925 22.2257 12.7119 22.2257C17.5355 22.2257 21.4399 18.3221 21.4399 13.4976C21.4399 8.67402 17.5363 4.76955 12.7119 4.76955C9.81099 4.76955 7.24296 6.18171 5.65633 8.35663H10.5299C10.8585 8.35663 11.125 8.62309 11.125 8.95173V11.3321C11.125 11.6608 10.8585 11.9272 10.5299 11.9272Z" fill="white"></path>
+						</svg>
+						Restore default
 					</button>
 				</div>
 
