@@ -1226,6 +1226,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+import { Tab } from "bootstrap";
+
 // tabs memorizer
 document.addEventListener("DOMContentLoaded", function () {
   const tabKey = "activeTab";
@@ -1241,7 +1243,7 @@ document.addEventListener("DOMContentLoaded", function () {
     : document.querySelector(defaultTabSelector);
 
   if (tabToActivate) {
-    const tabInstance = new bootstrap.Tab(tabToActivate);
+    const tabInstance = new Tab(tabToActivate);
     tabInstance.show(); // Activer l'onglet correspondant
   }
 
