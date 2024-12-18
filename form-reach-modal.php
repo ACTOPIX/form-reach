@@ -12,11 +12,6 @@ wp_enqueue_style('form-reach-intl-tel-input-css', plugin_dir_url(__FILE__) . 'as
 // Scripts
 wp_enqueue_script('form-reach-bundle-js', plugin_dir_url(__FILE__) . 'assets/js/bundle.min.js', array('jquery'), '1.0.0', true);
 
-// Passer le chemin vers utils.js à admin.js
-wp_localize_script('form-reach-bundle-js', 'form_reach_params', array(
-	'utilsScript' => plugin_dir_url(__FILE__) . 'assets/js/utils.js',
-));
-
 //Default Form
 function formreach_email_form_default() {
     $label_name = esc_html__('Name', 'form-reach-domain');

@@ -444,7 +444,7 @@ function formreach_form_log_callback() {
             <form method="post">
                 <?php wp_nonce_field('delete_entry'); ?>
 				<div class="table-responsive">
-                <table class="table wp-list-table widefat fixed striped table-view-list posts" id="formreach_form_history_table">
+                <table class="table wp-list-table widefat fixed striped table-view-list posts display nowrap" id="formreach_form_history_table">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>

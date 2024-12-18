@@ -9,7 +9,7 @@ import "bootstrap";
 import "bootstrap/scss/bootstrap.scss";
 
 jQuery(document).ready(function ($) {
-  function formreach_typeOrder(formreach_data, formreach_type, formreach_row) {
+  function formreach_typeOrder(formreach_data, formreach_type) {
     if (formreach_type === "sort") {
       if ($(formreach_data).hasClass("fa-whatsapp")) {
         return 1;
@@ -36,9 +36,10 @@ jQuery(document).ready(function ($) {
       responsive: true,
       order: [[0, "desc"]],
       columnDefs: [
+        { width: "15%", targets: 0 }, // ID
+        { width: "15%", targets: 1, render: formreach_typeOrder }, // Type
         { responsivePriority: 1, targets: 3 }, // Date
-        { responsivePriority: 2, targets: 4, orderable: false },
-        { targets: 1, render: formreach_typeOrder }, // Type
+        { width: "80px", responsivePriority: 2, targets: 4, orderable: false }, // Delete
       ],
     });
   }
