@@ -121,7 +121,7 @@ function formreach_optimize_admin_columns() {
 add_action('admin_footer', 'formreach_optimize_admin_columns');
 
 function formreach_always_publish( $data, $postarr ) {
-    if ( 'form_reach' === $data['post_type'] && !in_array( $data['post_status'], array('auto-draft', 'trash') ) ) {
+    if ( 'formreach_post_type' === $data['post_type'] && !in_array( $data['post_status'], array('auto-draft', 'trash') ) ) {
         $data['post_status'] = 'publish';
     }
     return $data;
@@ -129,7 +129,7 @@ function formreach_always_publish( $data, $postarr ) {
 add_filter( 'wp_insert_post_data', 'formreach_always_publish', 10, 2 );
 
 function formreach_remove_quick_edit($actions, $post) {
-    if (get_post_type($post) === 'form_reach') {
+    if (get_post_type($post) === 'formreach_post_type') {
         if (isset($actions['inline hide-if-no-js'])) {
             unset($actions['inline hide-if-no-js']);
         }
@@ -492,7 +492,6 @@ function formreach_form_log_callback() {
 }
 
 function formreach_add_flyout_menu() {
-	wp_enqueue_script('fontawesome', plugin_dir_url(__FILE__) . 'assets/fontawesome/85a869994b.js', array(), '1.0.0', true);
     wp_enqueue_script('formreach-flyout', plugin_dir_url(__FILE__) . 'js/form-reach-flyout.js', array(), '1.0.0', true);
 		?>
 			<!-- Flyout menu -->
