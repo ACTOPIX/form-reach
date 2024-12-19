@@ -1229,29 +1229,38 @@ document.addEventListener("DOMContentLoaded", function () {
 import { Tab } from "bootstrap";
 
 // tabs memorizer
-document.addEventListener("DOMContentLoaded", function () {
-  const tabKey = "activeTab";
-  const defaultTabSelector = '[data-bs-target="#formreach_formulaire"]'; // Sélecteur du premier onglet
-  const sectionFOUC = document.getElementById("formreach_section_metabox");
+document.addEventListener("DOMContentLoaded", () => {
+    const formreach_tabKey = "activeTab";
+    const formreach_defaultTabSelector = '[data-bs-target="#formreach_formulaire"]';
+    const formreach_sectionFOUC = document.getElementById('formreach_section_metabox');
 
-  sectionFOUC.style.visibility = "visible";
+    if (formreach_sectionFOUC) formreach_sectionFOUC.style.visibility = "visible";
 
-  // Récupérer l'onglet actif depuis le localStorage ou utiliser le premier onglet
-  const activeTab = localStorage.getItem(tabKey);
-  const tabToActivate = activeTab
-    ? document.querySelector(`[data-bs-target="${activeTab}"]`)
-    : document.querySelector(defaultTabSelector);
+    const formreach_getPostIdFromUrl = () =>
+        new URLSearchParams(window.location.search).get('post');
 
-  if (tabToActivate) {
-    const tabInstance = new Tab(tabToActivate);
-    tabInstance.show(); // Activer l'onglet correspondant
-  }
+    const formreach_currentPostId = formreach_getPostIdFromUrl();
+    const formreach_storedPostId = localStorage.getItem('formreach_currentPostId');
 
-  // Sauvegarder l'onglet actif lors des changements
-  const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
-  tabs.forEach((tab) => {
-    tab.addEventListener("shown.bs.tab", function (event) {
-      localStorage.setItem(tabKey, event.target.getAttribute("data-bs-target"));
+    if (formreach_storedPostId !== formreach_currentPostId) {
+        localStorage.removeItem(formreach_tabKey);
+    }
+    if (formreach_currentPostId) {
+        localStorage.setItem('formreach_currentPostId', formreach_currentPostId);
+    }
+
+    const formreach_activeTab = localStorage.getItem(formreach_tabKey);
+    const formreach_tabToActivate = document.querySelector(
+        formreach_activeTab ? `[data-bs-target="${formreach_activeTab}"]` : formreach_defaultTabSelector
+    );
+
+    if (formreach_tabToActivate) {
+        new bootstrap.Tab(formreach_tabToActivate).show();
+    }
+
+    document.querySelectorAll('[data-bs-toggle="tab"]').forEach(formreach_tab => {
+        formreach_tab.addEventListener("shown.bs.tab", (event) =>
+            localStorage.setItem(formreach_tabKey, event.target.getAttribute("data-bs-target"))
+        );
     });
-  });
 });
