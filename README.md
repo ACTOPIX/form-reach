@@ -8,7 +8,7 @@ Stable Tag: 1.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-Custom Contact Form Builder to WhatsApp, Email, and more !
+Custom Contact Form Builder to WhatsApp, Email, and more!
 
 == Description ==
 
