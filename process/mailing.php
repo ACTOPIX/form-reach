@@ -21,13 +21,13 @@ $formreach_contenuAdministrateur = '
                     <td align="center" style="background-color: #f6f6f6; padding: 20px;">
                         '.
 						// translators: %s is the current year.
-						$formreach_copyright_text = sprintf(esc_html__('Copyright © %s', 'form-reach-domain'), gmdate('Y')) .'
+						$formreach_copyright_text = sprintf(esc_html__('Copyright © %s', 'form-reach'), gmdate('Y')) .'
 						<p style="color: #C0C0C0; font-size: 12px; text-align: center;">
 							<?php echo $copyright_text; ?>
 							<a href="https://form-reach.com/" target="_blank" style="color: #333; text-decoration: none;">Form Reach</a>, 
-							'. esc_html__('All rights reserved.', 'form-reach-domain') .'
+							'. esc_html__('All rights reserved.', 'form-reach') .'
 							<br><br>
-							'. esc_html__('You received this email because you are using the Form Reach plugin on WordPress.', 'form-reach-domain') .'
+							'. esc_html__('You received this email because you are using the Form Reach plugin on WordPress.', 'form-reach') .'
 						</p>
 					</td>
                 </tr>
@@ -52,13 +52,13 @@ $formreach_contenuUtilisateur = '
                     <td align="center" style="background-color: #f6f6f6; padding: 20px;">
 						'.
 						// translators: %s is the current year.
-						$formreach_copyright_text = sprintf(esc_html__('Copyright © %s', 'form-reach-domain'), gmdate('Y')) .'
+						$formreach_copyright_text = sprintf(esc_html__('Copyright © %s', 'form-reach'), gmdate('Y')) .'
 						<p style="color: #C0C0C0; font-size: 12px; text-align: center;">
 							<?php echo $copyright_text; ?>
 							<a href="https://form-reach.com/" target="_blank" style="color: #333; text-decoration: none;">Form Reach</a>, 
-							'.  esc_html__('All rights reserved.', 'form-reach-domain') .'
+							'.  esc_html__('All rights reserved.', 'form-reach') .'
 							<br><br>
-							'.  esc_html__('You received this email because you are using the Form Reach plugin on WordPress.', 'form-reach-domain') .'
+							'.  esc_html__('You received this email because you are using the Form Reach plugin on WordPress.', 'form-reach') .'
 						</p>
 					</td>
                 </tr>

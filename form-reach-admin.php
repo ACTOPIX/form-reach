@@ -5,27 +5,27 @@ if ( !defined('ABSPATH') ) exit;
 // Register Custom Post Type
 function formreach_post_type() {
     $formreach_labels = array(
-        'name'                  => _x('Form Reach', 'Post Type General Name', 'form-reach-domain'),
-        'singular_name'         => _x('Form', 'Post Type Singular Name', 'form-reach-domain'),
-        'menu_name'             => __('Form Reach', 'form-reach-domain'),
-        'name_admin_bar'        => __('Form Reach', 'form-reach-domain'),
-        'add_new'               => __('Create New Form', 'form-reach-domain'),
-        'add_new_item'          => __('Add Form', 'form-reach-domain'),
-        'new_item'              => __('New Form', 'form-reach-domain'),
-        'edit_item'             => __('Edit Form', 'form-reach-domain'),
-        'all_items'             => __('All Forms', 'form-reach-domain'),
-        'search_items'          => __('Search Forms', 'form-reach-domain'),
-        'not_found'             => __('No forms found.', 'form-reach-domain'),
-        'not_found_in_trash'    => __('No forms found in Trash.', 'form-reach-domain'),
-        'featured_image'        => __('Form Image', 'form-reach-domain'),
-        'set_featured_image'    => __('Set form image', 'form-reach-domain'),
-        'remove_featured_image' => __('Remove form image', 'form-reach-domain'),
-        'use_featured_image'    => __('Use as form image', 'form-reach-domain'),
-        'insert_into_item'      => __('Insert into form', 'form-reach-domain'),
-        'uploaded_to_this_item' => __('Uploaded to this form', 'form-reach-domain'),
-        'items_list'            => __('Forms list', 'form-reach-domain'),
-        'items_list_navigation' => __('Forms list navigation', 'form-reach-domain'),
-        'filter_items_list'     => __('Filter forms list', 'form-reach-domain'),
+        'name'                  => _x('Form Reach', 'Post Type General Name', 'form-reach'),
+        'singular_name'         => _x('Form', 'Post Type Singular Name', 'form-reach'),
+        'menu_name'             => __('Form Reach', 'form-reach'),
+        'name_admin_bar'        => __('Form Reach', 'form-reach'),
+        'add_new'               => __('Create New Form', 'form-reach'),
+        'add_new_item'          => __('Add Form', 'form-reach'),
+        'new_item'              => __('New Form', 'form-reach'),
+        'edit_item'             => __('Edit Form', 'form-reach'),
+        'all_items'             => __('All Forms', 'form-reach'),
+        'search_items'          => __('Search Forms', 'form-reach'),
+        'not_found'             => __('No forms found.', 'form-reach'),
+        'not_found_in_trash'    => __('No forms found in Trash.', 'form-reach'),
+        'featured_image'        => __('Form Image', 'form-reach'),
+        'set_featured_image'    => __('Set form image', 'form-reach'),
+        'remove_featured_image' => __('Remove form image', 'form-reach'),
+        'use_featured_image'    => __('Use as form image', 'form-reach'),
+        'insert_into_item'      => __('Insert into form', 'form-reach'),
+        'uploaded_to_this_item' => __('Uploaded to this form', 'form-reach'),
+        'items_list'            => __('Forms list', 'form-reach'),
+        'items_list_navigation' => __('Forms list navigation', 'form-reach'),
+        'filter_items_list'     => __('Filter forms list', 'form-reach'),
     );
 
     $formreach_args = array(
@@ -54,11 +54,11 @@ add_action('init', 'formreach_post_type');
 function formreach_smashing_columns($formreach_columns) {
     $formreach_newColumns = array(
         'cb' => $formreach_columns['cb'],
-        'type' => __('Type', 'form-reach-domain'),
-        'title' => __('Title', 'form-reach-domain'),
-        'shortcode' => __('Shortcode', 'form-reach-domain'),
-        'author' => __('Author', 'form-reach-domain'),
-        'date' => __('Date', 'form-reach-domain'),
+        'type' => __('Type', 'form-reach'),
+        'title' => __('Title', 'form-reach'),
+        'shortcode' => __('Shortcode', 'form-reach'),
+        'author' => __('Author', 'form-reach'),
+        'date' => __('Date', 'form-reach'),
     );
     return $formreach_newColumns;
 }
@@ -86,7 +86,7 @@ function formreach_custom_column_content($formreach_column, $formreach_post_id) 
                     </svg>';
                 break;
             default:
-                echo esc_html__('Not yet defined', 'form-reach-domain');
+                echo esc_html__('Not yet defined', 'form-reach');
                 break;
         }
     }
@@ -152,7 +152,7 @@ function formreach_register_metabox_post_type( $formreach_post ) {
 
 	$formreach_shortcode = esc_attr( '[formreach_form id="' . $formreach_post_id . '"]' );
 
-	$formreach_copyInstruction = __('Copy this shortcode and paste it into your post, page, or text widget content: ', 'form-reach-domain');
+	$formreach_copyInstruction = __('Copy this shortcode and paste it into your post, page, or text widget content: ', 'form-reach');
 
 	$formreach_finalShortcode = '<div class="alert alert-secondary align-items-center">';
 	$formreach_finalShortcode .= '<label>';
@@ -179,25 +179,25 @@ function formreach_register_metabox_callback($formreach_post) {
 
 	$formreach_default_meta_values = [
 		'formreach_email_admin_to' => get_option('admin_email'),
-		'formreach_email_admin_from' => __("Form Reach", "form-reach-domain"),
-		'formreach_email_admin_subject' => __("User Message", "form-reach-domain"),
-		'formreach_email_user_to' => __("[email]", "form-reach-domain"),
+		'formreach_email_admin_from' => __("Form Reach", "form-reach"),
+		'formreach_email_admin_subject' => __("User Message", "form-reach"),
+		'formreach_email_user_to' => __("[email]", "form-reach"),
 		'formreach_email_user_from' => "Form Reach",
 		'formreach_email_user_subject' => "Form Reach",
-		'formreach_email_submit' => __("Send", "form-reach-domain"),
-		'formreach_whatsapp_submit' => __("WhatsApp", "form-reach-domain"),
+		'formreach_email_submit' => __("Send", "form-reach"),
+		'formreach_whatsapp_submit' => __("WhatsApp", "form-reach"),
 		'formreach_email_submit_color' => "#0d6efd",
 		'formreach_whatsapp_submit_color' => "#198754",
 		'formreach_email_text_color' => "#ffffff",
 		'formreach_whatsapp_text_color' => "#ffffff",
-		'formreach_email_admin_content' => __("Name: [name]\nEmail: [email]\nMessage: [message]", "form-reach-domain"),
-		'formreach_email_user_content' => __("Thank you for reaching out to us.\n\nWe acknowledge receipt of your message and assure you that we will respond as soon as possible.", "form-reach-domain"),
-		'formreach_email_success' => __("The form has been successfully submitted.", "form-reach-domain"),
-		'formreach_email_error' => __("The form could not be submitted due to an error. Please try again.", "form-reach-domain"),
-		'formreach_whatsapp_success' => __("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", "form-reach-domain"),
-		'formreach_whatsapp_error' => __("The message could not be submitted due to an error. Please try again.", "form-reach-domain"),
-		'formreach_email_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[formreach_input type="email" label="' . __("Email address", "form-reach-domain") . '" name="email" required="required" placeholder="' . __("Enter your email", "form-reach-domain") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
-		'formreach_whatsapp_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach-domain") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach-domain") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach-domain") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach-domain") . '"]',
+		'formreach_email_admin_content' => __("Name: [name]\nEmail: [email]\nMessage: [message]", "form-reach"),
+		'formreach_email_user_content' => __("Thank you for reaching out to us.\n\nWe acknowledge receipt of your message and assure you that we will respond as soon as possible.", "form-reach"),
+		'formreach_email_success' => __("The form has been successfully submitted.", "form-reach"),
+		'formreach_email_error' => __("The form could not be submitted due to an error. Please try again.", "form-reach"),
+		'formreach_whatsapp_success' => __("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", "form-reach"),
+		'formreach_whatsapp_error' => __("The message could not be submitted due to an error. Please try again.", "form-reach"),
+		'formreach_email_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach") . '"]' . "\n\n" . '[formreach_input type="email" label="' . __("Email address", "form-reach") . '" name="email" required="required" placeholder="' . __("Enter your email", "form-reach") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach") . '"]',
+		'formreach_whatsapp_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach") . '"]',
 		'formreach_whatsapp_switch' => 0,
 		'formreach_user_email_switch' => 0,
 	];
@@ -289,7 +289,7 @@ function formreach_input_type($formreach_atts) {
         $formreach_html .= '<textarea data-type="textarea" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' cols="' . esc_attr($formreach_atts['cols']) . '" rows="' . esc_attr($formreach_atts['rows']) . '">' . esc_html($formreach_atts['value']) . '</textarea>';
     } elseif ($formreach_atts['type'] === "email") {
         $formreach_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" data-type="email" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
-        $formreach_html .= '<div class="invalid-feedback" id="emailFeedback" style="display: none;">' . esc_html__('Please enter a valid email address', 'form-reach-domain') . '</div>';
+        $formreach_html .= '<div class="invalid-feedback" id="emailFeedback" style="display: none;">' . esc_html__('Please enter a valid email address', 'form-reach') . '</div>';
     } else {
         $formreach_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
     }        
@@ -387,8 +387,8 @@ add_action('save_post_formreach_post_type','formreach_meta_save');
 function formreach_add_custom_submenu() {
 	$formreach_page_hook_suffix = add_submenu_page(
 		"edit.php?post_type=formreach_post_type",
-		__("Form Submissions", "form-reach-domain"), 
-		__("Form Submissions", "form-reach-domain"),
+		__("Form Submissions", "form-reach"), 
+		__("Form Submissions", "form-reach"),
 		"manage_options",
 		"form-log",
 		"formreach_form_log_callback"
@@ -410,7 +410,7 @@ add_action("admin_menu", "formreach_add_custom_submenu");
 
 function formreach_form_log_callback() {
 	if (!current_user_can('manage_options')) {
-		wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'form-reach-domain'));
+		wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'form-reach'));
 	}
 
 	 global $wpdb;
@@ -439,7 +439,7 @@ function formreach_form_log_callback() {
     <div class="wrap">
         <h1>Form Submissions</h1>
         <?php if (empty($formreach_entries)): ?>
-			<h5 class="text-center"><?php echo esc_html(__('No form has been sent yet !', 'form-reach-domain')); ?></h5>
+			<h5 class="text-center"><?php echo esc_html(__('No form has been sent yet !', 'form-reach')); ?></h5>
         <?php else: ?>
             <form method="post">
                 <?php wp_nonce_field('delete_entry'); ?>
@@ -448,10 +448,10 @@ function formreach_form_log_callback() {
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col"><?php echo esc_html(__('Type', 'form-reach-domain')); ?></th>
-                            <th scope="col"><?php echo esc_html(__('Content', 'form-reach-domain')); ?></th>
-                            <th scope="col"><?php echo esc_html(__('Date', 'form-reach-domain')); ?></th>
-                            <th scope="col"><?php echo esc_html(__('Delete', 'form-reach-domain')); ?></th>
+                            <th scope="col"><?php echo esc_html(__('Type', 'form-reach')); ?></th>
+                            <th scope="col"><?php echo esc_html(__('Content', 'form-reach')); ?></th>
+                            <th scope="col"><?php echo esc_html(__('Date', 'form-reach')); ?></th>
+                            <th scope="col"><?php echo esc_html(__('Delete', 'form-reach')); ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -538,22 +538,22 @@ function formreach_recaptcha_options_page() {
             <div class="mb-3">
                 <input type="checkbox" name="formreach_recaptcha_switch" id="formreach_recaptcha_switch" value="1" <?php checked(1, get_option('formreach_recaptcha_switch')); ?> />
                 <label for="formreach_recaptcha_switch" class="form-label">Enable reCAPTCHA</label>
-                <p class="text-secondary"><?php echo esc_html(__('Protection against spam and abuse.', 'form-reach-domain')); ?></p>
+                <p class="text-secondary"><?php echo esc_html(__('Protection against spam and abuse.', 'form-reach')); ?></p>
             </div>
             <div>
-                <p><?php echo esc_html(__('reCAPTCHA protects you against spam and other types of automated abuse. With the Form Reach reCAPTCHA integration module, you can block abusive form submissions from spam bots.', 'form-reach-domain')); ?></p>
-                <p><strong><a href="https://www.google.com/recaptcha/about/" target="_blank"><?php echo esc_html(__('Learn more about reCAPTCHA v3', 'form-reach-domain')); ?></a></strong></p>
+                <p><?php echo esc_html(__('reCAPTCHA protects you against spam and other types of automated abuse. With the Form Reach reCAPTCHA integration module, you can block abusive form submissions from spam bots.', 'form-reach')); ?></p>
+                <p><strong><a href="https://www.google.com/recaptcha/about/" target="_blank"><?php echo esc_html(__('Learn more about reCAPTCHA v3', 'form-reach')); ?></a></strong></p>
                 <table class="form-table">
                     <tr valign="top">
-                        <th scope="row"><label for="formreach_key_site"><?php echo esc_html(__('Site key', 'form-reach-domain')); ?></label></th>
+                        <th scope="row"><label for="formreach_key_site"><?php echo esc_html(__('Site key', 'form-reach')); ?></label></th>
                         <td><input type="text" name="formreach_key_site" id="formreach_key_site" size="44" value="<?php echo esc_attr(get_option('formreach_key_site')); ?>" /></td>
                     </tr>
                     <tr valign="top">
-                        <th scope="row"><label for="formreach_key_secret"><?php echo esc_html(__('Secret key', 'form-reach-domain')); ?></label></th>
+                        <th scope="row"><label for="formreach_key_secret"><?php echo esc_html(__('Secret key', 'form-reach')); ?></label></th>
                         <td><input type="password" name="formreach_key_secret" id="formreach_key_secret" size="44" value="<?php echo esc_attr(get_option('formreach_key_secret')); ?>" /></td>
                     </tr>
                     <tr valign="top">
-                        <th scope="row"><label for="formreach_recaptcha_score"><?php echo esc_html(__('reCAPTCHA Score', 'form-reach-domain')); ?></label></th>
+                        <th scope="row"><label for="formreach_recaptcha_score"><?php echo esc_html(__('reCAPTCHA Score', 'form-reach')); ?></label></th>
                         <td><input type="number" name="formreach_recaptcha_score" id="formreach_recaptcha_score" min="0" max="1" step="0.1" value="<?php echo esc_attr(get_option('formreach_recaptcha_score')); ?>" /></td>
                     </tr>
                 </table>

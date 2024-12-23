@@ -14,17 +14,17 @@ wp_enqueue_script('form-reach-bundle-js', plugin_dir_url(__FILE__) . 'assets/js/
 
 //Default Form
 function formreach_email_form_default() {
-    $label_name = esc_html__('Name', 'form-reach-domain');
-    $name_attr = esc_attr__('name', 'form-reach-domain');
-    $placeholder_name = esc_attr__('Enter your name', 'form-reach-domain');
+    $label_name = esc_html__('Name', 'form-reach');
+    $name_attr = esc_attr__('name', 'form-reach');
+    $placeholder_name = esc_attr__('Enter your name', 'form-reach');
 
-    $label_email = esc_html__('Email address', 'form-reach-domain');
-    $email_attr = esc_attr__('email', 'form-reach-domain');
-    $placeholder_email = esc_attr__('Enter your email', 'form-reach-domain');
+    $label_email = esc_html__('Email address', 'form-reach');
+    $email_attr = esc_attr__('email', 'form-reach');
+    $placeholder_email = esc_attr__('Enter your email', 'form-reach');
 
-    $label_message = esc_html__('Message', 'form-reach-domain');
-    $message_attr = esc_attr__('message', 'form-reach-domain');
-    $placeholder_message = esc_attr__('Enter your message', 'form-reach-domain');
+    $label_message = esc_html__('Message', 'form-reach');
+    $message_attr = esc_attr__('message', 'form-reach');
+    $placeholder_message = esc_attr__('Enter your message', 'form-reach');
 
     return '[formreach_input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
            '[formreach_input type="email" label="' . $label_email . '" name="' . $email_attr . '" required="required" placeholder="' . $placeholder_email . '"]' . "\n\n" .
@@ -32,13 +32,13 @@ function formreach_email_form_default() {
 }
 
 function formreach_whatsapp_form_default() {
-    $label_name = esc_html__('Name', 'form-reach-domain');
-    $name_attr = esc_attr__('name', 'form-reach-domain');
-    $placeholder_name = esc_attr__('Enter your name', 'form-reach-domain');
+    $label_name = esc_html__('Name', 'form-reach');
+    $name_attr = esc_attr__('name', 'form-reach');
+    $placeholder_name = esc_attr__('Enter your name', 'form-reach');
 
-    $label_message = esc_html__('Message', 'form-reach-domain');
-    $message_attr = esc_attr__('message', 'form-reach-domain');
-    $placeholder_message = esc_attr__('Enter your message', 'form-reach-domain');
+    $label_message = esc_html__('Message', 'form-reach');
+    $message_attr = esc_attr__('message', 'form-reach');
+    $placeholder_message = esc_attr__('Enter your message', 'form-reach');
 
     return '[formreach_input type="text" label="' . $label_name . '" name="' . $name_attr . '" required="required" placeholder="' . $placeholder_name . '"]' . "\n\n" .
            '[formreach_input type="textarea" rows="10" label="' . $label_message . '" name="' . $message_attr . '" required="required" placeholder="' . $placeholder_message . '"]';
@@ -49,26 +49,26 @@ $formreach_defaultform = array(
     'formreach_email_form_default' => formreach_email_form_default(),
     'formreach_whatsapp_form_default' => formreach_whatsapp_form_default(),
 	// Submit Default
-	'formreach_email_submit_text_default' => esc_html__("Send", 'form-reach-domain'),
+	'formreach_email_submit_text_default' => esc_html__("Send", 'form-reach'),
 	'formreach_email_submit_text_color_default' => esc_attr("#ffffff"),
 	'formreach_email_submit_color_default' => esc_attr("#0d6efd"),
-	'formreach_whatsapp_submit_text_default' => esc_html__("WhatsApp", 'form-reach-domain'),
+	'formreach_whatsapp_submit_text_default' => esc_html__("WhatsApp", 'form-reach'),
 	'formreach_whatsapp_submit_text_color_default' => esc_attr("#ffffff"),
 	'formreach_whatsapp_submit_color_default' => esc_attr("#198754"),
 	// Default Values
 	'formreach_email_admin_to_default' => get_option('admin_email'),
-	'formreach_email_admin_from_default' => esc_html__("Form Reach", 'form-reach-domain'),
-	'formreach_email_admin_subject_default' => esc_html__("User Message", 'form-reach-domain'),
-	'formreach_email_admin_content_default' => esc_html__("Name: [name]\nEmail: [email]\nMessage: [message]", 'form-reach-domain'),
+	'formreach_email_admin_from_default' => esc_html__("Form Reach", 'form-reach'),
+	'formreach_email_admin_subject_default' => esc_html__("User Message", 'form-reach'),
+	'formreach_email_admin_content_default' => esc_html__("Name: [name]\nEmail: [email]\nMessage: [message]", 'form-reach'),
 	'formreach_email_user_to_default' => esc_attr("[email]"),
-	'formreach_email_user_from_default' => esc_html__("Form Reach", 'form-reach-domain'),
-	'formreach_email_user_subject_default' => esc_html__("Form Reach", 'form-reach-domain'),
-	'formreach_email_user_content_default' => esc_html__("Thank you for reaching out to us.\n\nWe acknowledge receipt of your message and assure you that we will respond as soon as possible.", 'form-reach-domain'),
+	'formreach_email_user_from_default' => esc_html__("Form Reach", 'form-reach'),
+	'formreach_email_user_subject_default' => esc_html__("Form Reach", 'form-reach'),
+	'formreach_email_user_content_default' => esc_html__("Thank you for reaching out to us.\n\nWe acknowledge receipt of your message and assure you that we will respond as soon as possible.", 'form-reach'),
 	// Error/Success default
-	'formreach_email_success_default' => esc_html__("The form has been successfully submitted.", 'form-reach-domain'),
-	'formreach_email_error_default' => esc_html__("The form could not be submitted due to an error. Please try again.", 'form-reach-domain'),
-	'formreach_whatsapp_success_default' => esc_html__("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", 'form-reach-domain'),
-	'formreach_whatsapp_error_default' => esc_html__("The message could not be submitted due to an error. Please try again.", 'form-reach-domain')
+	'formreach_email_success_default' => esc_html__("The form has been successfully submitted.", 'form-reach'),
+	'formreach_email_error_default' => esc_html__("The form could not be submitted due to an error. Please try again.", 'form-reach'),
+	'formreach_whatsapp_success_default' => esc_html__("The message has been successfully submitted. Click on the 'Continue to Conversation' button.", 'form-reach'),
+	'formreach_whatsapp_error_default' => esc_html__("The message could not be submitted due to an error. Please try again.", 'form-reach')
 );
 
 ?>
@@ -89,14 +89,14 @@ $formreach_defaultform = array(
 			<li id="formreach_switch_container" class="ms-auto d-flex align-items-center">
 				<!-- Email Icon -->
 				 <?php $formreach_envelope_svg_color = (isset($formreach_stored_meta['formreach_whatsapp_switch'][0]) && $formreach_stored_meta['formreach_whatsapp_switch'][0] == 0) ? '#2271b1' : '#a4a4a4'; ?>
-				<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 26 26" fill="none" style="margin: 0 8px 0 8px"><g clip-path="url(#clip0_660_96)"><path d="M24.9983 9.48608C25.1887 9.33472 25.4719 9.47632 25.4719 9.71558V19.7009C25.4719 20.9949 24.4221 22.0447 23.1282 22.0447H2.81567C1.52173 22.0447 0.471924 20.9949 0.471924 19.7009V9.72046C0.471924 9.47632 0.750244 9.3396 0.945557 9.49097C2.03931 10.3406 3.4895 11.4197 8.46997 15.0378C9.50024 15.7898 11.2385 17.3718 12.9719 17.3621C14.7151 17.3767 16.4875 15.7605 17.4788 15.0378C22.4592 11.4197 23.9045 10.3357 24.9983 9.48608ZM12.9719 15.7947C14.1047 15.8142 15.7356 14.3689 16.5559 13.7732C23.0354 9.07105 23.5286 8.66089 25.0227 7.48901C25.3059 7.26929 25.4719 6.92749 25.4719 6.56616V5.63843C25.4719 4.34448 24.4221 3.29468 23.1282 3.29468H2.81567C1.52173 3.29468 0.471924 4.34448 0.471924 5.63843V6.56616C0.471924 6.92749 0.637939 7.2644 0.921143 7.48901C2.41528 8.65601 2.90845 9.07105 9.38794 13.7732C10.2083 14.3689 11.8391 15.8142 12.9719 15.7947Z" fill="<?php echo htmlspecialchars($formreach_envelope_svg_color, ENT_QUOTES, 'UTF-8'); ?>"/></g><defs><clipPath id="clip0_660_96"><rect width="25" height="25" fill="white" transform="translate(0.471924 0.169678)"/></clipPath></defs>
+				<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 26 26" fill="none" style="margin: 0 8px 0 8px"><g clip-path="url(#clip0_660_96)"><path d="M24.9983 9.48608C25.1887 9.33472 25.4719 9.47632 25.4719 9.71558V19.7009C25.4719 20.9949 24.4221 22.0447 23.1282 22.0447H2.81567C1.52173 22.0447 0.471924 20.9949 0.471924 19.7009V9.72046C0.471924 9.47632 0.750244 9.3396 0.945557 9.49097C2.03931 10.3406 3.4895 11.4197 8.46997 15.0378C9.50024 15.7898 11.2385 17.3718 12.9719 17.3621C14.7151 17.3767 16.4875 15.7605 17.4788 15.0378C22.4592 11.4197 23.9045 10.3357 24.9983 9.48608ZM12.9719 15.7947C14.1047 15.8142 15.7356 14.3689 16.5559 13.7732C23.0354 9.07105 23.5286 8.66089 25.0227 7.48901C25.3059 7.26929 25.4719 6.92749 25.4719 6.56616V5.63843C25.4719 4.34448 24.4221 3.29468 23.1282 3.29468H2.81567C1.52173 3.29468 0.471924 4.34448 0.471924 5.63843V6.56616C0.471924 6.92749 0.637939 7.2644 0.921143 7.48901C2.41528 8.65601 2.90845 9.07105 9.38794 13.7732C10.2083 14.3689 11.8391 15.8142 12.9719 15.7947Z" fill="<?php echo esc_attr($formreach_envelope_svg_color, ENT_QUOTES, 'UTF-8'); ?>"/></g><defs><clipPath id="clip0_660_96"><rect width="25" height="25" fill="white" transform="translate(0.471924 0.169678)"/></clipPath></defs>
                 </svg>				
 				<!-- Toggle button to switch WhatsApp form -->
 				<input type="checkbox" name="formreach_whatsapp_switch" id="formreach_whatsapp_switch" class="formreach_slider-input-whatsapp position-absolute" <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 1 ) { ?>checked="checked"<?php }else{?><?php } ?> /><label id="formreach_whatsapp_label" for="formreach_whatsapp_switch" class="formreach_slider-label-whatsapp">Toggle</label>
 				
 				<!-- WhatsApp Icon -->
 				 <?php $formreach_whatsapp_svg_color = (isset($formreach_stored_meta['formreach_whatsapp_switch'][0]) && $formreach_stored_meta['formreach_whatsapp_switch'][0] == 0) ? '#a4a4a4' : '#25d366'; ?>
-				<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none" style="margin: 0 8px 0 8px"><path d="M21.774 5.12051C19.5645 2.90566 16.6219 1.6875 13.4947 1.6875C7.04004 1.6875 1.7877 6.93984 1.7877 13.3945C1.7877 15.4564 2.32559 17.4709 3.34863 19.248L1.6875 25.3125L7.89434 23.683C9.60293 24.6164 11.5277 25.1068 13.4895 25.1068H13.4947C19.9441 25.1068 25.3125 19.8545 25.3125 13.3998C25.3125 10.2727 23.9836 7.33535 21.774 5.12051ZM13.4947 23.1346C11.7439 23.1346 10.0301 22.6652 8.53769 21.7793L8.18437 21.5684L4.50352 22.5334L5.48438 18.9422L5.25234 18.573C4.27676 17.0227 3.76523 15.235 3.76523 13.3945C3.76523 8.03145 8.13164 3.66504 13.5 3.66504C16.0998 3.66504 18.5414 4.67754 20.3766 6.51797C22.2117 8.3584 23.3402 10.8 23.335 13.3998C23.335 18.7682 18.8578 23.1346 13.4947 23.1346ZM18.8314 15.8467C18.5414 15.699 17.1018 14.9924 16.8328 14.8975C16.5639 14.7973 16.3688 14.7498 16.1736 15.0451C15.9785 15.3404 15.4195 15.9943 15.2455 16.1947C15.0768 16.3898 14.9027 16.4162 14.6127 16.2686C12.8936 15.409 11.765 14.734 10.6313 12.7881C10.3307 12.2713 10.9318 12.3082 11.4908 11.1902C11.5857 10.9951 11.5383 10.8264 11.4645 10.6787C11.3906 10.5311 10.8053 9.09141 10.5627 8.50605C10.3254 7.93652 10.0828 8.01563 9.90352 8.00508C9.73477 7.99453 9.53965 7.99453 9.34453 7.99453C9.14941 7.99453 8.83301 8.06836 8.56406 8.3584C8.29512 8.65371 7.54102 9.36035 7.54102 10.8C7.54102 12.2396 8.59043 13.6318 8.73281 13.827C8.88047 14.0221 10.7947 16.9752 13.732 18.2461C15.5883 19.0477 16.316 19.1162 17.2441 18.9791C17.8084 18.8947 18.9738 18.2725 19.2164 17.5869C19.459 16.9014 19.459 16.316 19.3852 16.1947C19.3166 16.0629 19.1215 15.9891 18.8314 15.8467Z" fill="<?php echo htmlspecialchars($formreach_whatsapp_svg_color, ENT_QUOTES, 'UTF-8'); ?>"/>
+				<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none" style="margin: 0 8px 0 8px"><path d="M21.774 5.12051C19.5645 2.90566 16.6219 1.6875 13.4947 1.6875C7.04004 1.6875 1.7877 6.93984 1.7877 13.3945C1.7877 15.4564 2.32559 17.4709 3.34863 19.248L1.6875 25.3125L7.89434 23.683C9.60293 24.6164 11.5277 25.1068 13.4895 25.1068H13.4947C19.9441 25.1068 25.3125 19.8545 25.3125 13.3998C25.3125 10.2727 23.9836 7.33535 21.774 5.12051ZM13.4947 23.1346C11.7439 23.1346 10.0301 22.6652 8.53769 21.7793L8.18437 21.5684L4.50352 22.5334L5.48438 18.9422L5.25234 18.573C4.27676 17.0227 3.76523 15.235 3.76523 13.3945C3.76523 8.03145 8.13164 3.66504 13.5 3.66504C16.0998 3.66504 18.5414 4.67754 20.3766 6.51797C22.2117 8.3584 23.3402 10.8 23.335 13.3998C23.335 18.7682 18.8578 23.1346 13.4947 23.1346ZM18.8314 15.8467C18.5414 15.699 17.1018 14.9924 16.8328 14.8975C16.5639 14.7973 16.3688 14.7498 16.1736 15.0451C15.9785 15.3404 15.4195 15.9943 15.2455 16.1947C15.0768 16.3898 14.9027 16.4162 14.6127 16.2686C12.8936 15.409 11.765 14.734 10.6313 12.7881C10.3307 12.2713 10.9318 12.3082 11.4908 11.1902C11.5857 10.9951 11.5383 10.8264 11.4645 10.6787C11.3906 10.5311 10.8053 9.09141 10.5627 8.50605C10.3254 7.93652 10.0828 8.01563 9.90352 8.00508C9.73477 7.99453 9.53965 7.99453 9.34453 7.99453C9.14941 7.99453 8.83301 8.06836 8.56406 8.3584C8.29512 8.65371 7.54102 9.36035 7.54102 10.8C7.54102 12.2396 8.59043 13.6318 8.73281 13.827C8.88047 14.0221 10.7947 16.9752 13.732 18.2461C15.5883 19.0477 16.316 19.1162 17.2441 18.9791C17.8084 18.8947 18.9738 18.2725 19.2164 17.5869C19.459 16.9014 19.459 16.316 19.3852 16.1947C19.3166 16.0629 19.1215 15.9891 18.8314 15.8467Z" fill="<?php echo esc_attr($formreach_whatsapp_svg_color, ENT_QUOTES, 'UTF-8'); ?>"/>
                 </svg>
 			</li>
 		</ul>

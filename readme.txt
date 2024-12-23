@@ -1,12 +1,12 @@
 === Form Reach ===
 Tags: contact, form, whatsapp, logs, email
 Requires at least: 6.1
-Tested up to: 6.6
+Tested up to: 6.7
 Stable Tag: 1.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-Custom Contact Form Builder to WhatsApp, Email, and more !
+Custom Contact Form Builder to WhatsApp, Email, and more!
 
 == Description ==
 
@@ -57,6 +57,11 @@ Link to the service: [Google reCAPTCHA](https://www.google.com/recaptcha)
 Link to the terms of service: [Google reCAPTCHA Terms of Service](https://policies.google.com/terms)
 Link to the privacy policy: [Google reCAPTCHA Privacy Policy](https://policies.google.com/privacy)
 
+== Source Code ==
+
+The source code for this plugin is available at:
+https://github.com/ACTOPIX/form-reach
+
 == Installation ==
 
 1. Upload the entire `form-reach` folder to the `/wp-content/plugins/` directory.
@@ -65,4 +70,3 @@ Link to the privacy policy: [Google reCAPTCHA Privacy Policy](https://policies.g
 You will find **Form Reach** menu in your WordPress admin screen.
 
 For basic usage, have a look at the [plugin's website](https://form-reach.com/).
-
