@@ -129,8 +129,6 @@ function formreach_include($formreach_id) {
 
 	wp_enqueue_style('form-reach-bootstrap-css', plugins_url('style/style.css', __FILE__), array(), '1.0.0');
     
-    wp_enqueue_script('font-awesome',  plugin_dir_url(__FILE__) . 'assets/fontawesome/85a869994b.js', array(), '1.0.0', true);
-
 	wp_register_script('form-reach', plugin_dir_url(__FILE__) . 'js/form-reach.js', array('jquery'), '1.0', true);
     wp_localize_script('form-reach', 'formReach', array(
         'formreach_chemin' => plugin_dir_url(__FILE__),
