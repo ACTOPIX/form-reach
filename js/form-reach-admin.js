@@ -940,7 +940,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (formreach_colorTextInputWhatsapp) {
     formreach_colorTextInputWhatsapp.addEventListener("input", function () {
-      updateColorInput(
+      formreach_updateColorInput(
         formreach_colorTextInputWhatsapp,
         formreach_colorPickerInputWhatsapp
       );
