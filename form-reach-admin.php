@@ -280,23 +280,25 @@ function formreach_input_type($formreach_atts) {
         'rows' => null,
     ), $formreach_atts, 'input');
 
-    $formreach_html = '<div class="mb-3 mt-3">';
+    $formreach_input_html = '<div class="mb-3 mt-3">';
     if (!empty($formreach_atts['label'])) {
-        $formreach_html .= '<label class="form-label" for="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '">' . esc_html($formreach_atts['label']) . '</label>';
+        $formreach_input_html .= '<label class="form-label" for="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '">' . esc_html($formreach_atts['label']) . '</label>';
     }
     
     if ($formreach_atts['type'] === "textarea") {
-        $formreach_html .= '<textarea data-type="textarea" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' cols="' . esc_attr($formreach_atts['cols']) . '" rows="' . esc_attr($formreach_atts['rows']) . '">' . esc_html($formreach_atts['value']) . '</textarea>';
+        $formreach_input_html .= '<textarea data-type="textarea" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' cols="' . esc_attr($formreach_atts['cols']) . '" rows="' . esc_attr($formreach_atts['rows']) . '">' . esc_html($formreach_atts['value']) . '</textarea>';
     } elseif ($formreach_atts['type'] === "email") {
-        $formreach_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" data-type="email" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
-        $formreach_html .= '<div class="invalid-feedback" id="emailFeedback" style="display: none;">' . esc_html__('Please enter a valid email address', 'form-reach') . '</div>';
+        $formreach_input_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" data-type="email" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
+        $formreach_input_html .= '<div class="invalid-feedback" id="emailFeedback" style="display: none;">' . esc_html__('Please enter a valid email address', 'form-reach') . '</div>';
+    } elseif ($formreach_atts['type'] === "hidden") {
+        $formreach_input_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" value="' . esc_attr($formreach_atts['value']) . '"/>';
     } else {
-        $formreach_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
+        $formreach_input_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
     }        
     
-    $formreach_html .= '</div>';
+    $formreach_input_html .= '</div>';
     
-    return $formreach_html;
+    return $formreach_input_html;
 }
 add_shortcode('formreach_input', 'formreach_input_type');
 
