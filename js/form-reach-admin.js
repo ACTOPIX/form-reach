@@ -193,6 +193,53 @@ import "bootstrap/scss/bootstrap.scss";
 })(jQuery);
 
 (function ($) {
+  // Refactorisé pour utiliser jQuery dans le scope local
+  window.formreach_modalDateGenerator = function () {
+    var formreach_type = ' type="date"',
+      formreach_required = $("#formreach_generator-date-required").is(
+        ":checked"
+      )
+        ? ' required="required"'
+        : "",
+      formreach_label = $("#formreach_generator-date-label").val()
+        ? ' label="' + $("#formreach_generator-date-label").val() + '"'
+        : "",
+      formreach_name = $("#formreach_generator-date-name").val()
+        ? ' name="' + $("#formreach_generator-date-name").val() + '"'
+        : "",
+      formreach_class = $("#formreach_generator-date-class").val()
+        ? ' class="' + $("#formreach_generator-date-class").val() + '"'
+        : "",
+      formreach_id = $("#formreach_generator-date-id").val()
+        ? ' id="' + $("#formreach_generator-date-id").val() + '"'
+        : "",
+      formreach_value = $("#formreach_generator-date-value").val()
+        ? ' value="' + $("#formreach_generator-date-value").val() + '"'
+        : "",
+      formreach_placeholder = "";
+
+    if ($("#formreach_generator-date-placeholder").is(":checked")) {
+      formreach_placeholder =
+        ' placeholder="' + $("#formreach_generator-date-value").val() + '"';
+      formreach_value = ""; // Effacer la valeur si placeholder est coché
+    }
+
+    $("#formreach_generatedDateShortcode").val(
+      "[formreach_input" +
+        formreach_type +
+        formreach_label +
+        formreach_name +
+        formreach_value +
+        formreach_id +
+        formreach_class +
+        formreach_required +
+        formreach_placeholder +
+        "]"
+    );
+  };
+})(jQuery);
+
+(function ($) {
   document.addEventListener("DOMContentLoaded", function () {
     // Fonction pour vérifier et ajouter des attributs
     function formreach_checkAndAddAttributes(formreach_type) {
@@ -490,7 +537,7 @@ import "bootstrap/scss/bootstrap.scss";
     }
 
     // Ajout d'écouteurs d'événements pour les boutons de soumission
-    const formreach_types = ["text", "email", "textarea", "tel"];
+    const formreach_types = ["text", "email", "textarea", "tel", "date"];
     formreach_types.forEach((formreach_type) => {
       const formreach_submitButton = document.getElementById(
         `formreach_submit_${formreach_type}`
