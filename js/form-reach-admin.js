@@ -552,7 +552,7 @@ import "bootstrap/scss/bootstrap.scss";
 })(jQuery);
 
 // Sets default values for the Mail form based on predefined values
-function formreach_buttonDefaultMail() {
+window.formreach_buttonDefaultMail = function () {
   // Retrieve default values defined in hidden inputs or other elements
   var formreach_defaultValues = {
     formreach_defaultEmailForm: formReach.formreach_email_form_default,
@@ -576,9 +576,9 @@ function formreach_buttonDefaultMail() {
     formreach_defaultValues.formreach_defaultEmailSubmitTextColor;
   document.getElementById("formreach_color_code_email").value =
     formreach_defaultValues.formreach_defaultEmailSubmitColor;
-}
+};
 
-function formreach_buttonDefaultWhatsapp() {
+window.formreach_buttonDefaultWhatsapp = function () {
   var formreach_defaultValues = {
     formreach_defaultWhatsappForm: formReach.formreach_whatsapp_form_default,
     formreach_defaultWhatsappSubmitText:
@@ -600,10 +600,10 @@ function formreach_buttonDefaultWhatsapp() {
     formreach_defaultValues.formreach_defaultWhatsappSubmitTextColor;
   document.getElementById("formreach_color_code_whatsapp").value =
     formreach_defaultValues.formreach_defaultWhatsappSubmitColor;
-}
+};
 
 // Default values for the email messages
-function formreach_buttonDefaultEmailMessages() {
+window.formreach_buttonDefaultEmailMessages = function () {
   var formreach_defaultValues = {
     formreach_defaultEmailSuccess: formReach.formreach_email_success_default,
     formreach_defaultEmailError: formReach.formreach_email_error_default,
@@ -612,23 +612,23 @@ function formreach_buttonDefaultEmailMessages() {
     formreach_defaultValues.formreach_defaultEmailSuccess;
   document.getElementById("formreach_email_error").value =
     formreach_defaultValues.formreach_defaultEmailError;
-}
+};
 
 // Default values for the whatsapp messages
-function formreach_buttonDefaultWhatsappMessages() {
+window.formreach_buttonDefaultWhatsappMessages = function () {
   var formreach_defaultValues = {
     formreach_defaultWhatsappSuccess:
       formReach.formreach_whatsapp_success_default,
     formreach_defaultWhatsappError: formReach.formreach_whatsapp_error_default,
   };
   document.getElementById("formreach_whatsapp_success").value =
-    formreach_defaultValues.defaultWhatsappSuccess;
+    formreach_defaultValues.formreach_defaultWhatsappSuccess;
   document.getElementById("formreach_whatsapp_error").value =
-    formreach_defaultValues.defaultWhatsappError;
-}
+    formreach_defaultValues.formreach_defaultWhatsappError;
+};
 
 // Default values for the email sending
-function formreach_buttonDefaultEmailSending() {
+window.formreach_buttonDefaultEmailSending = function () {
   var formreach_defaultValues = {
     formreach_defaultEmailAdminTo: formReach.formreach_email_admin_to_default,
     formreach_defaultEmailAdminFrom:
@@ -662,7 +662,7 @@ function formreach_buttonDefaultEmailSending() {
     formreach_defaultValues.formreach_efaultEmailUserSubject;
   document.getElementById("formreach_email_user_content").value =
     formreach_defaultValues.formreach_defaultEmailUserContent;
-}
+};
 
 // Sélectionnez le formulaire à surveiller
 const formreach_formulaire = document.getElementById("post");

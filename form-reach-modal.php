@@ -72,6 +72,8 @@ $formreach_defaultform = array(
 	'formreach_whatsapp_error_default' => esc_html__("The message could not be submitted due to an error. Please try again.", 'form-reach')
 );
 
+wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
+
 ?>
 
 <section onload="formreach_modalTextGenerator(),formreach_modalTextareaGenerator(),formreach_modalEmailGenerator(),formreach_modalTelGenerator(),formreach_modalDateGenerator()" id="formreach_section_metabox" style="visibility: hidden;">
