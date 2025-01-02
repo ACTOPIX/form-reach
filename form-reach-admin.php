@@ -309,7 +309,7 @@ function formreach_input_type($formreach_atts) {
             style="display: none;">' 
             . esc_html__('Please enter a valid email address', 'form-reach') . 
             '</div>';
-    } elseif ($formreach_atts['type'] === "hidden") {
+    } elseif ($formreach_atts['type'] === "page") {
         global $post;
 
         if ( empty( $post ) ) {
@@ -319,8 +319,8 @@ function formreach_input_type($formreach_atts) {
         $formreach_pagetitle = get_the_title( $post->ID );
         $formreach_pageurl   = get_the_permalink( $post->ID );
             
-        $formreach_input_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" 
-            class="form-control ' . esc_attr($formreach_atts['class']) . '" 
+        $formreach_input_html .= '<input type="hidden" 
+            class="form-control" 
             id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" 
             name="' . esc_attr($formreach_atts['name']) . '" 
             value="' . esc_attr($formreach_pagetitle . ' - ' . $formreach_pageurl) . '"/>';       

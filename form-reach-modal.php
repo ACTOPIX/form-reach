@@ -499,9 +499,15 @@ wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
 			</div>
 
 			<!-- Modal Button: Date -->
-			<button type="button" name="button_date" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#formreach_modalDate"> Date </button>
+			<button type="button" 
+				name="button_date" 
+				class="btn btn-outline-secondary" 
+				data-bs-toggle="modal" 
+				data-bs-target="#formreach_modal_date">
+				Date
+			</button>
 			<!-- Modal Form Tag Generator: Text -->
-			<div class="modal fade" id="formreach_modalDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal fade" id="formreach_modal_date" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -637,6 +643,72 @@ wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
 							</div>
 							<div>
 								<button type="button" id="formreach_submit_date" class="btn btn-primary formreach_wp-blue">
+									Finish
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Button: Page Name -->
+			<button type="button" 
+				name="button_page" 
+				class="btn btn-outline-secondary" 
+				data-bs-toggle="modal" 
+				data-bs-target="#formreach_modal_page">
+				Page Name
+			</button>
+			<!-- Modal Form Tag Generator: Text -->
+			<div class="modal fade" id="formreach_modal_page" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="formreach_exampleModalLabel">Form Tag Generator: Page Name</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p class="text-center">Adds the Page/Post Name and URL from where the form is submitted</p>
+							<p class="text-center">It's an automatic hidden input that you can use in your Email</p>
+							<div class="table-responsive">
+								<table class="table table-borderless">
+									<tbody>
+										<tr>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-page-name">
+													Name<span class="text-danger">*</span>: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="name" 
+													class="tg-name oneline" 
+													id="formreach_generator-page-name" 
+													onchange="formreach_modalPageGenerator()">
+												</br>
+												<span id="formreach_requiredNameText" 
+													class="text-danger fst-italic" 
+													style="font-size: 12px;" hidden>
+														*This field is required
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="modal-footer position-relative">
+							<div class="position-absolute start-0 ms-3">
+								<input type="text" 
+									name="text" 
+									id="formreach_generatedPageShortcode" 
+									readonly="readonly" 
+									style="width:365px" 
+									value="[formreach_input]" >
+							</div>
+							<div>
+								<button type="button" id="formreach_submit_page" class="btn btn-primary formreach_wp-blue">
 									Finish
 								</button>
 							</div>

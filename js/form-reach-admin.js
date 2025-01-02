@@ -5,7 +5,6 @@ import "bootstrap";
 import "bootstrap/scss/bootstrap.scss";
 
 (function ($) {
-  // Refactorisé pour utiliser jQuery dans le scope local
   window.formreach_modalTextGenerator = function () {
     var formreach_type = ' type="text"',
       formreach_required = $("#formreach_generator-text-required").is(
@@ -193,7 +192,6 @@ import "bootstrap/scss/bootstrap.scss";
 })(jQuery);
 
 (function ($) {
-  // Refactorisé pour utiliser jQuery dans le scope local
   window.formreach_modalDateGenerator = function () {
     var formreach_type = ' type="date"',
       formreach_required = $("#formreach_generator-date-required").is(
@@ -235,6 +233,19 @@ import "bootstrap/scss/bootstrap.scss";
         formreach_required +
         formreach_placeholder +
         "]"
+    );
+  };
+})(jQuery);
+
+(function ($) {
+  window.formreach_modalPageGenerator = function () {
+    var formreach_type = ' type="page"',
+      formreach_name = $("#formreach_generator-page-name").val()
+        ? ' name="' + $("#formreach_generator-page-name").val() + '"'
+        : "";
+
+    $("#formreach_generatedPageShortcode").val(
+      "[formreach_input" + formreach_type + formreach_name + "]"
     );
   };
 })(jQuery);
@@ -537,7 +548,14 @@ import "bootstrap/scss/bootstrap.scss";
     }
 
     // Ajout d'écouteurs d'événements pour les boutons de soumission
-    const formreach_types = ["text", "email", "textarea", "tel", "date"];
+    const formreach_types = [
+      "text",
+      "email",
+      "textarea",
+      "tel",
+      "date",
+      "page",
+    ];
     formreach_types.forEach((formreach_type) => {
       const formreach_submitButton = document.getElementById(
         `formreach_submit_${formreach_type}`
