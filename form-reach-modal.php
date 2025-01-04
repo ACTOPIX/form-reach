@@ -912,6 +912,31 @@ wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
 							</button>
 						</div>
 					<?php endif; ?>
+
+					<!-- Restore default form button -->
+					<div class="col-auto">
+						<button type="button" 
+							id="formreach_default_whatsapp" 
+							style="height:min-content; display:flex; align-items:center; justify-content:space-around ;width:105%" 
+							class="btn btn-secondary btn-sm" 
+							<?php 
+								if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 1 ) {
+									 ?> onclick="formreach_buttonDefaultWhatsAppSending()"<?php 
+								}
+							?>
+						>
+							<svg xmlns="http://www.w3.org/2000/svg" 
+								width="12" 
+								height="12" 
+								viewBox="0 0 26 26" 
+								fill="none">
+									<path d="M10.5299 11.9272H0.595095C0.266454 11.9272 0 11.6608 0 11.3321V1.39734C0 1.0687 0.266454 0.802246 0.595095 0.802246H2.97548C3.30412 0.802246 3.57057 1.0687 3.57057 1.39734V5.27102C5.84051 2.75014 9.13769 1.17269 12.8032 1.19932C19.5926 1.24862 25.0249 6.73485 25.0105 13.5243C24.996 20.3044 19.4953 25.7963 12.7119 25.7963C9.53363 25.7963 6.63715 24.5905 4.45444 22.6117C4.20157 22.3825 4.18992 21.9892 4.43128 21.7479L6.11575 20.0634C6.33762 19.8415 6.69408 19.8295 6.92909 20.0374C8.46821 21.3993 10.4925 22.2257 12.7119 22.2257C17.5355 22.2257 21.4399 18.3221 21.4399 13.4976C21.4399 8.67402 17.5363 4.76955 12.7119 4.76955C9.81099 4.76955 7.24296 6.18171 5.65633 8.35663H10.5299C10.8585 8.35663 11.125 8.62309 11.125 8.95173V11.3321C11.125 11.6608 10.8585 11.9272 10.5299 11.9272Z" 
+										fill="white">
+									</path>
+							</svg>
+							Restore default
+						</button>
+					</div>	
 				</div>
 			</div>
 			
@@ -1008,7 +1033,14 @@ wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
 
 					<!-- Restore default form button -->
 					<div class="col-auto">
-						<button type="button" id="formreach_default_email" style="height:min-content; display:flex; align-items:center; justify-content:space-around ;width:105%" class="btn btn-secondary btn-sm" <?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?> onclick="formreach_buttonDefaultEmailSending()"<?php }?>>
+						<button type="button" 
+							id="formreach_default_email" 
+							style="height:min-content; display:flex; align-items:center; justify-content:space-around ;width:105%" 
+							class="btn btn-secondary btn-sm" 
+							<?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?> 
+								onclick="formreach_buttonDefaultEmailSending()"
+							<?php }?>
+						>
 							<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 26 26" fill="none"><path d="M10.5299 11.9272H0.595095C0.266454 11.9272 0 11.6608 0 11.3321V1.39734C0 1.0687 0.266454 0.802246 0.595095 0.802246H2.97548C3.30412 0.802246 3.57057 1.0687 3.57057 1.39734V5.27102C5.84051 2.75014 9.13769 1.17269 12.8032 1.19932C19.5926 1.24862 25.0249 6.73485 25.0105 13.5243C24.996 20.3044 19.4953 25.7963 12.7119 25.7963C9.53363 25.7963 6.63715 24.5905 4.45444 22.6117C4.20157 22.3825 4.18992 21.9892 4.43128 21.7479L6.11575 20.0634C6.33762 19.8415 6.69408 19.8295 6.92909 20.0374C8.46821 21.3993 10.4925 22.2257 12.7119 22.2257C17.5355 22.2257 21.4399 18.3221 21.4399 13.4976C21.4399 8.67402 17.5363 4.76955 12.7119 4.76955C9.81099 4.76955 7.24296 6.18171 5.65633 8.35663H10.5299C10.8585 8.35663 11.125 8.62309 11.125 8.95173V11.3321C11.125 11.6608 10.8585 11.9272 10.5299 11.9272Z" fill="white"></path>
 							</svg>
 							Restore default

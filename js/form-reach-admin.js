@@ -675,6 +675,16 @@ window.formreach_buttonDefaultEmailSending = function () {
     formreach_defaultValues.formreach_defaultEmailUserContent;
 };
 
+// Default values for the whatsapp message content
+window.formreach_buttonDefaultWhatsAppSending = function () {
+  var formreach_defaultValues = {
+    formreach_defaultWhatsappContent:
+      formReach.formreach_whatsapp_message_content_default,
+  };
+  document.getElementById("formreach_whatsapp_message_content").value =
+    formreach_defaultValues.formreach_defaultWhatsappContent;
+};
+
 // Sélectionnez le formulaire à surveiller
 const formreach_formulaire = document.getElementById("post");
 
