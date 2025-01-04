@@ -216,12 +216,6 @@ import "bootstrap/scss/bootstrap.scss";
         : "",
       formreach_placeholder = "";
 
-    if ($("#formreach_generator-date-placeholder").is(":checked")) {
-      formreach_placeholder =
-        ' placeholder="' + $("#formreach_generator-date-value").val() + '"';
-      formreach_value = ""; // Effacer la valeur si placeholder est coché
-    }
-
     $("#formreach_generatedDateShortcode").val(
       "[formreach_input" +
         formreach_type +
@@ -231,7 +225,6 @@ import "bootstrap/scss/bootstrap.scss";
         formreach_id +
         formreach_class +
         formreach_required +
-        formreach_placeholder +
         "]"
     );
   };

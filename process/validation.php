@@ -61,6 +61,15 @@ function formreach_handle_contact_form() {
                 case 'number':
                     $formreach_field_value_filtered = floatval($formreach_field_value); 
                     break;
+                case 'date':
+                    $timestamp = strtotime($formreach_field_value);
+                    if (!$timestamp) {
+                        wp_send_json_error(['dateValid' => false, 'success' => false]);
+                        wp_die();
+                    }
+                
+                    $formreach_field_value_filtered = date_i18n(get_option('date_format'), $timestamp);
+                    break; 
                 case 'file':
                     if (!empty($_FILES[$formreach_field_name]['name'])) {
                         $formreach_upload = wp_handle_upload($_FILES[$formreach_field_name], ['test_form' => false]);

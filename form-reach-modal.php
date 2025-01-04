@@ -576,25 +576,11 @@ wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
 												</label>
 											</th>
 											<td>
-												<input type="text" 
+												<input type="date" 
 													name="value" 
 													class="oneline" 
 													id="formreach_generator-date-value" 
 													onchange="formreach_modalDateGenerator()" >
-											</td>
-										</tr>
-
-										<tr>
-											<td></td>
-											<td class="pt-n3">
-												<input type="checkbox" 
-													name="placeholder" 
-													id="formreach_generator-date-placeholder" 
-													class="option" 
-													onclick="formreach_modalDateGenerator()">
-												<label for="formreach_generator-date-placeholder">
-													Use this text as placeholder for the field.
-												</label>
 											</td>
 										</tr>
 
