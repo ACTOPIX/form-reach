@@ -436,6 +436,171 @@ import "bootstrap/scss/bootstrap.scss";
           formreach_verifierCorrespondances();
         }
       });
+    } else {
+      var formreach_verifierCorrespondances = function () {
+        var formreach_textarea1 = document.querySelector(
+            "#formreach_contenu_formulaire"
+          ),
+          formreach_textarea2 = document.querySelector(
+            "#formreach_whatsapp_message_content"
+          ),
+          formreach_contenuTextarea1 = formreach_textarea1
+            ? formreach_textarea1.value
+            : "",
+          formreach_contenuTextarea2 = formreach_textarea2
+            ? formreach_textarea2.value
+            : "",
+          formreach_valeurs1 = (
+            formreach_contenuTextarea1.match(/name="([^"]+)"/g) || []
+          ).map((match) => match.slice(6, -1)),
+          formreach_valeursManquantes1 = formreach_valeurs1
+            .filter(
+              (formreach_valeur) =>
+                !formreach_contenuTextarea2.includes(`[${formreach_valeur}]`)
+            )
+            .map((formreach_valeur) => `[${formreach_valeur}] `),
+          formreach_containerForm = document.getElementById(
+            "formreach_warning_inputs_uncalled_container"
+          ),
+          formreach_containerEmail = document.getElementById(
+            "formreach_warning_inputs_inexistent_container"
+          ),
+          formreach_messageForm = document.getElementById(
+            "formreach_warning_inputs_uncalled"
+          ),
+          formreach_messageEmail = document.getElementById(
+            "formreach_warning_inputs_inexistent"
+          );
+
+        if (formreach_valeursManquantes1.length) {
+          formreach_containerForm.style.display = "block";
+          setTimeout(() => {
+            formreach_containerForm.style.opacity = "1";
+          }, 200);
+          setTimeout(() => {
+            formreach_containerForm.style.height = "auto";
+          }, 200);
+          formreach_messageForm.innerHTML = `The following inputs are missing in the <u>WhatsApp message builder</u>: <strong>${formreach_valeursManquantes1.join(
+            ", "
+          )}</strong> `;
+          formreach_containerEmail.style.display = "block";
+          setTimeout(() => {
+            formreach_containerEmail.style.opacity = "1";
+          }, 200);
+          setTimeout(() => {
+            formreach_containerEmail.style.height = "auto";
+          }, 200);
+          formreach_valeursManquantes1 = formreach_valeurs1
+            .filter(
+              (formreach_valeur) =>
+                !formreach_contenuTextarea2.includes(`[${formreach_valeur}]`)
+            )
+            .map(
+              (formreach_valeur) =>
+                `<span class="formreach_draggable" style="color:#41464b;font-weight:bold;" draggable="true">[${formreach_valeur}]</span>`
+            );
+          formreach_messageEmail.innerHTML = `The following draggable inputs  are not used: ${formreach_valeursManquantes1
+            .join(", ")
+            .replace(/,/g, " ")}`;
+        } else {
+          formreach_containerForm.style.opacity = "0";
+          setTimeout(() => {
+            formreach_containerForm.style.height = "0";
+          }, 200);
+          setTimeout(() => {
+            formreach_containerForm.style.display = "none";
+          }, 300);
+          formreach_messageForm.innerHTML = "";
+          formreach_containerEmail.style.opacity = "0";
+          setTimeout(() => {
+            formreach_containerEmail.style.height = "0";
+          }, 200);
+          setTimeout(() => {
+            formreach_containerEmail.style.display = "none";
+          }, 300);
+          formreach_messageEmail.innerHTML = "";
+        }
+
+        document
+          .querySelectorAll(".formreach_draggable")
+          .forEach((draggable) => {
+            draggable.addEventListener("dragstart", (event) => {
+              event.dataTransfer.setData("text/plain", event.target.innerText);
+            });
+          });
+
+        const formreach_draggableElements = document.querySelectorAll(
+          ".formreach_draggable"
+        );
+
+        // Fonction pour ajouter le focus aux inputs spécifiés
+        function formreach_focusInputs() {
+          document.getElementById("formreach_email_admin_to").style.outline =
+            "1.5px solid #2271B1";
+          document.getElementById("formreach_email_admin_from").style.outline =
+            "1.5px solid #2271B1";
+          document.getElementById(
+            "formreach_email_admin_subject"
+          ).style.outline = "1.5px solid #2271B1";
+          document.getElementById(
+            "formreach_email_admin_content"
+          ).style.outline = "1.5px solid #2271B1";
+          document.getElementById("formreach_email_user_to").style.outline =
+            "1.5px solid #2271B1";
+          document.getElementById("formreach_email_user_from").style.outline =
+            "1.5px solid #2271B1";
+          document.getElementById(
+            "formreach_email_user_subject"
+          ).style.outline = "1.5px solid #2271B1";
+          document.getElementById(
+            "formreach_email_user_content"
+          ).style.outline = "1.5px solid #2271B1";
+        }
+
+        function formreach_removeFocus() {
+          document.getElementById("formreach_email_admin_to").style.outline =
+            "";
+          document.getElementById("formreach_email_admin_from").style.outline =
+            "";
+          document.getElementById(
+            "formreach_email_admin_subject"
+          ).style.outline = "";
+          document.getElementById(
+            "formreach_email_admin_content"
+          ).style.outline = "";
+          document.getElementById("formreach_email_user_to").style.outline = "";
+          document.getElementById("formreach_email_user_from").style.outline =
+            "";
+          document.getElementById(
+            "formreach_email_user_subject"
+          ).style.outline = "";
+          document.getElementById(
+            "formreach_email_user_content"
+          ).style.outline = "";
+        }
+
+        function formreach_handleDragStart(event) {
+          formreach_focusInputs();
+        }
+
+        function formreach_handleDragEnd(event) {
+          formreach_removeFocus();
+        }
+
+        formreach_draggableElements.forEach((element) => {
+          element.setAttribute("draggable", "true");
+          element.addEventListener("dragstart", formreach_handleDragStart);
+          element.addEventListener("dragend", formreach_handleDragEnd);
+        });
+      };
+
+      formreach_verifierCorrespondances();
+
+      document.addEventListener("input", function (event) {
+        if (event.target.matches("textarea")) {
+          formreach_verifierCorrespondances();
+        }
+      });
     }
 
     // Fonction pour transférer le contenu du champ

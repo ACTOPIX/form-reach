@@ -107,17 +107,15 @@ wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
 		<!-- Creation of containers for the content associated with tabs -->
 		<div id="formreach_formulaire" class="tab-pane fade  mt-3 container" role="tabpanel">
 		
-		<?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 0 ) { ?>
-			<div class="row">
-				<div class="col-xl-10 col-lg-10 col-md-10 col-xs-12 col-sm-12 formreach_warning-container" id="formreach_warning_inputs_uncalled_container" style="height:0;opacity:0;">
-					<div class="alert alert-primary d-flex align-items-center text-primary" role="alert" style="margin-right:auto;">
-						<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><g clip-path="url(#clip0_660_94)"><path d="M13 0.40625C6.04515 0.40625 0.40625 6.04718 0.40625 13C0.40625 19.9569 6.04515 25.5938 13 25.5938C19.9548 25.5938 25.5938 19.9569 25.5938 13C25.5938 6.04718 19.9548 0.40625 13 0.40625ZM13 5.99219C14.1779 5.99219 15.1328 6.94708 15.1328 8.125C15.1328 9.30292 14.1779 10.2578 13 10.2578C11.8221 10.2578 10.8672 9.30292 10.8672 8.125C10.8672 6.94708 11.8221 5.99219 13 5.99219ZM15.8438 18.8906C15.8438 19.2272 15.5709 19.5 15.2344 19.5H10.7656C10.4291 19.5 10.1562 19.2272 10.1562 18.8906V17.6719C10.1562 17.3353 10.4291 17.0625 10.7656 17.0625H11.375V13.8125H10.7656C10.4291 13.8125 10.1562 13.5397 10.1562 13.2031V11.9844C10.1562 11.6478 10.4291 11.375 10.7656 11.375H14.0156C14.3522 11.375 14.625 11.6478 14.625 11.9844V17.0625H15.2344C15.5709 17.0625 15.8438 17.3353 15.8438 17.6719V18.8906Z" fill="#2271b1"/></g><defs><clipPath id="clip0_660_94"><rect width="26" height="26" fill="white"/></clipPath></defs></svg>
-						<div class="ms-2" id="formreach_warning_inputs_uncalled">
-						</div>
+		<div class="row">
+			<div class="col-xl-10 col-lg-10 col-md-10 col-xs-12 col-sm-12 formreach_warning-container" id="formreach_warning_inputs_uncalled_container" style="height:0;opacity:0;">
+				<div class="alert alert-primary d-flex align-items-center text-primary" role="alert" style="margin-right:auto;">
+					<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><g clip-path="url(#clip0_660_94)"><path d="M13 0.40625C6.04515 0.40625 0.40625 6.04718 0.40625 13C0.40625 19.9569 6.04515 25.5938 13 25.5938C19.9548 25.5938 25.5938 19.9569 25.5938 13C25.5938 6.04718 19.9548 0.40625 13 0.40625ZM13 5.99219C14.1779 5.99219 15.1328 6.94708 15.1328 8.125C15.1328 9.30292 14.1779 10.2578 13 10.2578C11.8221 10.2578 10.8672 9.30292 10.8672 8.125C10.8672 6.94708 11.8221 5.99219 13 5.99219ZM15.8438 18.8906C15.8438 19.2272 15.5709 19.5 15.2344 19.5H10.7656C10.4291 19.5 10.1562 19.2272 10.1562 18.8906V17.6719C10.1562 17.3353 10.4291 17.0625 10.7656 17.0625H11.375V13.8125H10.7656C10.4291 13.8125 10.1562 13.5397 10.1562 13.2031V11.9844C10.1562 11.6478 10.4291 11.375 10.7656 11.375H14.0156C14.3522 11.375 14.625 11.6478 14.625 11.9844V17.0625H15.2344C15.5709 17.0625 15.8438 17.3353 15.8438 17.6719V18.8906Z" fill="#2271b1"/></g><defs><clipPath id="clip0_660_94"><rect width="26" height="26" fill="white"/></clipPath></defs></svg>
+					<div class="ms-2" id="formreach_warning_inputs_uncalled">
 					</div>
 				</div>
 			</div>
-		<?php };?>
+		</div>
 			
 			<!-- Modal Button: Text -->
 			<button type="button" name="button_text" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#formreach_modal_text">Text</button>
@@ -839,7 +837,17 @@ wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
 
 		<!-- WhatsApp tab + international number & flag -->
 		<?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 1 ){ ?> 
-			<div id="formreach_email" class="tab-pane fade mt-3 container" role="tabpanel">						
+			<div id="formreach_email" class="tab-pane fade mt-3 container" role="tabpanel">
+				<div class="row">
+					<div class="col-xl-10 col-lg-10 col-md-10 col-xs-12 col-sm-12 formreach_warning-container" id="formreach_warning_inputs_inexistent_container" style="height:0;opacity:0;">
+							<div class="alert alert-primary d-flex align-items-center text-primary" role="alert" style="margin-right:auto;">
+								<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><g clip-path="url(#clip0_660_94)"><path d="M13 0.40625C6.04515 0.40625 0.40625 6.04718 0.40625 13C0.40625 19.9569 6.04515 25.5938 13 25.5938C19.9548 25.5938 25.5938 19.9569 25.5938 13C25.5938 6.04718 19.9548 0.40625 13 0.40625ZM13 5.99219C14.1779 5.99219 15.1328 6.94708 15.1328 8.125C15.1328 9.30292 14.1779 10.2578 13 10.2578C11.8221 10.2578 10.8672 9.30292 10.8672 8.125C10.8672 6.94708 11.8221 5.99219 13 5.99219ZM15.8438 18.8906C15.8438 19.2272 15.5709 19.5 15.2344 19.5H10.7656C10.4291 19.5 10.1562 19.2272 10.1562 18.8906V17.6719C10.1562 17.3353 10.4291 17.0625 10.7656 17.0625H11.375V13.8125H10.7656C10.4291 13.8125 10.1562 13.5397 10.1562 13.2031V11.9844C10.1562 11.6478 10.4291 11.375 10.7656 11.375H14.0156C14.3522 11.375 14.625 11.6478 14.625 11.9844V17.0625H15.2344C15.5709 17.0625 15.8438 17.3353 15.8438 17.6719V18.8906Z" fill="#2271b1"/></g><defs><clipPath id="clip0_660_94"><rect width="26" height="26" fill="white"/></clipPath></defs>
+								</svg>
+								<div class="ms-2" id="formreach_warning_inputs_inexistent">
+								</div>
+							</div>
+					</div>
+				</div>
 				<div class="form-group">
 					<label for="formreach_whatsapp_tel" class="d-block mb-1">
 						<strong>
