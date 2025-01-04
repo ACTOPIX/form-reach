@@ -198,7 +198,7 @@ function formreach_register_metabox_callback($formreach_post) {
 		'formreach_whatsapp_error' => __("The message could not be submitted due to an error. Please try again.", "form-reach"),
 		'formreach_email_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach") . '"]' . "\n\n" . '[formreach_input type="email" label="' . __("Email address", "form-reach") . '" name="email" required="required" placeholder="' . __("Enter your email", "form-reach") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach") . '"]',
 		'formreach_whatsapp_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach") . '"]',
-		'formreach_whatsapp_message_content' => __("Name: [name]\nEmail: [email]\nMessage: [message]", "form-reach"),
+		'formreach_whatsapp_message_content' => __("Name: [name]\nMessage: [message]", "form-reach"),
 		'formreach_whatsapp_switch' => 0,
 		'formreach_user_email_switch' => 0,
 	];
