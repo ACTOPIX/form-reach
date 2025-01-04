@@ -14,7 +14,7 @@ $formreach_contenuAdministrateur = '
                 <tr>
                     <td align="center" style="padding: 40px 0;">
                         <h1 style="color: #171719; font-size: 24px; font-weight: bold;"><a href="' . esc_url($formreach_urlDuSite) . '" target="_blank" style="color: #171719; text-decoration: none;">' . esc_html($formreach_nomDuSite) . '</a></h1>
-                        <p>' . nl2br(esc_html(str_replace("&#039;","'",esc_attr($formreach_stored_meta_validation_mail["formreach_email_admin_content"][0])))) . '</p>
+                        <p>' . $formreach_contenuFormPostReplace . '</p>
                     </td>
                 </tr>
                 <tr>

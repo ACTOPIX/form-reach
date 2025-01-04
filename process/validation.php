@@ -26,7 +26,6 @@ function formreach_handle_contact_form() {
     $formreach_postID = isset($_POST['formreach_container_post']) ? (int) $_POST['formreach_container_post'] : 0;
     $formreach_stored_meta_validation_mail = get_post_meta($formreach_postID);
     $formreach_email_form_content = get_post_meta($formreach_postID, 'formreach_email_form_content', true);
-    include 'mailing.php';
 
     // Detection of the `name` and the `type`
     preg_match_all('/\[formreach_input[^\]]*type="([^"]+)"[^\]]*name="([^"]+)"[^\]]*\]/', $formreach_email_form_content, $formreach_matches);
@@ -86,17 +85,18 @@ function formreach_handle_contact_form() {
                     break;
             }
 
-            // Build email content
-            $formreach_contenuFormPost .= esc_attr($formreach_field_name) . ' : ' . $formreach_field_value_filtered . '<br/>';
-
             // Prepare shortcodes for replacement
             $formreach_keyShortcode[] = '[' . esc_attr(str_replace("\\", "", $formreach_field_name)) . ']';
             $formreach_valShortcode[] = str_replace("\\", "", $formreach_field_value_filtered);
         }
     }
 
+    // Build email content
+    $formreach_contenuFormPost = nl2br(esc_html(str_replace("&#039;","'",esc_attr($formreach_stored_meta_validation_mail["formreach_email_admin_content"][0]))));
+    $formreach_contenuFormPostReplace = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_contenuFormPost);
+    include 'mailing.php';
+
     // Replace placeholders in email content
-    $formreach_contenuReplace = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_contenuAdministrateur);
     $formreach_contenuReplaceUser = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_contenuUtilisateur);
 
     $formreach_subjectAdmin = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_stored_meta_validation_mail['formreach_email_admin_subject'][0]);
@@ -113,7 +113,7 @@ function formreach_handle_contact_form() {
 	
     // Send admin email
     $GLOBALS['formreach_mail'] = true;
-    wp_mail($formreach_toAdminSeveral, $formreach_subjectAdmin, $formreach_contenuReplace, $formreach_headerAdmin);
+    wp_mail($formreach_toAdminSeveral, $formreach_subjectAdmin, $formreach_contenuAdministrateur, $formreach_headerAdmin);
     $GLOBALS['formreach_mail'] = false;
 
     // Send user email if enabled
@@ -132,7 +132,7 @@ function formreach_handle_contact_form() {
 		$wpdb->prefix . 'formreach_form_history',
 		[
 			'type' => 'Mail', 
-			'content' => str_replace("\\", "", $formreach_contenuFormPost), 
+			'content' => $formreach_contenuFormPostReplace, 
 			'created_at' => $formreach_local_time
 		],
 		['%s', '%s', '%s']
