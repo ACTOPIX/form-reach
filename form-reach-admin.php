@@ -198,6 +198,7 @@ function formreach_register_metabox_callback($formreach_post) {
 		'formreach_whatsapp_error' => __("The message could not be submitted due to an error. Please try again.", "form-reach"),
 		'formreach_email_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach") . '"]' . "\n\n" . '[formreach_input type="email" label="' . __("Email address", "form-reach") . '" name="email" required="required" placeholder="' . __("Enter your email", "form-reach") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach") . '"]',
 		'formreach_whatsapp_form_content' => '[formreach_input type="text" label="' . __("Name", "form-reach") . '" name="name" required="required" placeholder="' . __("Enter your name", "form-reach") . '"]' . "\n\n" . '[formreach_input type="textarea" rows="10" label="' . __("Message", "form-reach") . '" name="message" required="required" placeholder="' . __("Enter your message", "form-reach") . '"]',
+		'formreach_whatsapp_message_content' => __("Name: [name]\nEmail: [email]\nMessage: [message]", "form-reach"),
 		'formreach_whatsapp_switch' => 0,
 		'formreach_user_email_switch' => 0,
 	];
@@ -280,23 +281,61 @@ function formreach_input_type($formreach_atts) {
         'rows' => null,
     ), $formreach_atts, 'input');
 
-    $formreach_html = '<div class="mb-3 mt-3">';
+    $formreach_input_html = '<div class="mb-3 mt-3">';
     if (!empty($formreach_atts['label'])) {
-        $formreach_html .= '<label class="form-label" for="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '">' . esc_html($formreach_atts['label']) . '</label>';
+        $formreach_input_html .= '<label class="form-label" 
+            for="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '">' 
+            . esc_html($formreach_atts['label']) . 
+            '</label>';
     }
     
     if ($formreach_atts['type'] === "textarea") {
-        $formreach_html .= '<textarea data-type="textarea" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' cols="' . esc_attr($formreach_atts['cols']) . '" rows="' . esc_attr($formreach_atts['rows']) . '">' . esc_html($formreach_atts['value']) . '</textarea>';
+        $formreach_input_html .= '<textarea data-type="textarea" class="form-control ' . esc_attr($formreach_atts['class']) . '" 
+            id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" 
+            name="' . esc_attr($formreach_atts['name']) . '" 
+            placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' 
+            cols="' . esc_attr($formreach_atts['cols']) . '" 
+            rows="' . esc_attr($formreach_atts['rows']) . '">' . esc_html($formreach_atts['value']) . '</textarea>';
     } elseif ($formreach_atts['type'] === "email") {
-        $formreach_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" data-type="email" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
-        $formreach_html .= '<div class="invalid-feedback" id="emailFeedback" style="display: none;">' . esc_html__('Please enter a valid email address', 'form-reach') . '</div>';
+        $formreach_input_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" 
+            data-type="email" 
+            class="form-control ' . esc_attr($formreach_atts['class']) . '" 
+            id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" 
+            name="' . esc_attr($formreach_atts['name']) . '" 
+            placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' 
+            value="' . esc_attr($formreach_atts['value']) . '"/>';
+        $formreach_input_html .= '<div class="invalid-feedback" 
+            id="emailFeedback" 
+            style="display: none;">' 
+            . esc_html__('Please enter a valid email address', 'form-reach') . 
+            '</div>';
+    } elseif ($formreach_atts['type'] === "page") {
+        global $post;
+
+        if ( empty( $post ) ) {
+            return '';
+        }
+
+        $formreach_pagetitle = get_the_title( $post->ID );
+        $formreach_pageurl   = get_the_permalink( $post->ID );
+            
+        $formreach_input_html .= '<input type="hidden" 
+            class="form-control" 
+            id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" 
+            name="' . esc_attr($formreach_atts['name']) . '" 
+            value="' . esc_attr($formreach_pagetitle . ' - ' . $formreach_pageurl) . '"/>';       
     } else {
-        $formreach_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" class="form-control ' . esc_attr($formreach_atts['class']) . '" id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" name="' . esc_attr($formreach_atts['name']) . '" placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' value="' . esc_attr($formreach_atts['value']) . '"/>';
+        $formreach_input_html .= '<input type="' . esc_attr($formreach_atts['type']) . '" 
+            class="form-control ' . esc_attr($formreach_atts['class']) . '" 
+            id="' . esc_attr($formreach_atts['name']) . '_' . esc_attr($formreach_atts['id']) . '" 
+            name="' . esc_attr($formreach_atts['name']) . '" 
+            placeholder="' . esc_attr($formreach_atts['placeholder']) . '"' . ($formreach_atts['required'] ? ' required' : '') . ' 
+            value="' . esc_attr($formreach_atts['value']) . '"/>';
     }        
     
-    $formreach_html .= '</div>';
+    $formreach_input_html .= '</div>';
     
-    return $formreach_html;
+    return $formreach_input_html;
 }
 add_shortcode('formreach_input', 'formreach_input_type');
 
@@ -347,6 +386,7 @@ function formreach_meta_save($formreach_post_id) {
         'formreach_email_form_content' => 'textarea',
         'formreach_whatsapp_form_content' => 'textarea',
         'formreach_whatsapp_tel_international' => 'tel',
+        'formreach_whatsapp_message_content' => 'textarea',
         'formreach_whatsapp_switch' => 'checkbox',
         'formreach_user_email_switch' => 'checkbox',
     ];

@@ -60,6 +60,7 @@ $formreach_defaultform = array(
 	'formreach_email_admin_from_default' => esc_html__("Form Reach", 'form-reach'),
 	'formreach_email_admin_subject_default' => esc_html__("User Message", 'form-reach'),
 	'formreach_email_admin_content_default' => esc_html__("Name: [name]\nEmail: [email]\nMessage: [message]", 'form-reach'),
+	'formreach_whatsapp_message_content_default' => esc_html__("Name: [name]\nEmail: [email]\nMessage: [message]", 'form-reach'),
 	'formreach_email_user_to_default' => esc_attr("[email]"),
 	'formreach_email_user_from_default' => esc_html__("Form Reach", 'form-reach'),
 	'formreach_email_user_subject_default' => esc_html__("Form Reach", 'form-reach'),
@@ -71,9 +72,11 @@ $formreach_defaultform = array(
 	'formreach_whatsapp_error_default' => esc_html__("The message could not be submitted due to an error. Please try again.", 'form-reach')
 );
 
+wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
+
 ?>
 
-<section onload="formreach_modalTextGenerator(),formreach_modalTextareaGenerator(),formreach_modalEmailGenerator(),formreach_modalTelGenerator()" id="formreach_section_metabox" style="visibility: hidden;">
+<section onload="formreach_modalTextGenerator(),formreach_modalTextareaGenerator(),formreach_modalEmailGenerator(),formreach_modalTelGenerator(),formreach_modalDateGenerator()" id="formreach_section_metabox" style="visibility: hidden;">
 
 	<div class="tab-content" id="formreach_myTabContent">
 		<ul class="nav nav-tabs" id="formreach_myTab" role="tablist">
@@ -135,42 +138,110 @@ $formreach_defaultform = array(
 											<td>
 												<fieldset>
 													<legend class="screen-reader-text">Field type</legend>
-													<label><input type="checkbox" id="formreach_generator-text-required" name="required" onclick="formreach_modalTextGenerator()"> Required field</label>
+													<label>
+														<input type="checkbox" 
+															id="formreach_generator-text-required" 
+															name="required" onclick="formreach_modalTextGenerator()">
+														 Required field
+													</label>
 												</fieldset>
 											</td>
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="formreach_generator-text-label">Label: </label></th>
-											<td ><input type="text" name="label" class="tg-name oneline" id="formreach_generator-text-label" onchange="formreach_modalTextGenerator()"></td>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-text-label">
+													Label: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="label" 
+													class="tg-name oneline" 
+													id="formreach_generator-text-label" 
+													onchange="formreach_modalTextGenerator()">
+											</td>
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="formreach_generator-text-name">Name<span class="text-primary">*</span>: </label></th>
-											<td><input type="text" name="name" class="tg-name oneline" id="formreach_generator-text-name" onchange="formreach_modalTextGenerator()"></br>
-											<span id="formreach_requiredNameText" class="text-danger fst-italic" style="font-size: 12px;" hidden>*This field is required</span></td>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-text-name">
+													Name<span class="text-danger">*</span>: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="name" 
+													class="tg-name oneline" 
+													id="formreach_generator-text-name" 
+													onchange="formreach_modalTextGenerator()">
+												</br>
+												<span id="formreach_requiredNameText" 
+													class="text-danger fst-italic" 
+													style="font-size: 12px;" hidden>
+														*This field is required
+												</span>
+											</td>
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="formreach_generator-text-value">Value: </label></th>
-											<td><input type="text" name="value" class="oneline" id="formreach_generator-text-value" onchange="formreach_modalTextGenerator()" ></td>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-text-value">
+													Value: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="value" 
+													class="oneline" 
+													id="formreach_generator-text-value" 
+													onchange="formreach_modalTextGenerator()" >
+											</td>
 										</tr>
 
 										<tr>
 											<td></td>
-											<td class="pt-n3"><input type="checkbox" name="placeholder"  id="formreach_generator-text-placeholder" class="option" onclick="formreach_modalTextGenerator()" ><label for="formreach_generator-text-placeholder">Use this text as placeholder for the field.</label></td>
+											<td class="pt-n3">
+												<input type="checkbox" 
+													name="placeholder" 
+													id="formreach_generator-text-placeholder" 
+													class="option" 
+													onclick="formreach_modalTextGenerator()">
+												<label for="formreach_generator-text-placeholder">
+													Use this text as placeholder for the field.
+												</label>
+											</td>
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="formreach_generator-text-id">ID: </label></th>
-											<td><input type="text" name="id" class="idvalue oneline option" id="formreach_generator-text-id" onchange="formreach_modalTextGenerator()"></td>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-text-id">
+													ID: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="id" 
+													class="idvalue oneline option" 
+													id="formreach_generator-text-id" 
+													onchange="formreach_modalTextGenerator()">
+											</td>
 										</tr>
 
 										<tr>
-											<th class="text-end" scope="row"><label for="formreach_generator-text-class">Class: </label></th>
-											<td><input type="text" name="class" class="classvalue oneline option" id="formreach_generator-text-class" onchange="formreach_modalTextGenerator()"></td>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-text-class">
+													Class: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="class" 
+													class="classvalue oneline option" 
+													id="formreach_generator-text-class" 
+													onchange="formreach_modalTextGenerator()">
+											</td>
 										</tr>
-
 									</tbody>
 								</table>
 							</div>
@@ -178,10 +249,17 @@ $formreach_defaultform = array(
 
 						<div class="modal-footer position-relative">
 							<div class="position-absolute start-0 ms-3">
-								<input type="text" name="text" id="formreach_generatedTextShortcode" readonly="readonly" style="width:365px" value="[formreach_input]" >
+								<input type="text" 
+									name="text" 
+									id="formreach_generatedTextShortcode" 
+									readonly="readonly" 
+									style="width:365px" 
+									value="[formreach_input]" >
 							</div>
 							<div>
-								<button type="button" id="formreach_submit_text" class="btn btn-primary formreach_wp-blue">Finish</button>
+								<button type="button" id="formreach_submit_text" class="btn btn-primary formreach_wp-blue">
+									Finish
+								</button>
 							</div>
 						</div>
 					</div>
@@ -374,7 +452,7 @@ $formreach_defaultform = array(
 
 										<tr>
 											<th class="text-end" scope="row"><label for="formreach_generator-tel-label">Label: </label></th>
-											<td ><input type="text" name="label" class="tg-name oneline" id="formreach_generator-tel-label" onchange="formreach_modalTextGenerator()"></td>
+											<td ><input type="text" name="label" class="tg-name oneline" id="formreach_generator-tel-label" onchange="formreach_modalTelGenerator()"></td>
 										</tr>
 
 										<tr>
@@ -420,6 +498,211 @@ $formreach_defaultform = array(
 				</div>
 			</div>
 
+			<!-- Modal Button: Date -->
+			<button type="button" 
+				name="button_date" 
+				class="btn btn-outline-secondary" 
+				data-bs-toggle="modal" 
+				data-bs-target="#formreach_modal_date">
+				Date
+			</button>
+			<!-- Modal Form Tag Generator: Text -->
+			<div class="modal fade" id="formreach_modal_date" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="formreach_exampleModalLabel">Form Tag Generator: Date</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="table-responsive">
+								<table class="table table-borderless">
+									<tbody>
+										<tr>
+											<th class="text-end"scope="row">Type: </th>
+											<td>
+												<fieldset>
+													<legend class="screen-reader-text">Field type</legend>
+													<label>
+														<input type="checkbox" 
+															id="formreach_generator-date-required" 
+															name="required" onclick="formreach_modalDateGenerator()">
+														 Required field
+													</label>
+												</fieldset>
+											</td>
+										</tr>
+
+										<tr>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-date-label">
+													Label: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="label" 
+													class="tg-name oneline" 
+													id="formreach_generator-date-label" 
+													onchange="formreach_modalDateGenerator()">
+											</td>
+										</tr>
+
+										<tr>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-date-name">
+													Name<span class="text-danger">*</span>: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="name" 
+													class="tg-name oneline" 
+													id="formreach_generator-date-name" 
+													onchange="formreach_modalDateGenerator()">
+												</br>
+												<span id="formreach_requiredNameText" 
+													class="text-danger fst-italic" 
+													style="font-size: 12px;" hidden>
+														*This field is required
+												</span>
+											</td>
+										</tr>
+
+										<tr>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-date-value">
+													Value: 
+												</label>
+											</th>
+											<td>
+												<input type="date" 
+													name="value" 
+													class="oneline" 
+													id="formreach_generator-date-value" 
+													onchange="formreach_modalDateGenerator()" >
+											</td>
+										</tr>
+
+										<tr>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-date-id">
+													ID: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="id" 
+													class="idvalue oneline option" 
+													id="formreach_generator-date-id" 
+													onchange="formreach_modalDateGenerator()">
+											</td>
+										</tr>
+
+										<tr>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-date-class">
+													Class: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="class" 
+													class="classvalue oneline option" 
+													id="formreach_generator-date-class" 
+													onchange="formreach_modalDateGenerator()">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="modal-footer position-relative">
+							<div class="position-absolute start-0 ms-3">
+								<input type="text" 
+									name="text" 
+									id="formreach_generatedDateShortcode" 
+									readonly="readonly" 
+									style="width:365px" 
+									value="[formreach_input]" >
+							</div>
+							<div>
+								<button type="button" id="formreach_submit_date" class="btn btn-primary formreach_wp-blue">
+									Finish
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Button: Page Name -->
+			<button type="button" 
+				name="button_page" 
+				class="btn btn-outline-secondary" 
+				data-bs-toggle="modal" 
+				data-bs-target="#formreach_modal_page">
+				Page Name
+			</button>
+			<!-- Modal Form Tag Generator: Text -->
+			<div class="modal fade" id="formreach_modal_page" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="formreach_exampleModalLabel">Form Tag Generator: Page Name</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p class="text-center">Adds the Page/Post Name and URL from where the form is submitted</p>
+							<p class="text-center">It's an automatic hidden input that you can use in your Email</p>
+							<div class="table-responsive">
+								<table class="table table-borderless">
+									<tbody>
+										<tr>
+											<th class="text-end" scope="row">
+												<label for="formreach_generator-page-name">
+													Name<span class="text-danger">*</span>: 
+												</label>
+											</th>
+											<td>
+												<input type="text" 
+													name="name" 
+													class="tg-name oneline" 
+													id="formreach_generator-page-name" 
+													onchange="formreach_modalPageGenerator()">
+												</br>
+												<span id="formreach_requiredNameText" 
+													class="text-danger fst-italic" 
+													style="font-size: 12px;" hidden>
+														*This field is required
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="modal-footer position-relative">
+							<div class="position-absolute start-0 ms-3">
+								<input type="text" 
+									name="text" 
+									id="formreach_generatedPageShortcode" 
+									readonly="readonly" 
+									style="width:365px" 
+									value="[formreach_input]" >
+							</div>
+							<div>
+								<button type="button" id="formreach_submit_page" class="btn btn-primary formreach_wp-blue">
+									Finish
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<!-- Modal Button: Dropdown Menu -->
 			<button type="button" name="button_menu_deroulant" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#formreach_modalMenu" disabled> Dropdown menu </button>
 
@@ -429,9 +712,6 @@ $formreach_defaultform = array(
 			<!-- Modal Button: Radio Button -->
 			<button type="button" name="button_boutons_radio" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#formreach_modalRadio" disabled> Radio button </button>
 
-			<!-- Modal Button: Date -->
-			<button type="button" name="button_date" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#formreach_modalDate" disabled> Date </button>
-			
 			<!-- Modal Button: File -->
 			<button type="button" name="button_fichier" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#formreach_modalFichier" disabled> File </button>
 
