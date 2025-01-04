@@ -841,10 +841,43 @@ wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
 		<?php if( ($formreach_stored_meta['formreach_whatsapp_switch'][0]) == 1 ){ ?> 
 			<div id="formreach_email" class="tab-pane fade mt-3 container" role="tabpanel">						
 				<div class="form-group">
-					<label for="formreach_whatsapp_tel" class="d-block mb-1"><strong>Number :</strong></label>
-					<input type="tel" id="formreach_whatsapp_tel" name="formreach_whatsapp_tel" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" class="form-control" />
+					<label for="formreach_whatsapp_tel" class="d-block mb-1">
+						<strong>
+							Number :
+						</strong>
+					</label>
+					<input 
+						type="tel" 
+						id="formreach_whatsapp_tel" 
+						name="formreach_whatsapp_tel" 
+						value="<?php 
+							if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) 
+								echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); 
+						?>" 
+						class="form-control" />
 					<span id="formreach_whatsapp_message" class="text-danger ms-3 d-none"></span>
-					<input type="hidden" id="formreach_whatsapp_tel_international" name="formreach_whatsapp_tel_international" value="<?php if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); ?>" />
+					<input type="hidden" 
+						id="formreach_whatsapp_tel_international" 
+						name="formreach_whatsapp_tel_international" 
+						value="<?php 
+							if (!empty($formreach_stored_meta['formreach_whatsapp_tel_international'])) 
+								echo esc_attr($formreach_stored_meta['formreach_whatsapp_tel_international'][0]); 
+						?>" 
+					/>
+
+					<label for="formreach_whatsapp_message_content" class="d-block mb-1 mt-2">
+						<strong>
+							Message content :
+						</strong>
+					</label>
+					<textarea 
+						rows="8" 
+						name="formreach_whatsapp_message_content" 
+						id="formreach_whatsapp_message_content" 
+						class="large-text code"><?php 
+								if (! empty ($formreach_stored_meta['formreach_whatsapp_message_content'])) 
+								echo esc_attr ( $formreach_stored_meta['formreach_whatsapp_message_content'][0] ); 
+					?></textarea>
 				</div>
 
 				<div class="row mt-3">
@@ -905,8 +938,19 @@ wp_localize_script('form-reach-bundle-js', 'formReach', $formreach_defaultform);
 					<label for="formreach_email_admin_subject" ><strong>Subject</strong></label>
 					<input type="text" name="formreach_email_admin_subject" id="formreach_email_admin_subject" class="large-text code" value="<?php if (! empty ($formreach_stored_meta['formreach_email_admin_subject'])) echo esc_attr ( $formreach_stored_meta['formreach_email_admin_subject'][0] ); ?>"/>
 					
-					<label for="formreach_email_admin_content"><strong>Message content</strong></label>
-					<textarea cols="100" rows="18" name="formreach_email_admin_content" id="formreach_email_admin_content" class="large-text code"><?php if (! empty ($formreach_stored_meta['formreach_email_admin_content'])) echo esc_attr ( $formreach_stored_meta['formreach_email_admin_content'][0] ); ?></textarea>
+					<label for="formreach_email_admin_content">
+						<strong>
+							Message content
+						</strong>
+					</label>
+					<textarea 
+						rows="18" 
+						name="formreach_email_admin_content" 
+						id="formreach_email_admin_content" 
+						class="large-text code"><?php 
+								if (! empty ($formreach_stored_meta['formreach_email_admin_content'])) 
+								echo esc_attr ( $formreach_stored_meta['formreach_email_admin_content'][0] ); 
+					?></textarea>
 				</div>
 				
 				<div class="ms-auto d-flex align-items-center">

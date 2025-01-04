@@ -34,7 +34,6 @@ function formreach_handle_whatsapp_form() {
     $formreach_field_types = $formreach_matches[1];
     $formreach_field_names = $formreach_matches[2];
 
-    $formreach_content = '';
     $formreach_keyShortcode = [];
     $formreach_valShortcode = [];
 
@@ -85,15 +84,22 @@ function formreach_handle_whatsapp_form() {
                     $formreach_field_value_filtered = sanitize_text_field($formreach_field_value);
                     break;
             }
-            $formreach_content .= esc_attr($formreach_field_name) . ' : ' . $formreach_field_value_filtered . '<br/>';
+
+            // Prepare shortcodes for replacement
+            $formreach_keyShortcode[] = '[' . esc_attr(str_replace("\\", "", $formreach_field_name)) . ']';
+            $formreach_valShortcode[] = str_replace("\\", "", $formreach_field_value_filtered);
         }
     }
+
+    // Build whatsApp message
+    $formreach_contenuFormPost = nl2br(esc_html(str_replace("&#039;","'",esc_attr($formreach_wp_stored_meta_whatsapp["formreach_whatsapp_message_content"][0]))));
+    $formreach_contenuFormPostReplace = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_contenuFormPost);
 
     // Generate WhatsApp link
     $formreach_filteredContent = str_replace(
         ["\\", "<br />", "<br/>"],
         ["", "", "\n"],
-        $formreach_content
+        $formreach_contenuFormPostReplace
     );
     $formreach_tel = urlencode($formreach_wp_stored_meta_whatsapp['formreach_whatsapp_tel_international'][0]);
     $formreach_link = "https://api.whatsapp.com/send/?phone=$formreach_tel&text=" . urlencode($formreach_filteredContent);
@@ -105,7 +111,7 @@ function formreach_handle_whatsapp_form() {
 		$wpdb->prefix . 'formreach_form_history',
 		[
 			'type' => 'Whatsapp',
-			'content' => str_replace("\\", "", $formreach_content),
+			'content' => str_replace("\\", "", $formreach_contenuFormPostReplace),
 			'created_at' => $formreach_local_time
 		],
 		['%s','%s','%s']
