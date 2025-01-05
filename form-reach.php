@@ -113,7 +113,6 @@ function formreach_delete_db() {
     }
 }
 
-
 // Contains the entire form
 function formreach_include($formreach_id) {
 	// Allows to use the post ID and call database's metadatas
@@ -160,34 +159,103 @@ function formreach_include($formreach_id) {
 	
 						$formreach_is_in_form_reach = false;
 
-						// Determines whether the WhatsApp submit button should be displayed
-						$formreach_displayWhatsAppSubmit = esc_attr($formreach_stored_meta_front['formreach_whatsapp_switch'][0]) == 1 ? '' : 'style="display:none"';
-						// Determines whether the Email submit button should be displayed
-						$formreach_displayMailSubmit = esc_attr($formreach_stored_meta_front['formreach_whatsapp_switch'][0]) == 1 ? 'style="display:none"' : '';
+						$formreach_whatsapp_switch = isset($formreach_stored_meta_front['formreach_whatsapp_switch'][0]) 
+							? (int) $formreach_stored_meta_front['formreach_whatsapp_switch'][0] 
+							: 0;
 
-						wp_nonce_field('formreach_send_contact_action', 'formreach_send_contact_nonce');
+						wp_nonce_field( 'formreach_send_contact_action', 'formreach_send_contact_nonce' );
 
-						// Form display
-						echo '<div id="formreach_mail_submit" ' . wp_kses_post($formreach_displayMailSubmit) . '>';
-						echo '<button type="submit" name="formreach_mail_submit" class="btn mb-3 mt-3 " style="background-color: ' . esc_attr($formreach_stored_meta_front['formreach_email_submit_color'][0]) . ';">';
-						echo '<div id="formreach_submitContent_' . esc_attr($formreach_id['id']) . '" style="display:flex; align-items:center; width:fit-content; justify-content:space-around;">';
-						echo '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 26 26" fill="none" style="margin-right: 0.4em;"><g clip-path="url(#clip0_660_96)"><path d="M24.9983 9.48608C25.1887 9.33472 25.4719 9.47632 25.4719 9.71558V19.7009C25.4719 20.9949 24.4221 22.0447 23.1282 22.0447H2.81567C1.52173 22.0447 0.471924 20.9949 0.471924 19.7009V9.72046C0.471924 9.47632 0.750244 9.3396 0.945557 9.49097C2.03931 10.3406 3.4895 11.4197 8.46997 15.0378C9.50024 15.7898 11.2385 17.3718 12.9719 17.3621C14.7151 17.3767 16.4875 15.7605 17.4788 15.0378C22.4592 11.4197 23.9045 10.3357 24.9983 9.48608ZM12.9719 15.7947C14.1047 15.8142 15.7356 14.3689 16.5559 13.7732C23.0354 9.07105 23.5286 8.66089 25.0227 7.48901C25.3059 7.26929 25.4719 6.92749 25.4719 6.56616V5.63843C25.4719 4.34448 24.4221 3.29468 23.1282 3.29468H2.81567C1.52173 3.29468 0.471924 4.34448 0.471924 5.63843V6.56616C0.471924 6.92749 0.637939 7.2644 0.921143 7.48901C2.41528 8.65601 2.90845 9.07105 9.38794 13.7732C10.2083 14.3689 11.8391 15.8142 12.9719 15.7947Z" fill="' . esc_attr($formreach_stored_meta_front['formreach_email_text_color'][0]) . '"/></g><defs><clipPath id="clip0_660_96"><rect width="25" height="25" fill="white" transform="translate(0.471924 0.169678)"/></clipPath></defs></svg>';
-						echo '<span style="color: ' . esc_attr($formreach_stored_meta_front['formreach_email_text_color'][0]) . ';">' . esc_html($formreach_stored_meta_front['formreach_email_submit'][0]) . '</span>';
-						echo '</div>';
-						echo '<div id="formreach_spinner_' . esc_attr($formreach_id['id']) . '" class="spinner-border spinner-border-sm text-white" style="display:none"></div>';
-						echo '</button>';
-						echo '</div>';
+						if ( $formreach_whatsapp_switch === 0 ) : ?>
+							<div id="formreach_mail_submit">
+								<button 
+									type="submit" 
+									name="formreach_mail_submit" 
+									class="btn mb-3 mt-3"
+									style="background-color: <?php echo esc_attr($formreach_stored_meta_front['formreach_email_submit_color'][0]); ?>;"
+								>
+									<div 
+										id="formreach_submitContent_<?php echo esc_attr($formreach_id['id']); ?>" 
+										style="display:flex; align-items:center; width:fit-content; justify-content:space-around;"
+									>
+										<!-- Icône mail -->
+										<svg 
+											xmlns="http://www.w3.org/2000/svg" 
+											width="16" 
+											height="16" 
+											viewBox="0 0 26 26" 
+											fill="none" 
+											style="margin-right: 0.4em;"
+										>
+											<g clip-path="url(#clip0_660_96)">
+												<path 
+													d="M24.9983 9.48608C25.1887 9.33472 25.4719 9.47632 25.4719 9.71558V19.7009C25.4719 20.9949 24.4221 22.0447 23.1282 22.0447H2.81567C1.52173 22.0447 0.471924 20.9949 0.471924 19.7009V9.72046C0.471924 9.47632 0.750244 9.3396 0.945557 9.49097C2.03931 10.3406 3.4895 11.4197 8.46997 15.0378C9.50024 15.7898 11.2385 17.3718 12.9719 17.3621C14.7151 17.3767 16.4875 15.7605 17.4788 15.0378C22.4592 11.4197 23.9045 10.3357 24.9983 9.48608ZM12.9719 15.7947C14.1047 15.8142 15.7356 14.3689 16.5559 13.7732C23.0354 9.07105 23.5286 8.66089 25.0227 7.48901C25.3059 7.26929 25.4719 6.92749 25.4719 6.56616V5.63843C25.4719 4.34448 24.4221 3.29468 23.1282 3.29468H2.81567C1.52173 3.29468 0.471924 4.34448 0.471924 5.63843V6.56616C0.471924 6.92749 0.637939 7.2644 0.921143 7.48901C2.41528 8.65601 2.90845 9.07105 9.38794 13.7732C10.2083 14.3689 11.8391 15.8142 12.9719 15.7947Z" 
+													fill="<?php echo esc_attr($formreach_stored_meta_front['formreach_email_text_color'][0]); ?>"
+												/>
+											</g>
+											<defs>
+												<clipPath id="clip0_660_96">
+													<rect 
+														width="25" 
+														height="25" 
+														fill="white" 
+														transform="translate(0.471924 0.169678)"
+													/>
+												</clipPath>
+											</defs>
+										</svg>
+										<!-- Texte mail -->
+										<span style="color: <?php echo esc_attr($formreach_stored_meta_front['formreach_email_text_color'][0]); ?>;">
+											<?php echo esc_html($formreach_stored_meta_front['formreach_email_submit'][0]); ?>
+										</span>
+									</div>
+									<div 
+										id="formreach_spinner_<?php echo esc_attr($formreach_id['id']); ?>" 
+										class="spinner-border spinner-border-sm text-white" 
+										style="display:none"
+									></div>
+								</button>
+							</div>
+						<?php endif; ?>
 
-						echo '<div id="formreach_whatsapp_submit" ' . wp_kses_post($formreach_displayWhatsAppSubmit) . '>';
-						echo '<button type="submit" name="formreach_whatsapp_submit" class="btn mb-3 mt-3 " style="background-color: ' . esc_attr($formreach_stored_meta_front['formreach_whatsapp_submit_color'][0]) . ';">';
-						echo '<div id="formreach_submitContentWhatsapp_' . esc_attr($formreach_id['id']) . '" style="display:flex; align-items:center; width:fit-content; justify-content:space-around;"> ';
-						echo '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 27 27" fill="none" style="margin-right: 0.4em;"><path d="M21.774 5.12051C19.5645 2.90566 16.6219 1.6875 13.4947 1.6875C7.04004 1.6875 1.7877 6.93984 1.7877 13.3945C1.7877 15.4564 2.32559 17.4709 3.34863 19.248L1.6875 25.3125L7.89434 23.683C9.60293 24.6164 11.5277 25.1068 13.4895 25.1068H13.4947C19.9441 25.1068 25.3125 19.8545 25.3125 13.3998C25.3125 10.2727 23.9836 7.33535 21.774 5.12051ZM13.4947 23.1346C11.7439 23.1346 10.0301 22.6652 8.53769 21.7793L8.18437 21.5684L4.50352 22.5334L5.48438 18.9422L5.25234 18.573C4.27676 17.0227 3.76523 15.235 3.76523 13.3945C3.76523 8.03145 8.13164 3.66504 13.5 3.66504C16.0998 3.66504 18.5414 4.67754 20.3766 6.51797C22.2117 8.3584 23.3402 10.8 23.335 13.3998C23.335 18.7682 18.8578 23.1346 13.4947 23.1346ZM18.8314 15.8467C18.5414 15.699 17.1018 14.9924 16.8328 14.8975C16.5639 14.7973 16.3688 14.7498 16.1736 15.0451C15.9785 15.3404 15.4195 15.9943 15.2455 16.1947C15.0768 16.3898 14.9027 16.4162 14.6127 16.2686C12.8936 15.409 11.765 14.734 10.6313 12.7881C10.3307 12.2713 10.9318 12.3082 11.4908 11.1902C11.5857 10.9951 11.5383 10.8264 11.4645 10.6787C11.3906 10.5311 10.8053 9.09141 10.5627 8.50605C10.3254 7.93652 10.0828 8.01563 9.90352 8.00508C9.73477 7.99453 9.53965 7.99453 9.34453 7.99453C9.14941 7.99453 8.83301 8.06836 8.56406 8.3584C8.29512 8.65371 7.54102 9.36035 7.54102 10.8C7.54102 12.2396 8.59043 13.6318 8.73281 13.827C8.88047 14.0221 10.7947 16.9752 13.732 18.2461C15.5883 19.0477 16.316 19.1162 17.2441 18.9791C17.8084 18.8947 18.9738 18.2725 19.2164 17.5869C19.459 16.9014 19.459 16.316 19.3852 16.1947C19.3166 16.0629 19.1215 15.9891 18.8314 15.8467Z" fill="' . esc_attr($formreach_stored_meta_front['formreach_whatsapp_text_color'][0]) . '"/></svg>'; 
-						echo '<span style="color: ' . esc_attr($formreach_stored_meta_front['formreach_whatsapp_text_color'][0]) . ';">' . esc_html($formreach_stored_meta_front['formreach_whatsapp_submit'][0]) . '</span>';
-						echo '</div>';
-						echo '<div id="formreach_spinnerWhatsapp_' . esc_attr($formreach_id['id']) . '" class="spinner-border spinner-border-sm text-white" style="display:none"></div>';
-						echo '</button>';
-						echo '</div>';
-						?>
+						<?php
+						if ( $formreach_whatsapp_switch === 1 ) : ?>
+							<div id="formreach_whatsapp_submit">
+								<button 
+									type="submit" 
+									name="formreach_whatsapp_submit" 
+									class="btn mb-3 mt-3"
+									style="background-color: <?php echo esc_attr($formreach_stored_meta_front['formreach_whatsapp_submit_color'][0]); ?>;"
+								>
+									<div 
+										id="formreach_submitContentWhatsapp_<?php echo esc_attr($formreach_id['id']); ?>" 
+										style="display:flex; align-items:center; width:fit-content; justify-content:space-around;"
+									>
+										<svg 
+											xmlns="http://www.w3.org/2000/svg" 
+											width="16" 
+											height="16" 
+											viewBox="0 0 27 27" 
+											fill="none" 
+											style="margin-right: 0.4em;"
+										>
+											<path 
+												d="M21.774 5.12051C19.5645 2.90566 16.6219 1.6875 13.4947 1.6875C7.04004 1.6875 1.7877 6.93984 1.7877 13.3945C1.7877 15.4564 2.32559 17.4709 3.34863 19.248L1.6875 25.3125L7.89434 23.683C9.60293 24.6164 11.5277 25.1068 13.4895 25.1068H13.4947C19.9441 25.1068 25.3125 19.8545 25.3125 13.3998C25.3125 10.2727 23.9836 7.33535 21.774 5.12051ZM13.4947 23.1346C11.7439 23.1346 10.0301 22.6652 8.53769 21.7793L8.18437 21.5684L4.50352 22.5334L5.48438 18.9422L5.25234 18.573C4.27676 17.0227 3.76523 15.235 3.76523 13.3945C3.76523 8.03145 8.13164 3.66504 13.5 3.66504C16.0998 3.66504 18.5414 4.67754 20.3766 6.51797C22.2117 8.3584 23.3402 10.8 23.335 13.3998C23.335 18.7682 18.8578 23.1346 13.4947 23.1346ZM18.8314 15.8467C18.5414 15.699 17.1018 14.9924 16.8328 14.8975C16.5639 14.7973 16.3688 14.7498 16.1736 15.0451C15.9785 15.3404 15.4195 15.9943 15.2455 16.1947C15.0768 16.3898 14.9027 16.4162 14.6127 16.2686C12.8936 15.409 11.765 14.734 10.6313 12.7881C10.3307 12.2713 10.9318 12.3082 11.4908 11.1902C11.5857 10.9951 11.5383 10.8264 11.4645 10.6787C11.3906 10.5311 10.8053 9.09141 10.5627 8.50605C10.3254 7.93652 10.0828 8.01563 9.90352 8.00508C9.73477 7.99453 9.53965 7.99453 9.34453 7.99453C9.14941 7.99453 8.83301 8.06836 8.56406 8.3584C8.29512 8.65371 7.54102 9.36035 7.54102 10.8C7.54102 12.2396 8.59043 13.6318 8.73281 13.827C8.88047 14.0221 10.7947 16.9752 13.732 18.2461C15.5883 19.0477 16.316 19.1162 17.2441 18.9791C17.8084 18.8947 18.9738 18.2725 19.2164 17.5869C19.459 16.9014 19.459 16.316 19.3852 16.1947C19.3166 16.0629 19.1215 15.9891 18.8314 15.8467Z" 
+												fill="<?php echo esc_attr($formreach_stored_meta_front['formreach_whatsapp_text_color'][0]); ?>"
+											/>
+										</svg>
+										<span style="color: <?php echo esc_attr($formreach_stored_meta_front['formreach_whatsapp_text_color'][0]); ?>;">
+											<?php echo esc_html($formreach_stored_meta_front['formreach_whatsapp_submit'][0]); ?>
+										</span>
+									</div>
+									<div 
+										id="formreach_spinnerWhatsapp_<?php echo esc_attr($formreach_id['id']); ?>" 
+										class="spinner-border spinner-border-sm text-white" 
+										style="display:none"
+									></div>
+								</button>
+							</div>
+						<?php endif; ?>
+
                         <input type="hidden" name="formreach_container_post" value="<?php echo esc_attr($formreach_id['id']); ?>">
 					</form>
 
