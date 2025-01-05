@@ -170,12 +170,12 @@ function formreach_include($formreach_id) {
 								<button 
 									type="submit" 
 									name="formreach_mail_submit" 
-									class="btn mb-3 mt-3"
+									class="btn formreach_submit_button mb-3 mt-3"
 									style="background-color: <?php echo esc_attr($formreach_stored_meta_front['formreach_email_submit_color'][0]); ?>;"
 								>
 									<div 
 										id="formreach_submitContent_<?php echo esc_attr($formreach_id['id']); ?>" 
-										style="display:flex; align-items:center; width:fit-content; justify-content:space-around;"
+										class="formreach_submit_button_content d-flex align-items-center"
 									>
 										<!-- Icône mail -->
 										<svg 
@@ -223,12 +223,12 @@ function formreach_include($formreach_id) {
 								<button 
 									type="submit" 
 									name="formreach_whatsapp_submit" 
-									class="btn mb-3 mt-3"
+									class="btn formreach_submit_button mb-3 mt-3"
 									style="background-color: <?php echo esc_attr($formreach_stored_meta_front['formreach_whatsapp_submit_color'][0]); ?>;"
 								>
 									<div 
 										id="formreach_submitContentWhatsapp_<?php echo esc_attr($formreach_id['id']); ?>" 
-										style="display:flex; align-items:center; width:fit-content; justify-content:space-around;"
+										class="formreach_submit_button_content d-flex align-items-center"
 									>
 										<svg 
 											xmlns="http://www.w3.org/2000/svg" 
