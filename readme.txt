@@ -6,67 +6,105 @@ Stable Tag: 1.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-Custom Contact Form Builder to WhatsApp, Email, and more!
+Custom Contact Form Builder for WhatsApp, Email, and more!
 
 == Description ==
 
 Form Reach is a powerful WordPress form builder extension that allows you to create contact forms for various messaging platforms, including WhatsApp, email, and more. With Form Reach, you can effortlessly manage multiple contact forms and customize their content using simple shortcodes. The plugin supports Ajax form submission and integrates seamlessly with reCAPTCHA for enhanced security. Additionally, Form Reach automatically stores all submitted messages, ensuring that you never miss important user inquiries.
 
-Key Features:
-1. Easy Form Building: Create professional contact forms for WhatsApp, email, and more within minutes.
-2. Multi-platform Support: Reach your audience through various messaging platforms with ease.
-3. Customization Options: Personalize the content of your forms and emails using simple shortcodes.
-4. Ajax Form Submission: Seamlessly submit forms without refreshing the page, providing a smoother user experience.
-5. Enhanced Security: Integrate reCAPTCHA to prevent spam submissions and ensure data integrity.
-6. Message Storage: Store and access all user-submitted messages conveniently for reference and follow-ups.
+### Key Features:
+1. **Easy Form Building** – Create professional contact forms for WhatsApp, email, and more within minutes.
+2. **Multi-platform Support** – Reach your audience through various messaging platforms with ease.
+3. **Customization Options** – Personalize the content of your forms and emails using simple shortcodes.
+4. **Ajax Form Submission** – Seamlessly submit forms without refreshing the page, providing a smoother user experience.
+5. **Enhanced Security** – Integrate reCAPTCHA to prevent spam submissions and ensure data integrity.
+6. **Message Storage** – Store and access all user-submitted messages conveniently for reference and follow-ups.
 
 Experience the convenience and versatility of Form Reach for your WordPress website. Simplify your contact form management and engage with your users effectively.
 
-= Docs and support =
+## Documentation & Support
 
-You can find [docs](https://form-reach.com/docs/), [FAQ](https://form-reach.com/faq/) and more detailed information about Form Reach on [form-reach.com](https://form-reach.com/). When you cannot find the answer to your question on the FAQ or in any of the documentation, check the [support forum](https://wordpress.org/support/plugin/formreach/) on WordPress.org. If you cannot locate any topics that pertain to your particular issue, post a new topic for it.
+You can find [documentation](https://form-reach.com/docs/), [FAQ](https://form-reach.com/faq/), and more detailed information about Form Reach on [form-reach.com](https://form-reach.com/). 
 
-= Privacy notices =
+If you need further assistance, visit the [support forum](https://wordpress.org/support/plugin/formreach/) on WordPress.org. If you cannot find an existing topic that relates to your issue, feel free to post a new one.
 
-With the default configuration, this plugin, in itself, does not:
+---
 
-* track users by stealth;
-* write any user personal data to the database;
-* send any data to external servers;
-* use cookies.
+## Privacy Notice
 
-If you activate certain features in this plugin, the contact form submitter's personal data, including their IP address, may be sent to the service provider. Thus, confirming the provider's privacy policy is recommended. These features include:
+With the default configuration, this plugin **does not**:
 
-* reCAPTCHA ([Google](https://policies.google.com/?hl=en))
+* Track users without their consent;
+* Store any user personal data in the database;
+* Send any user data to external servers;
+* Use cookies.
 
-== Third-Party Services Used ==
+If you activate certain features, the contact form submitter’s personal data, including their **IP address**, may be sent to third-party service providers. You should review their privacy policies before enabling these features.
 
-= WhatsApp API =
-This plugin uses the WhatsApp API to send messages. This service is used in the following circumstances:
-* When a user submits a form that triggers a WhatsApp message.
+### Services that may collect user data:
+- **reCAPTCHA** ([Google](https://policies.google.com/?hl=en))  
+  Used to protect forms from spam and bot submissions.
 
-Link to the service: [WhatsApp API](https://api.whatsapp.com)
-Link to the terms of service: [WhatsApp Terms of Service](https://www.whatsapp.com/legal/terms-of-service)
-Link to the privacy policy: [WhatsApp Privacy Policy](https://www.whatsapp.com/legal/privacy-policy)
+- **WhatsApp API** ([WhatsApp](https://www.whatsapp.com/legal/privacy-policy))  
+  Used for sending form submissions to WhatsApp.
 
-= Google reCAPTCHA =
-This plugin uses Google reCAPTCHA to ensure that form submissions are not made by bots. This service is used in the following circumstances:
-* When a user submits a form with reCAPTCHA protection enabled.
+- **IP Geolocation Service (ipinfo.io)** ([ipinfo.io](https://ipinfo.io/privacy))  
+  Used for detecting the user's country and pre-filling location-based fields.
 
-Link to the service: [Google reCAPTCHA](https://www.google.com/recaptcha)
-Link to the terms of service: [Google reCAPTCHA Terms of Service](https://policies.google.com/terms)
-Link to the privacy policy: [Google reCAPTCHA Privacy Policy](https://policies.google.com/privacy)
+---
 
-== Source Code ==
+## External Services Used
 
-The source code for this plugin is available at:
-https://github.com/ACTOPIX/form-reach
+### WhatsApp API
+This plugin integrates with the **WhatsApp API** to send messages when a user submits a form with WhatsApp as the selected contact method.
 
-== Installation ==
+**What data is sent and when?**
+- When a user submits a form that triggers a WhatsApp message, their **phone number and message content** are processed through the WhatsApp API.
+
+**Service details:**
+- API provider: [WhatsApp API](https://api.whatsapp.com)
+- [WhatsApp Terms of Service](https://www.whatsapp.com/legal/terms-of-service)
+- [WhatsApp Privacy Policy](https://www.whatsapp.com/legal/privacy-policy)
+
+---
+
+### Google reCAPTCHA
+This plugin uses **Google reCAPTCHA** to prevent spam submissions.
+
+**What data is sent and when?**
+- When a user submits a form with **reCAPTCHA enabled**, their **IP address and browser-related data** are sent to Google for verification.
+
+**Service details:**
+- API provider: [Google reCAPTCHA](https://www.google.com/recaptcha)
+- [Google reCAPTCHA Terms of Service](https://policies.google.com/terms)
+- [Google reCAPTCHA Privacy Policy](https://policies.google.com/privacy)
+
+---
+
+### IP Geolocation (ipinfo.io)
+This plugin uses **ipinfo.io** to detect the user’s country for auto-filling location-based fields.
+
+**What data is sent and when?**
+- When a form loads with country-based auto-detection enabled, the user’s **IP address** is sent to ipinfo.io to determine their country.
+
+**Service details:**
+- API provider: [ipinfo.io](https://ipinfo.io)
+- [ipinfo.io Privacy Policy](https://ipinfo.io/privacy)
+
+---
+
+## Source Code
+
+The source code for this plugin is available at:  
+[GitHub Repository](https://github.com/ACTOPIX/form-reach)
+
+---
+
+## Installation
 
 1. Upload the entire `form-reach` folder to the `/wp-content/plugins/` directory.
-1. Activate the plugin through the **Plugins** screen (**Plugins > Installed Plugins**).
+2. Activate the plugin through the **Plugins** screen (**Plugins > Installed Plugins**).
 
-You will find **Form Reach** menu in your WordPress admin screen.
+You will find the **Form Reach** menu in your WordPress admin panel.
 
-For basic usage, have a look at the [plugin's website](https://form-reach.com/).
+For usage instructions, visit the [official website](https://form-reach.com/).
