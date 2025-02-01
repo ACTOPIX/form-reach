@@ -606,9 +606,19 @@ function formreach_recaptcha_options_page() {
 }
 
 function formreach_register_recaptcha_settings() {
-    register_setting('formreach_recaptcha_options_group', 'formreach_recaptcha_switch');
-    register_setting('formreach_recaptcha_options_group', 'formreach_key_site');
-    register_setting('formreach_recaptcha_options_group', 'formreach_key_secret');
-    register_setting('formreach_recaptcha_options_group', 'formreach_recaptcha_score');
+    register_setting('formreach_recaptcha_options_group', 'formreach_recaptcha_switch', 'formreach_sanitize_boolean');
+    register_setting('formreach_recaptcha_options_group', 'formreach_key_site', 'sanitize_text_field');
+    register_setting('formreach_recaptcha_options_group', 'formreach_key_secret', 'sanitize_text_field');
+    register_setting('formreach_recaptcha_options_group', 'formreach_recaptcha_score', 'formreach_sanitize_recaptcha_score');
 }
+
+function formreach_sanitize_boolean($input) {
+    return (!empty($input) && $input == '1') ? 1 : 0;
+}
+
+function formreach_sanitize_recaptcha_score($input) {
+    $score = floatval($input);
+    return ($score >= 0 && $score <= 1) ? $score : 0.5;
+}
+
 add_action('admin_init', 'formreach_register_recaptcha_settings');
