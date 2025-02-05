@@ -126,9 +126,9 @@ function formreach_include($formreach_id) {
 	// Instantiate in the cache
 	ob_start();
 
-	wp_enqueue_style('form-reach-bootstrap-css', plugins_url('style/style.css', __FILE__), array(), '1.0.0');
+	wp_enqueue_style('form-reach-bootstrap-css', plugins_url('style/style.css', __FILE__), array(), '1.0.1');
     
-	wp_register_script('form-reach', plugin_dir_url(__FILE__) . 'js/form-reach.js', array('jquery'), '1.0', true);
+	wp_register_script('form-reach', plugin_dir_url(__FILE__) . 'js/form-reach.js', array('jquery'), '1.0.1', true);
     wp_localize_script('form-reach', 'formReach', array(
         'formreach_chemin' => plugin_dir_url(__FILE__),
 		'formreach_ajax_url' => admin_url('admin-ajax.php'),

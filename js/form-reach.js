@@ -36,12 +36,25 @@ jQuery(document).ready(function ($) {
               (screen.width - 600) / 2 +
               ",top=" +
               (screen.height - 400) / 2;
-            window.open(
+
+            var newWindow = window.open(
               formreach_response.whatsapp_link,
               "_blank",
               formreach_options
             );
+
+            if (
+              !newWindow ||
+              newWindow.closed ||
+              typeof newWindow.closed === "undefined"
+            ) {
+              // Fallback si `window.open` est bloqué
+              setTimeout(function () {
+                window.location.href = formreach_response.whatsapp_link;
+              }, 500); // Léger délai pour améliorer la compatibilité
+            }
             break;
+
           case "#formreach_mail":
             // No specific action needed for mail on success
             break;

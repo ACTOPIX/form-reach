@@ -101,7 +101,7 @@ function formreach_enqueue_admin_styles() {
         'formreach-admin-css',
         plugin_dir_url(__FILE__) . 'assets/css/form-reach-admin.min.css', 
         array(), 
-        '1.0'
+        '1.0.1'
     );
 }
 
