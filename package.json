@@ -12,15 +12,15 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.3.3",
-    "datatables.net": "^2.2.1",
-    "datatables.net-bs5": "^2.2.1",
+    "datatables.net": "^2.2.2",
+    "datatables.net-bs5": "^2.2.2",
     "datatables.net-responsive": "^3.0.3",
     "datatables.net-responsive-bs5": "^3.0.3",
-    "intl-tel-input": "^25.2.1"
+    "intl-tel-input": "^25.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/preset-env": "^7.26.0",
+    "@babel/core": "^7.26.7",
+    "@babel/preset-env": "^7.26.7",
     "babel-loader": "^9.2.1",
     "css-loader": "^7.1.2",
     "gulp": "^5.0.0",
@@ -29,10 +29,10 @@
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.1.4",
     "gulp-sourcemaps": "^3.0.0",
-    "sass": "^1.81.0",
-    "sass-loader": "^16.0.3",
+    "sass": "^1.84.0",
+    "sass-loader": "^16.0.4",
     "style-loader": "^4.0.0",
-    "webpack": "^5.96.1",
+    "webpack": "^5.97.1",
     "webpack-stream": "^7.0.0"
   }
 }

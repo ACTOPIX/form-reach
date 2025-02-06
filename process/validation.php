@@ -106,7 +106,7 @@ function formreach_handle_contact_form() {
 
     $formreach_headerAdmin = [
         'Content-Type: text/html; charset=UTF-8',
-        'From: "' . $formreach_admin_from_name . '" <no-reply@' . parse_url(get_bloginfo('url'), PHP_URL_HOST) . '>',
+        'From: "' . $formreach_admin_from_name . '" <no-reply@' . wp_parse_url(get_bloginfo('url'), PHP_URL_HOST) . '>',
     ];
     $formreach_toAdminSeveral = array_map('trim', explode(',', $formreach_toAdmin));
 	
@@ -119,7 +119,7 @@ function formreach_handle_contact_form() {
         $formreach_user_from_name = str_replace("&#039;", "'", $formreach_stored_meta_validation_mail['formreach_email_user_from'][0]);
         $formreach_headerUser = [
             'Content-Type: text/html; charset=UTF-8',
-            'From: "' . $formreach_user_from_name . '" <no-reply@' . parse_url(get_bloginfo('url'), PHP_URL_HOST) . '>',
+            'From: "' . $formreach_user_from_name . '" <no-reply@' . wp_parse_url(get_bloginfo('url'), PHP_URL_HOST) . '>',
             'Reply-To: ' . $formreach_toAdminSeveral,
         ];
         wp_mail($formreach_toUser, $formreach_subjectUser, $formreach_contenuReplaceUser, $formreach_headerUser);

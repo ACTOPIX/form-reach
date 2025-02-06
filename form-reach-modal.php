@@ -7,10 +7,10 @@ wp_enqueue_style('form-reach-css', plugin_dir_url(__FILE__) . 'assets/css/form-r
 wp_enqueue_script('jquery');
 
 // Styles
-wp_enqueue_style('form-reach-intl-tel-input-css', plugin_dir_url(__FILE__) . 'assets/css/intlTelInput.min.css', array(), '1.0.0');
+wp_enqueue_style('form-reach-intl-tel-input-css', plugin_dir_url(__FILE__) . 'assets/css/intlTelInput.min.css', array(), '1.0.1');
 
 // Scripts
-wp_enqueue_script('form-reach-bundle-js', plugin_dir_url(__FILE__) . 'assets/js/bundle.min.js', array('jquery'), '1.0.0', true);
+wp_enqueue_script('form-reach-bundle-js', plugin_dir_url(__FILE__) . 'assets/js/bundle.min.js', array('jquery'), '1.0.1', true);
 
 //Default Form
 function formreach_email_form_default() {

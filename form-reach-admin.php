@@ -439,8 +439,8 @@ function formreach_add_custom_submenu() {
             return;
         }
     
-        wp_enqueue_style('datatables-css', plugin_dir_url(__FILE__) . 'assets/css/dataTables.bootstrap5.min.css', array(), '2.1.18');
-        wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . 'assets/js/bundle-datatables.min.js', array('jquery'), '2.1.18', true);
+        wp_enqueue_style('datatables-css', plugin_dir_url(__FILE__) . 'assets/css/dataTables.bootstrap5.min.css', array(), '2.2.2');
+        wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . 'assets/js/bundle-datatables.min.js', array('jquery'), '2.2.2', true);
 
         wp_enqueue_style('form-reach-style', plugin_dir_url(__FILE__) . 'assets/css/form-reach.min.css', array(), '1.0.0');
     });    
