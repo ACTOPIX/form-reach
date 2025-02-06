@@ -179,14 +179,14 @@ function formreach_register_metabox_callback($formreach_post) {
 
 	$formreach_default_meta_values = [
 		'formreach_email_admin_to' => get_option('admin_email'),
-		'formreach_email_admin_from' => __("Form Reach", "form-reach"),
-		'formreach_email_admin_subject' => __("User Message", "form-reach"),
+		'formreach_email_admin_from' => esc_html(get_bloginfo('name')),
+		'formreach_email_admin_subject' => __("New Message", "form-reach"),
 		'formreach_email_user_to' => __("[email]", "form-reach"),
-		'formreach_email_user_from' => "Form Reach",
-		'formreach_email_user_subject' => "Form Reach",
+		'formreach_email_user_from' => esc_html(get_bloginfo('name')),
+		'formreach_email_user_subject' => esc_html(get_bloginfo('name')),
 		'formreach_email_submit' => __("Send", "form-reach"),
 		'formreach_whatsapp_submit' => __("WhatsApp", "form-reach"),
-		'formreach_email_submit_color' => "#0d6efd",
+		'formreach_email_submit_color' => "#2271b1",
 		'formreach_whatsapp_submit_color' => "#198754",
 		'formreach_email_text_color' => "#ffffff",
 		'formreach_whatsapp_text_color' => "#ffffff",
@@ -398,7 +398,7 @@ function formreach_meta_save($formreach_post_id) {
 
 			switch ($formreach_sanitize) {
 				case 'email':
-					$formreach_value = sanitize_email($formreach_value);
+					$formreach_value = implode(',', array_map('sanitize_email', explode(',', $formreach_value)));
 					break;
 				case 'tel':
 					$formreach_value = preg_replace('/[^0-9+]/', '', $formreach_value);

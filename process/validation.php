@@ -102,27 +102,27 @@ function formreach_handle_contact_form() {
     $formreach_subjectAdmin = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_stored_meta_validation_mail['formreach_email_admin_subject'][0]);
     $formreach_toUser = str_replace($formreach_keyShortcode, $formreach_valShortcode, $formreach_stored_meta_validation_mail['formreach_email_user_to'][0]);
     $formreach_toAdmin = $formreach_stored_meta_validation_mail['formreach_email_admin_to'][0];
-    $GLOBALS['formreach_admin_from_name'] = str_replace("&#039;", "'", $formreach_stored_meta_validation_mail['formreach_email_admin_from'][0]);
+    $formreach_admin_from_name = str_replace("&#039;", "'", $formreach_stored_meta_validation_mail['formreach_email_admin_from'][0]);
 
-    add_filter('wp_mail_from_name', function($formreach_name) {
-        return $GLOBALS['formreach_mail'] ? $GLOBALS['formreach_admin_from_name'] : $formreach_name;
-    });
-
-    $formreach_headerAdmin = ['Content-Type: text/html; charset=UTF-8'];
+    $formreach_headerAdmin = [
+        'Content-Type: text/html; charset=UTF-8',
+        'From: "' . $formreach_admin_from_name . '" <no-reply@' . parse_url(get_bloginfo('url'), PHP_URL_HOST) . '>',
+    ];
     $formreach_toAdminSeveral = array_map('trim', explode(',', $formreach_toAdmin));
 	
     // Send admin email
-    $GLOBALS['formreach_mail'] = true;
     wp_mail($formreach_toAdminSeveral, $formreach_subjectAdmin, $formreach_contenuAdministrateur, $formreach_headerAdmin);
-    $GLOBALS['formreach_mail'] = false;
 
     // Send user email if enabled
     if ($formreach_stored_meta_validation_mail['formreach_user_email_switch'][0] == 1) {
         $formreach_subjectUser = str_replace("&#039;", "'", $formreach_stored_meta_validation_mail['formreach_email_user_subject'][0]);
-        $formreach_headerUser = str_replace("&#039;", "'", $formreach_stored_meta_validation_mail['formreach_email_user_from'][0]);
-        $GLOBALS['formreach_mail'] = true;
-        wp_mail($formreach_toUser, $formreach_subjectUser, $formreach_contenuReplaceUser, $formreach_headerAdmin);
-        $GLOBALS['formreach_mail'] = false;
+        $formreach_user_from_name = str_replace("&#039;", "'", $formreach_stored_meta_validation_mail['formreach_email_user_from'][0]);
+        $formreach_headerUser = [
+            'Content-Type: text/html; charset=UTF-8',
+            'From: "' . $formreach_user_from_name . '" <no-reply@' . parse_url(get_bloginfo('url'), PHP_URL_HOST) . '>',
+            'Reply-To: ' . $formreach_toAdminSeveral,
+        ];
+        wp_mail($formreach_toUser, $formreach_subjectUser, $formreach_contenuReplaceUser, $formreach_headerUser);
     }
 	
 	$formreach_local_time = gmdate('Y-m-d H:i:s');
